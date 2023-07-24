@@ -1,0 +1,96 @@
+:root{
+    --primary: #EEEEEE;
+    --responsible-font-size-11: calc(1.7rem + 2.2vh);
+    --responsible-font-size-12: calc(1rem + 1.5vh);
+    --responsible-font-size-13: calc(0.8rem + 1.2vh);
+    --responsible-font-size-14: calc(0.7rem + 1.2vh);
+    --responsible-font-size-15: calc(0.7rem + 0.8vh);
+
+}
+
+.poppins{
+    font-family: 'Poppins', sans-serif;
+}
+.roboto{
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Font Custom Size */
+.fcs-11{
+    font-size: var(--responsible-font-size-11);
+}
+.fcs-12{
+    font-size: var(--responsible-font-size-12);
+}
+.fcs-13{
+    font-size: var(--responsible-font-size-13);
+}
+.fcs-14{
+    font-size: var(--responsible-font-size-14);
+}
+.fcs-15{
+    font-size: var(--responsible-font-size-15);
+}
+
+.category-img{
+    width: calc(7rem + 7vh);
+}
+
+.bg-grey{
+    background-color: #cccccc;
+}
+
+/* CSS para dropdown on hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.section-title {
+  position: relative;
+  display: inline-block;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: #1C1C1C;
+}
+
+.section-title span {
+  position: relative;
+  background: #ffffff;
+  z-index: 1;
+}
+
+.section-title::before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: #1C1C1C;
+}
+
+.card-img-top:hover{
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+/* Seletor para o checkbox do Bootstrap */
+.form-check-input:checked{
+    background-color: #212529;
+    border-color:#000000;
+}
+.pagination{
+    --bs-pagination-active-bg: #aaaaaa;
+    --bs-pagination-active-border-color:#aaaaaa;
+}
+
+.cart-img{
+    width: calc(2rem + 2vh);
+    height: calc(2rem + 2vh);
+}
+
+.dropdown-item.active,.dropdown-item:active{
+    color:var(--bs-dropdown-link-active-color);
+    text-decoration:none;
+    background-color:var(--bs-dark)
+}

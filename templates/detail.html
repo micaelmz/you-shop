@@ -1,0 +1,191 @@
+{% extends 'main-template.html' %}
+
+{% block title %}Detalhes do Produto{% endblock %}
+{% block extra_style %}
+  <style>
+  .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      filter: invert(100%);
+    }
+    .nav-link {
+      color: #676767;
+    }
+    .nav-link:hover {
+      color: #000;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<section id="detail">
+  <div class="container-lg mt-5">
+    <div class="row">
+      <div class="col-4"> <!-- Product Image Carrousel -->
+        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="../static/assets/images/product-1.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="../static/assets/images/product-1.png" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div> <!-- Product Image Carrousel -->
+      <div class="col-8 ps-3">
+        <h2 class="fcs-12 poppins fw-bold" id="productName">Colorful Stylish Shirt</h2>
+        <div id="grade">
+          <i class="fas fa-star fcs-15 text-warning"></i>
+          <i class="fas fa-star fcs-15 text-warning"></i>
+          <i class="fas fa-star fcs-15 text-warning"></i>
+          <i class="fas fa-star fcs-15 text-warning"></i>
+          <i class="fa-solid fa-star-half-stroke  fcs-15 text-warning"></i>
+          <span class="fcs-15 roboto ">4.5 (50 Reviews)</span>
+        </div>
+        <div id="price" class="mt-3">
+          <span class="fcs-13 roboto fw-semibold">R$ 99,99</span>
+          <del class="fcs-15 roboto fw-semibold text-danger ms-3">R$ 49,99</del>
+        </div>
+        <div id="description" class="mt-3" style="height: 7rem;">
+          <p class="fcs-15 roboto">
+            Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit clita ea. Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo dolor no sea nonumy. Accus labore stet, est lorem sit diam sea et justo, amet at lorem et eirmod ipsum diam et rebum kasd rebum.
+          </p>
+        </div>
+        <div id="sizesOptions">
+          <span class="fcs-15 roboto fw-bold me-4">Tamanho:</span>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="size" id="sizeP" checked>
+            <label class="form-check-label" for="sizeP">
+              P
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="size" id="sizeM">
+            <label class="form-check-label" for="sizeM">
+              M
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="size" id="sizeG">
+            <label class="form-check-label" for="sizeG">
+              G
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="size" id="sizeGG">
+            <label class="form-check-label" for="sizeGG">
+              GG
+            </label>
+          </div>
+        </div>
+        <div id="colorOptions" class="mt-1">
+          <span class="fcs-15 roboto fw-bold me-4">Cores:</span>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="color" id="colorBlack" checked>
+            <label class="form-check-label" for="colorBlack">
+              Preto
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="color" id="colorWhite">
+            <label class="form-check-label" for="colorWhite">
+              Branco
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="color" id="colorRed">
+            <label class="form-check-label" for="colorRed">
+              Vermelho
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="color" id="colorBlue">
+            <label class="form-check-label" for="colorBlue">
+              Azul
+            </label>
+          </div>
+          <div class="form-check d-inline-block me-4">
+            <input class="form-check-input" type="radio" name="color" id="colorGreen">
+            <label class="form-check-label" for="colorGreen">
+              Verde
+            </label>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="input-group mt-3" style="width: 18%;">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-minus"></i></button>
+            <input type="text" class="form-control text-center fcs-15" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="1">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="ms-4 mt-3">
+            <button class="btn btn-outline-dark roboto fcs-15">
+              <i class="fas fa-shopping-cart"></i>
+              Adicionar ao carrinho
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex mt-5">
+      <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Descrição</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Informação</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link pe-0" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+            Avaliações
+            <span class="top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              0
+            </span>
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content mt-1" id="myTabContent">
+        <div class="tab-pane fade show active roboto" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin feugiat nec tortor et commodo. Aenean non cursus nisl. Maecenas ac lacinia nisi. Cras aliquet elit lacus, in interdum diam tempus quis. Mauris in pretium tortor. Suspendisse non est nec felis vestibulum ornare vel non tellus. Etiam luctus turpis et purus fringilla, a dignissim nisi porttitor. Suspendisse vulputate purus sit amet enim ultrices venenatis.</div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">Morbi ut feugiat nisl, sed rutrum enim. In convallis sapien sit amet risus vehicula, sit amet cursus nisl pellentesque. Ut ut eros sed est ornare accumsan a quis dui. Pellentesque finibus ipsum ut odio porta interdum. Vestibulum convallis, est id bibendum maximus, purus mi porta dolor, quis semper augue urna a lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi quis fermentum quam. In varius id ipsum sed suscipit. Morbi congue malesuada est eu bibendum.</div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+          <div class="row m-3">
+            <div class="col-6">
+              <div class="userReview">
+                <p class="fw-bold roboto mb-0">John Doe<span class="fw-light fst-italic"> - 01 Jan 2045</span></p>
+                <div class="userRating">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fa-solid fa-star-half-stroke text-warning"></i>
+                  <i class="fa-regular fa-star text-warning"></i>
+                </div>
+                <p class="comment roboto">Gostei mto</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="userReview">
+                <p class="fw-bold roboto mb-0">John Doe<span class="fw-light fst-italic"> - 01 Jan 2045</span></p>
+                <div class="userRating">
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fas fa-star text-warning"></i>
+                  <i class="fa-solid fa-star-half-stroke text-warning"></i>
+                  <i class="fa-regular fa-star text-warning"></i>
+                </div>
+                <p class="comment roboto">Gostei mto até comprei dnv</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

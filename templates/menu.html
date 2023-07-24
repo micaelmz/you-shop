@@ -1,0 +1,57 @@
+<section id="menu">
+  <div class="container-lg mt-3">
+    <div class="row d-flex shadow-sm py-2"> <!-- Header -->
+      <div class="col d-flex"> <!-- Logo -->
+        <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-12 text-dark"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
+      </div> <!-- Logo -->
+      <div class="col"> <!-- Search -->
+        <form action="/search" method="post">
+          <div class="input-group">
+            <input type="text" class="form-control roboto" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton">
+            <button id="searchButton" class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+          </div>
+        </form>
+      </div> <!-- Search -->
+      <div class="col d-flex align-content-center justify-content-end"> <!-- SVG Buttons -->
+        <div class="dropdown me-4 my-auto"> <!-- User -->
+          <a id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user fcs-12"></i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="{{ url_for('login') }}">Login / Registrar</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="#">Meus pedidos</a>
+            <a class="dropdown-item" href="#">Meus cupons</a>
+          </div>
+        </div> <!-- User -->
+        <a class="position-relative text-decoration-none text-dark my-auto" href="{{ url_for('cart') }}"> <!-- Cart -->
+          <i class="fa fa-shopping-cart fcs-12"></i>
+          <span id="cartLength" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ cartLength }}
+          </span>
+        </a> <!-- Cart -->
+      </div> <!-- SVG Buttons -->
+    </div> <!-- Header -->
+    <div class="row mt-1"> <!-- Options Menu -->
+      <div class="col-10"> <!-- Category -->
+      <ul id="categoryList" class="list-inline roboto">
+        {% for category in categories %}
+        <li class="list-inline-item me-3"><a href="#" class="text-decoration-none text-dark fcs-15">{{ category.name }}</a></li>
+        {% endfor %}
+        <li class="list-inline-item me-3 dropdown" id="moreDropdown">
+          <a class="dropdown-toggle text-decoration-none text-dark fcs-15" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mais
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="moreDropdown" id="moreItems">
+            <!-- Excessive itens here -->
+          </ul>
+        </li>
+      </ul>
+      </div>  <!-- Category -->
+      <div class="col-2 d-flex justify-content-end"> <!-- Login / Register -->
+        <a href="{{ url_for('login') }}" class="roboto text-decoration-none text-dark fcs-15 me-3">Login</a>
+        <a href="{{ url_for('register') }}" class="roboto text-decoration-none text-dark fcs-15">Registrar</a>
+      </div> <!-- Login / Register -->
+    </div> <!-- Options Menu -->
+  </div>
+</section>
