@@ -1,5 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# Piperline para testar o código Python, usando o flake8 para linting e o pytest para testes unitários (contidos no projeto_.
 
 name: Python application
 
@@ -37,3 +36,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+# falta a step de deploy
