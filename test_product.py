@@ -1,10 +1,6 @@
 import pytest
 from models.product import Grade, Price, Review, Product
 
-# Replace 'your_module' with the actual module name that contains the classes.
-
-
-
 def test_grade_str():
     grade = Grade(3.2)
     assert str(grade) == "3,2"

@@ -35,9 +35,10 @@ jobs:
       run: |
         pytest
 
-    - name: Merge to main if tests pass
-      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.merged == true
-      run: git fetch origin development:main && git push origin main
+    - name: Merge to master if tests pass
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.merged == true
+      run: git fetch origin development:master && git push origin master
+
 
 #    - name: Deploy to production
 #      if: github.ref == 'refs/heads/main'
