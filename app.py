@@ -4,34 +4,27 @@ from models.product import Product, Price, Grade, Review
 
 app = Flask(__name__)
 
-cartLengthExample = 99
+cartLengthExample = 5
 categoriesExample = [
-    Category(1, 'Laptop'),
-    Category(2, 'Desktop'),
-    Category(3, 'Phone'),
-    Category(4, 'Tablet'),
-    Category(5, 'Watch'),
-    Category(6, 'TV'),
-    Category(7, 'Camera'),
-    Category(8, 'Headphone'),
-    Category(9, 'Speaker'),
-    Category(10, 'Printer'),
-    Category(11, 'Monitor'),
-    Category(12, 'Keyboard'),
-
+    Category(1, 'Feminino'),
+    Category(2, 'Masculino'),
+    Category(3, 'Infantil'),
+    Category(4, 'Acessórios'),
+    Category(5, 'Teste'),
 ]
 productExample = Product(
     id=1,
-    name='Vestido Azul',
-    price=200,
-    price_old=400,
-    category='Feminino',
+    name='Vestido Azul tentando quebrar a pagina escrevenmdo um nome mto grande oi 123',
+    price=50,
+    price_old=100,
+    category=1,
     image_url='https://cdn.awsli.com.br/1500x1500/67/67661/produto/206450249/whatsapp-image-2023-03-02-at-15-42-09-oswmhm.jpg',
     description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl sed tincidunt ultricies, nunc nisl luctus nunc, nec aliquam nisl nunc v',
     reviews=[
             Review(1, 'João', 'Muito bom', 4.9),
             Review(2, 'Maria', 'legal', 4),
             Review(3, 'José', 'lixo', 1),
+            Review(4, 'João', 'bom', 3),
         ]
 )
 
