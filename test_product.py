@@ -61,5 +61,6 @@ def test_product_calculate_grade():
 
 # pydantic models
 def test_grade_model():
-    grade = GradeModel(3)
+    grade = GradeModel(3.4)
     assert grade.integer == 3
+    assert grade.decimal == 4
