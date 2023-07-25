@@ -1,12 +1,10 @@
-# Piperline para testar o código Python, usando o flake8 para linting e o pytest para testes unitários (contidos no projeto_.
-
 name: Python application
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "development" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "development" ]
 
 permissions:
   contents: read
@@ -37,4 +35,12 @@ jobs:
       run: |
         pytest
 
-# falta a step de deploy
+    - name: Merge to main if tests pass
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.merged == true
+      run: git fetch origin development:main && git push origin main
+
+#    - name: Deploy to production
+#      if: github.ref == 'refs/heads/main'
+#      run: |
+#        # Seu comando de deploy aqui
+
