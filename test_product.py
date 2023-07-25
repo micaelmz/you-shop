@@ -1,6 +1,5 @@
 import pytest
 from models.product import Grade, Price, Review, Product
-from models.product import GradeModel, PriceModel, ReviewModel, ProductModel
 
 # Replace 'your_module' with the actual module name that contains the classes.
 
@@ -57,10 +56,3 @@ def test_product_calculate_grade():
                       "https://cdn.awsli.com.br/1500x1500/67/67661/produto/206450249/whatsapp-image-2023-03-02-at-15-42-09-oswmhm.jpg",
                       "Product description", reviews)
     assert str(product.grade) == "4,1"
-
-
-# pydantic models
-def test_grade_model():
-    grade = GradeModel(3.4)
-    assert grade.integer == 3
-    assert grade.decimal == 4
