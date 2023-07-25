@@ -28,8 +28,8 @@ def test_review_init():
 
 
 def test_review_str():
-    review = Review(1, "Jane Doe", "Nice item!", 3.2)
-    assert str(review) == "Jane Doe: Nice item!"
+    review = Review(1, "Jane Doe", "Thats Nice item!", 3.2)
+    assert str(review) == "Jane Doe: Thats Nice item!"
 
 
 # Test Product class
