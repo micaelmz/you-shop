@@ -37,7 +37,6 @@ jobs:
       - name: Merge to master if tests pass
         if: success()
         run: |
-          git checkout master
           git merge development
           git push origin master
           
