@@ -1,7 +1,6 @@
 from colorthief import ColorThief
 import requests
 import datetime
-from pydantic import BaseModel, HttpUrl
 
 
 class Grade:
@@ -12,12 +11,6 @@ class Grade:
 
     def __str__(self):
         return f"{self.integer},{self.decimal}"
-
-
-class GradeModel(BaseModel):
-    grade: float
-    integer: int
-    decimal: int
 
 
 class Price:
@@ -32,11 +25,6 @@ class Price:
         return "{:.2f}".format(price)
 
 
-class PriceModel(BaseModel):
-    new: float
-    old: float
-
-
 class Review:
     def __init__(self, id, author, content, grade):
         self.id = id
@@ -47,13 +35,6 @@ class Review:
 
     def __str__(self):
         return f"{self.author}: {self.content}"
-
-
-class ReviewModel(BaseModel):
-    id: int
-    author: str
-    content: str
-    grade: float
 
 
 class Product:
@@ -83,16 +64,3 @@ class Product:
             return Grade(0)
         grades = [review.grade.grade for review in reviews]
         return Grade(sum(grades) / len(grades))
-
-
-class ProductModel(BaseModel):
-    id: int
-    name: str
-    price: PriceModel
-    category: str
-    image_thumb: HttpUrl
-    extra_images: list = []
-    description: str
-    reviews: list[ReviewModel]
-    grade: GradeModel
-    color: str
