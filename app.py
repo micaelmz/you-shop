@@ -37,7 +37,7 @@ def detail():
         'detail.html',
         categories=categoriesExample,
         cartLength=cartLengthExample,
-        product=productExample,
+        product=None
     )
 
 
