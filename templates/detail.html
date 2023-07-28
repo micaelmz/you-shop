@@ -168,7 +168,7 @@
               {% for review in product.reviews %}
                 <li class="list-inline-item" style="width: 49% !important;">
                 <div class="userReview">
-                  <p class="fw-bold roboto mb-0 text-truncate">{{ review.author }}<span class="fw-light fst-italic"> - {{ review.date }}</span></p>
+                  <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span></p>
                   <div class="userRating">
                     {% for i in range(5) %}
                       {% if i < review.grade.integer %}
