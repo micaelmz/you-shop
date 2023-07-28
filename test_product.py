@@ -16,6 +16,29 @@ test_reviews = [
            grade=3.5, date="01-01-2021", author_name="User3"
            )
 ]
+test_products = [
+    Product(
+        id=1,
+        name="Test Product",
+        price=25.99,
+        price_old=50.0,
+        category='Test Category',
+        promotion=False,
+        image_url='https://www.test.com/test.jpg',
+        description='Test Description',
+        reviews=test_reviews
+    ),
+Product(
+        id=2,
+        name="Test Product 1",
+        price=16.99,
+        price_old=45.0,
+        category='Test Category',
+        promotion=True,
+        image_url='https://www.test.com/test2.jpg',
+        description='Test Description 2',
+    )
+]
 
 
 def test_grade_str():
@@ -94,10 +117,25 @@ def test_product_detect_color():
 
 
 def test_product_calculate_grade():
-    product_test1 = Product(id=1, name="Test Product", price=25.99, price_old=50.0, category='Test Category',
-                           promotion=False, image_url='https://www.test.com/test.jpg', description='Test Description',
-                           reviews=test_reviews)
-    assert str(product_test1.grade) == "4,1"
-    product_test2 = Product(id=2, name="Test Product", price=25.99, price_old=50.0, category='Test Category',
-                            promotion=False, image_url='https://www.test.com/test.jpg', description='Test Description')
-    assert str(product_test2.grade) == "0,0"
+    assert str(test_products[0].grade) == "4,1"
+    assert str(test_products[1].grade) == "0,0"
+
+def test_commit_product():
+    first = Product.commit_product(db, test_products[0])
+    assert first == 1
+    second = Product.commit_product(db, test_products[1])
+    assert second == 2
+
+
+def test_get_all_product():
+    products = Product.get_all_products(db)
+    assert len(products) != 0
+    assert len(products) == len(test_products)
+
+    for i in range(len(products)):
+        assert str(products[i]) == str(test_products[i])
+
+
+def test_get_product_by_id():
+    product = Product.get_product_by_id(db, 1)
+    assert str(product) == str(test_products[0])

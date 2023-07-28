@@ -4,7 +4,6 @@ from models.product import Product, Price, Grade, Review
 from database import Database
 
 app = Flask(__name__)
-db = Database('database.db')
 cartLengthExample = 5
 categoriesExample = [
     Category(1, 'Feminino'),
@@ -33,11 +32,16 @@ def cart():
 
 @app.route('/detail')
 def detail():
+    db = Database('database.db')
+    product_id = int(request.args.get('id'))
+    product = Product.get_product_by_id(db, product_id)
+    product.reviews = Review.get_review_by_product_id(db, product_id)
+    product.grade = product.calculate_product_grade(product.reviews)
     return render_template(
         'detail.html',
         categories=categoriesExample,
         cartLength=cartLengthExample,
-        product=None
+        product=product
     )
 
 

@@ -2,6 +2,7 @@ from colorthief import ColorThief
 import requests
 import datetime
 
+
 class Grade:
     def __init__(self, grade):
         self.grade = grade
@@ -50,13 +51,16 @@ class Review:
             raise e
 
     @staticmethod
-    def get_product_reviews(cursor, product_id):
-        cursor.execute('SELECT * FROM review WHERE product_id = ?', (product_id,))
-        rows = cursor.fetchall()
-        reviews = []
-        for row in rows:
-            reviews.append(Review(*row))
-        return reviews
+    def get_review_by_product_id(db, product_id):
+        try:
+            db.cursor.execute('SELECT * FROM review WHERE product_id = ?', (product_id,))
+            rows = db.cursor.fetchall()
+            reviews = []
+            for row in rows:
+                reviews.append(Review(*row))
+            return reviews
+        except Exception as e:
+            raise e
 
     @staticmethod
     def commit_review(db, review: object) -> int:
@@ -85,10 +89,9 @@ class Review:
             raise e
 
 
-
 class Product:
     def __init__(self, id, name, price, price_old, category, promotion,
-                 image_url, description, reviews=None, color=None):
+                 image_url, description, color=None, reviews=None):
         self.id = id
         self.name = name
         # todo: receber o price como um objeto Price
@@ -119,33 +122,43 @@ class Product:
         return Grade(sum(grades) / len(grades))
 
     @staticmethod
-    def get_all_products(cursor: object) -> list[object]:
-        cursor.execute('SELECT * FROM product')
-        rows = cursor.fetchall()
+    def get_all_products(db: object) -> list[object]:
+        db.cursor.execute('SELECT * FROM product')
+        rows = db.cursor.fetchall()
         products = []
         for row in rows:
             products.append(Product(*row))
         return products
 
     @staticmethod
-    def send_product(cursor, product: object) -> int:
-        cursor.execute('INSERT INTO product VALUES (?,?,?,?,?,?,?,?,?)', (
-            product.id,
-            product.name,
-            product.price.new,
-            product.price.old,
-            product.category,
-            product.promotion,
-            product.image_thumb,
-            product.description,
-            product.color
-        ))
-        cursor.conn.commit()
-        return cursor.lastrowid
+    def get_product_by_id(db: object, product_id: int) -> object:
+        db.cursor.execute('SELECT * FROM product WHERE id = ?', (product_id,))
+        row = db.cursor.fetchone()
+        return Product(*row)
+
+    @staticmethod
+    def commit_product(db, product: object) -> int:
+        try:
+            db.cursor.execute('INSERT INTO product VALUES (?,?,?,?,?,?,?,?,?)', (
+                product.id,
+                product.name,
+                product.price.new,
+                product.price.old,
+                product.category,
+                product.promotion,
+                product.image_thumb,
+                product.description,
+                ""  # product.color
+            ))
+            db.conn.commit()
+            return db.cursor.lastrowid
+        except Exception as e:
+            raise e
 
 
 if __name__ == '__main__':
     from database import Database
+
     review = Review.get_all_reviews(Database('../database.db').create_cursor())
     for r in review:
         print(r)
