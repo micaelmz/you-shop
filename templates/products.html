@@ -1,0 +1,210 @@
+<!-- todo: fazer todas imagens terem a mesma proporção, no width todas são iguais porém tem umas mais altas -->
+{% extends 'main-template.html' %}
+
+{% block title %}Produtos{% endblock %}
+{% block extra_style %}
+  <style>
+      ul.list-unstyled.list-inline {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.list-unstyled.list-inline li {
+      padding: 0;
+      box-sizing: border-box;
+      width: 31.33%; /* 33.33% - (2 * 1%) para cada li */
+      float: left; /* Alinha os li's lado a lado */
+      margin: 0 0 1.5% 1.5%; /* Margem de 1% entre os li's */
+    }
+
+    /* Limpa o float para o próximo elemento após o UL */
+    ul.list-unstyled.list-inline::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section id="products" class="mt-5">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-3"> <!-- Filters -->
+        <div id="byPrice" class="filter mb-5">
+          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por preço</h2>
+          <form id="priceForm" action="/seu_backend" method="POST">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="0to50" checked name="checkbox2">
+            <label class="form-check-label roboto fcs-15" for="0to50">
+              R$ 0,00 - R$ 50,00
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="50to100" name="checkbox1">
+            <label class="form-check-label roboto fcs-15" for="50to100">
+              R$ 50,00 - R$ 100,00
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="100to150" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="100to150">
+              R$ 100,00 - R$ 150,00
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="150to200" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="150to200">
+              R$ 150,00 - R$ 200,00
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="200ormore" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="200ormore">
+              R$ 200 ou mais
+            </label>
+          </div>
+        </form>
+        </div>
+        <div id="byColor" class="filter mb-5">
+          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por cor</h2>
+          <form id="colorForm" action="/seu_backend" method="POST">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="allcolors" checked name="checkbox2">
+            <label class="form-check-label roboto fcs-15" for="allcolors">
+              Todas as cores
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="black" name="checkbox1">
+            <label class="form-check-label roboto fcs-15" for="black">
+              Preto
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="white" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="white">
+              Branco
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="red" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="red">
+              Vermelho
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="blue" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="blue">
+              Azul
+            </label>
+          </div>
+          <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" value="" id="green" name="checkbox1">
+          <label class="form-check-labe roboto fcs-15l" for="green">
+            Verde
+          </label>
+        </div>
+        </form>
+        </div>
+        <div id="bySize" class="filter mb-5">
+          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por tamanho</h2>
+          <form id="sizeForm" action="/seu_backend" method="POST">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="allsizes" checked name="checkbox2">
+            <label class="form-check-label roboto fcs-15" for="allsizes">
+              Todos os tamanhos
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="sizeP" name="checkbox1">
+            <label class="form-check-label roboto fcs-15" for="sizeP">
+              P
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="sizeM" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="sizeM">
+              M
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="sizeG" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="sizeG">
+              G
+            </label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="sizeGG" name="checkbox1">
+            <label class="form-check-labe roboto fcs-15l" for="sizeGG">
+              GG
+            </label>
+          </div>
+        </form>
+        </div>
+      </div> <!-- Filters -->
+      <div class="col-9"> <!-- Products -->
+        <div class="row mb-2"> <!-- Search -->
+          <div class="col-8">
+            <form action="" method="post">
+              <div class="input-group">
+                <input type="text" class="form-control roboto" placeholder="Pesquisar por nome" aria-label="Pesquisar por nome" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon3"><i class="fas fa-search"></i></button>
+              </div>
+            </form>
+          </div>
+          <div class="col-4 dropdown roboto d-flex justify-content-end">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Ordenar por
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Preço</a></li>
+              <li><a class="dropdown-item" href="#">Avaliação</a></li>
+            </ul>
+          </div>
+        </div> <!-- Search -->
+        <div class="row"> <!-- Products -->
+          <ul class="list-unstyled list-inline">
+            {% for product in products %}
+            <li class="list-inline-item">
+              <div class="card">
+                <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body text-center roboto">
+                  <h5 class="card-title fw-bold text-truncate">{{ product.name }}</h5>
+                  <p class="card-text">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                    {% if product.price.old %}
+                      <del class="text-danger">{{ product.price.format_price(product.price.old) }}</del>
+                    {% endif %}
+                  </p>
+                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                  <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+      </div> <!-- Products -->
+    </div> <!-- Products -->
+    </div>
+    <div class="row">
+      <nav aria-label="Page navigation" class="d-flex justify-content-center">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link text-dark" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item active"><a class="page-link text-dark" href="#">1</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link text-dark" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+{% endblock %}

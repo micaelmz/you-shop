@@ -21,8 +21,9 @@ class Price:
     def __str__(self):
         return self.format_price(self.new)
 
-    def format_price(self, price):
-        return "{:.2f}".format(price)
+    @staticmethod
+    def format_price(price):
+        return "{:.2f}".format(price).replace('.', ',')
 
 
 class Review:
@@ -154,11 +155,3 @@ class Product:
             return db.cursor.lastrowid
         except Exception as e:
             raise e
-
-
-if __name__ == '__main__':
-    from database import Database
-
-    review = Review.get_all_reviews(Database('../database.db').create_cursor())
-    for r in review:
-        print(r)
