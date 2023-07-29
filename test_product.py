@@ -49,13 +49,13 @@ def test_grade_str():
 # Test Price class
 def test_price_format_price():
     price = Price(25.99, 15.5)
-    assert price.format_price(25.99) == "25.99"
-    assert price.format_price(15.5) == "15.50"
+    assert price.format_price(25.99) == "25,99"
+    assert price.format_price(15.5) == "15,50"
 
 
 def test_price_str():
     price = Price(29.95, 20.0)
-    assert str(price) == "29.95"
+    assert str(price) == "29,95"
 
 
 # Test Review class

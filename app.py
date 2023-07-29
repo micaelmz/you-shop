@@ -30,6 +30,17 @@ def register():
 def cart():
     return 'Place holder'
 
+@app.route('/products')
+def products():
+    db = Database('database.db')
+    products = Product.get_all_products(db)
+    return render_template(
+        'products.html',
+        categories=categoriesExample,
+        cartLength=cartLengthExample,
+        products=products
+    )
+
 @app.route('/detail')
 def detail():
     db = Database('database.db')
