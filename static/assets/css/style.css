@@ -71,7 +71,7 @@
 }
 
 .card-img-top:hover{
-    transform: scale(1.05);
+    transform: scale(1.03);
     transition: 0.5s;
 }
 /* Seletor para o checkbox do Bootstrap */

@@ -155,3 +155,15 @@ class Product:
             return db.cursor.lastrowid
         except Exception as e:
             raise e
+
+    @staticmethod
+    def get_promotion_products(db: object) -> list[object]:
+        try:
+            db.cursor.execute('SELECT * FROM product WHERE promotion = 1')
+            rows = db.cursor.fetchall()
+            products = []
+            for row in rows:
+                products.append(Product(*row))
+            return products
+        except Exception as e:
+            raise e
