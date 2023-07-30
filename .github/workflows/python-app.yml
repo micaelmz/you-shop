@@ -47,12 +47,12 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
           
   deploy:
-    needs: merge-branch
+    needs: build
     if: ${{ needs.merge-branch.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
+        uses: actions/checkout@v3.5.3                   # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
 
       - name: Deploy via SFTP
         uses: wangyucode/sftp-upload-action@v2.0.2
