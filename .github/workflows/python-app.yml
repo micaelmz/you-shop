@@ -63,3 +63,7 @@ jobs:
           port: 22
           source: "."
           target: "/home/micaelmz/api"
+          script: |
+              cd /home/micaelmz/api
+              ls -la
+              exit
