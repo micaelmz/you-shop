@@ -62,4 +62,4 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           localDir: '.'                                   # Required, Absolute or relative to cwd.
           remoteDir: '/home/micaelmz/api'                 # Required, Absolute path only.
-          exclude: '.github,.git'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+          exclude: '.github,.git,_temp,_PipelineMapping,_actions,you-shop-backend'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
