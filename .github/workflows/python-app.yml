@@ -55,7 +55,7 @@ jobs:
         run: sudo apt-get install -y openssh-client
 
       - name: Deploy via SFTP
-        uses: "appleboy/sftp-action@master"
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
