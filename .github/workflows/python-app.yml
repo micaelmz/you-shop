@@ -46,3 +46,20 @@ jobs:
             target_branch: master
             github_token: ${{ secrets.GITHUB_TOKEN }}
           
+  deploy:
+    needs: merge-branch
+    if: ${{ needs.merge-branch.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
+
+      - name: Deploy via SFTP
+        uses: "appleboy/sftp-action@master"
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          source: "."
+          target: "/home/micaelmz/api"
