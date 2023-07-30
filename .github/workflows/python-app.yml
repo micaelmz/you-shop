@@ -46,20 +46,24 @@ jobs:
 #            target_branch: master
 #            github_token: ${{ secrets.GITHUB_TOKEN }}
           
-#  deploy:
-#    needs: merge-branch
-#    if: ${{ needs.merge-branch.result == 'success' }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Deploy via SFTP
-#        uses: wangyucode/sftp-upload-action@v2.0.2
-#        with:
-#          host: ${{ secrets.SFTP_HOST }}
-#          username: ${{ secrets.SFTP_USERNAME }}
-#          password: ${{ secrets.SFTP_PASSWORD }}
-#          localDir: '../..'                          # Required, Absolute or relative to cwd.
-#          remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
-#          exclude: '.github'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+  deploy:
+    needs: merge-branch
+    if: ${{ needs.merge-branch.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
+
+      - name: Deploy via SFTP
+        uses: wangyucode/sftp-upload-action@v2.0.2
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          localDir: '.'                              # Required, Absolute or relative to cwd.
+          remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
+          exclude: '.github,.git'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+
   debug:
       runs-on: ubuntu-latest
 
