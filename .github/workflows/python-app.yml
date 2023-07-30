@@ -46,17 +46,40 @@ jobs:
 #            target_branch: master
 #            github_token: ${{ secrets.GITHUB_TOKEN }}
           
-  deploy:
+#  deploy:
 #    needs: merge-branch
 #    if: ${{ needs.merge-branch.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy via SFTP
-        uses: wangyucode/sftp-upload-action@v2.0.2
-        with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          localDir: '../..'                          # Required, Absolute or relative to cwd.
-          remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
-          exclude: '.github'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Deploy via SFTP
+#        uses: wangyucode/sftp-upload-action@v2.0.2
+#        with:
+#          host: ${{ secrets.SFTP_HOST }}
+#          username: ${{ secrets.SFTP_USERNAME }}
+#          password: ${{ secrets.SFTP_PASSWORD }}
+#          localDir: '../..'                          # Required, Absolute or relative to cwd.
+#          remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
+#          exclude: '.github'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+  debug:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2  # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
+
+        - name: List files and folders
+          run: |
+            echo "Current working directory (GitHub Actions):"
+            pwd
+            
+            echo "Content of the root directory (GitHub Actions):"
+            ls -al
+            
+            echo "Content of the parent directory:"
+            ls -al ..
+  
+            echo "Content of the grandparent directory:"
+            ls -al ../..
+  
+            echo "Content of the great-grandparent directory:"
+            ls -al ../../..
