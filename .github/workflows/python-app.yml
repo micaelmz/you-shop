@@ -48,7 +48,7 @@ jobs:
           
   deploy:
     needs: build
-    if: ${{ needs.merge-branch.result == 'success' }}
+    if: ${{ needs.build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
