@@ -47,8 +47,8 @@ jobs:
 #            github_token: ${{ secrets.GITHUB_TOKEN }}
           
   deploy:
-    needs: merge-branch
-    if: ${{ needs.merge-branch.result == 'success' }}
+#    needs: merge-branch
+#    if: ${{ needs.merge-branch.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
