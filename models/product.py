@@ -133,9 +133,14 @@ class Product:
 
     @staticmethod
     def get_product_by_id(db: object, product_id: int) -> object:
-        db.cursor.execute('SELECT * FROM product WHERE id = ?', (product_id,))
-        row = db.cursor.fetchone()
-        return Product(*row)
+        try:
+            db.cursor.execute('SELECT * FROM product WHERE id = ?', (product_id,))
+            row = db.cursor.fetchone()
+            if not row:
+                return None
+            return Product(*row)
+        except Exception as e:
+            raise e
 
     @staticmethod
     def commit_product(db, product: object) -> int:

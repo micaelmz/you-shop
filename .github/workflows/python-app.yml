@@ -6,49 +6,49 @@ on:
       - "development"
 
 jobs:
-#  build:
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up Python 3.11
-#        uses: actions/setup-python@v3
-#        with:
-#          python-version: "3.11"
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install flake8 pytest
-#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-#      - name: Lint with flake8
-#        run: |
-#          # stop the build if there are Python syntax errors or undefined names
-#          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-#          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-#          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-#      - name: Test with pytest
-#        run: |
-#          pytest
-#
-#  merge-branch:
-#      needs: build
-#      if: ${{ needs.build.result == 'success' }}
-#      runs-on: ubuntu-latest
-#      steps:
-#        - uses: actions/checkout@master
-#
-#        - name: Merge branch to master
-#          uses: devmasx/merge-branch@1.4.0
-#          with:
-#            type: now
-#            from_branch: development
-#            target_branch: master
-#            github_token: ${{ secrets.GITHUB_TOKEN }}
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+
+  merge-branch:
+      needs: build
+      if: ${{ needs.build.result == 'success' }}
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@master
+
+        - name: Merge branch to master
+          uses: devmasx/merge-branch@1.4.0
+          with:
+            type: now
+            from_branch: development
+            target_branch: master
+            github_token: ${{ secrets.GITHUB_TOKEN }}
           
   deploy:
-#    needs: merge-branch
-#    if: ${{ needs.merge-branch.result == 'success' }}
+    needs: merge-branch
+    if: ${{ needs.merge-branch.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -60,30 +60,6 @@ jobs:
           host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          localDir: '.'                              # Required, Absolute or relative to cwd.
-          remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
+          localDir: '.'                                   # Required, Absolute or relative to cwd.
+          remoteDir: '/home/micaelmz/api'                 # Required, Absolute path only.
           exclude: '.github,.git'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
-
-  debug:
-      runs-on: ubuntu-latest
-
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2  # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
-
-        - name: List files and folders
-          run: |
-            echo "Current working directory (GitHub Actions):"
-            pwd
-            
-            echo "Content of the root directory (GitHub Actions):"
-            ls -al
-            
-            echo "Content of the parent directory:"
-            ls -al ..
-  
-            echo "Content of the grandparent directory:"
-            ls -al ../..
-  
-            echo "Content of the great-grandparent directory:"
-            ls -al ../../..
