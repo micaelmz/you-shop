@@ -57,6 +57,6 @@ jobs:
           host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          localDir: '.'                              # Required, Absolute or relative to cwd.
+          localDir: '../..'                          # Required, Absolute or relative to cwd.
           remoteDir: '/home/micaelmz/api'            # Required, Absolute path only.
           exclude: '.github'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
