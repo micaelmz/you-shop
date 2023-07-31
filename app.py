@@ -27,7 +27,7 @@ def login():
 
 @app.route('/register')
 def register():
-    return 'Place holder'
+    return 'Place holder for register'
 
 
 @app.route('/cart')
