@@ -77,7 +77,7 @@ jobs:
       - name: Merge app to monolith
         uses: spcily/ssh-action@v1.0.0
         with:
-          host: www.pythonanywhere.com
+          host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           script: |
@@ -87,7 +87,7 @@ jobs:
       - name: Reload pythonanywhere webapp
         uses: jensvog/pythonanywhere-webapp-reload-action@v1
         with:
-          host: 'ssh.pythonanywhere.com'
+          host: 'www.pythonanywhere.com'
           username: ${{ secrets.SFTP_USERNAME }}
           api-token: ${{ secrets.PYTHON_ANYWHERE_API_TOKEN }}
           domain-name: ${{ secrets.DOMAIN_NAME }}
