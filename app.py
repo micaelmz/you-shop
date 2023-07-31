@@ -73,3 +73,7 @@ def register_validation():
 def cart():
     return 'Place holder for cart.'
 
+
+@app.route('/search')
+def search():
+    return 'Place holder for search.'
