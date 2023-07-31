@@ -6,7 +6,7 @@ on:
       - "development"
 
 jobs:
-  build:
+  analyze:
 
     runs-on: ubuntu-latest
 
@@ -32,8 +32,8 @@ jobs:
           pytest
 
   merge-branch:
-      needs: build
-      if: ${{ needs.build.result == 'success' }}
+      needs: analyze
+      if: ${{ needs.analyze.result == 'success' }}
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@master
@@ -47,14 +47,24 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
           
   deploy:
-    needs: build
-    if: ${{ needs.build.result == 'success' }}
+    needs: analyze
+    if: ${{ needs.analyze.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.5.3                   # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
 
-      - name: Deploy via SFTP
+      - name: Exclude files
+        run: |
+          rm -rf node_modules
+          rm -rf .github
+          rm -rf .git
+          rm -rf _temp
+          rm -rf _PipelineMapping
+          rm -rf _actions
+          rm -rf you-shop-backend
+
+      - name: Send files via SFTP
         uses: wangyucode/sftp-upload-action@v2.0.2
         with:
           host: ${{ secrets.SFTP_HOST }}
@@ -63,3 +73,21 @@ jobs:
           localDir: '.'                                   # Required, Absolute or relative to cwd.
           remoteDir: '/home/micaelmz/api'                 # Required, Absolute path only.
           exclude: '.github,.git,_temp,_PipelineMapping,_actions,you-shop-backend'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+
+      - name: Merge app to monolith
+        uses: nekiro/ssh-job@v1.0.2
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          user: ${{ secrets.SFTP_USERNAME }}
+          command: |
+            cd /home/micaelmz/api
+            python monolith_merge.py
+
+      - name: Reload pythonanywhere webapp
+        uses: jensvog/pythonanywhere-webapp-reload-action@v1
+        with:
+          host: 'ssh.pythonanywhere.com'
+          username: ${{ secrets.SFTP_USERNAME }}
+          api-token: ${{ secrets.PYTHON_ANYWHERE_API_TOKEN }}
+          domain-name: ${{ secrets.DOMAIN_NAME }}
