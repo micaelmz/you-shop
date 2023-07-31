@@ -20,21 +20,6 @@ def home():
     )
 
 
-@app.route('/login')
-def login():
-    return 'Place holder for login'
-
-
-@app.route('/register')
-def register():
-    return 'Place holder for register'
-
-
-@app.route('/cart')
-def cart():
-    return 'Place holder'
-
-
 @app.route('/products')
 def products():
     db = Database('database.db')
@@ -57,7 +42,7 @@ def detail():
     if not product:
         return redirect(url_for('home'))
 
-    product.reviews = Review.get_review_by_product_id(db, product_id)
+    product.reviews = Review.get_reviews_by_product_id(db, product_id)
     product.grade = product.calculate_product_grade(product.reviews)
     categories = Category.get_all_categories(db)
 
@@ -67,4 +52,24 @@ def detail():
         cartLength=cartLengthExample,
         product=product
     )
+
+
+@app.route('/login')
+def login():
+    return 'Place holder for login.'
+
+
+@app.route('/register')
+def register():
+    return 'Place holder for register.'
+
+
+@app.route('/register/validation')
+def register_validation():
+    return 'Place holder for register validation.'
+
+
+@app.route('/cart')
+def cart():
+    return 'Place holder for cart.'
 

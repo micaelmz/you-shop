@@ -26,3 +26,15 @@ class Database:
     def count_rows(self, table):
         self.cursor.execute(f'SELECT COUNT(*) FROM {table}')
         return self.cursor.fetchone()[0]
+
+
+def db_handler(func):
+    def wrapper(db: Database, *args, **kwargs):
+        try:
+            return func(db, *args, **kwargs)
+        except Exception as e:
+            func_name = str(func.__name__).replace('_', ' ').title()
+            error_msg = f"Erro na função '{func_name}' do banco de dados: {str(e)}"
+            raise Exception(error_msg)
+
+    return wrapper

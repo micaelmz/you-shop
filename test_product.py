@@ -139,3 +139,9 @@ def test_get_all_product():
 def test_get_product_by_id():
     product = Product.get_product_by_id(db, 1)
     assert str(product) == str(test_products[0])
+
+
+def test_db_handle():
+    with pytest.raises(Exception) as e:
+        Product.get_product_by_id(db, 999)  # 999 is an invalid id
+    assert "Erro na função 'Get Product By Id' do banco de dados: " in str(e.value)
