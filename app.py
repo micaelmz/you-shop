@@ -22,7 +22,7 @@ def home():
 
 @app.route('/login')
 def login():
-    return 'Place holder'
+    return 'Place holder for login'
 
 
 @app.route('/register')
