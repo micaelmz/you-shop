@@ -75,12 +75,12 @@ jobs:
           exclude: '.github,.git,_temp,_PipelineMapping,_actions,you-shop-backend'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
 
       - name: Merge app to monolith
-        uses: nekiro/ssh-job@v1.0.2
+        uses: spcily/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          user: ${{ secrets.SFTP_USERNAME }}
-          command: |
+          script: |
             cd /home/micaelmz/api
             python monolith_merge.py
 
