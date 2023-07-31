@@ -45,7 +45,7 @@ def add_shop_prefix_to_routes(app_content):
 
 def update_monolito():
     app_file_path = "app.py"
-    monolito_file_path = "flask_app.py"
+    monolito_file_path = "flask_api.py"
 
     # Read the content of app.py
     app_content = read_file(app_file_path)
