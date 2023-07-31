@@ -1,14 +1,13 @@
-if __name__ == "__main__":
-    from flask import Flask, render_template, request, redirect, url_for, session, flash
-    app = Flask(__name__)
-
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from models.category import Category
 from models.product import Product, Price, Grade, Review
 from database import Database
 
+app = Flask(__name__)
 cartLengthExample = 5
 
-@app.route('/shop')
+
+@app.route('/')
 def home():
     db = Database('database.db')
     categories = Category.get_all_categories(db)
@@ -21,22 +20,22 @@ def home():
     )
 
 
-@app.route('/shop/login')
+@app.route('/login')
 def login():
-    return 'Place holder for login'
+    return 'Place holder'
 
 
-@app.route('/shop/register')
+@app.route('/register')
 def register():
     return 'Place holder'
 
 
-@app.route('/shop/cart')
+@app.route('/cart')
 def cart():
     return 'Place holder'
 
 
-@app.route('/shop/products')
+@app.route('/products')
 def products():
     db = Database('database.db')
     products = Product.get_all_products(db)
@@ -49,7 +48,7 @@ def products():
     )
 
 
-@app.route('/shop/detail')
+@app.route('/detail')
 def detail():
     db = Database('database.db')
     product_id = int(request.args.get('id'))
@@ -69,6 +68,3 @@ def detail():
         product=product
     )
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
