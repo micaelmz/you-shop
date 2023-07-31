@@ -56,20 +56,20 @@ def detail():
 
 @app.route('/login')
 def login():
-    return 'Place holder for login'
+    return 'Place holder for login.'
 
 
 @app.route('/register')
 def register():
-    return 'Place holder for register'
+    return 'Place holder for register.'
 
 
 @app.route('/register/validation')
 def register_validation():
-    return 'Place holder for register validation'
+    return 'Place holder for register validation.'
 
 
 @app.route('/cart')
 def cart():
-    return 'Place holder for cart'
+    return 'Place holder for cart.'
 
