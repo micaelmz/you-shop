@@ -1,15 +1,15 @@
 
 <header class="container-lg mt-3">
   <div class="row d-flex shadow-sm py-2"> <!-- Header -->
-    <div class="col d-block d-md-none">
-      <button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fcs-12 fa-solid fa-bars"></i>
+    <div class="col-2 col-md-0 d-flex d-md-none"> <!-- Hamburger Button -->
+      <button class="navbar-toggler d-block d-md-none my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fcs-16 fa-solid fa-bars"></i>
       </button>
-    </div>
-    <div class="col d-flex"> <!-- Logo -->
-      <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-12 text-dark mx-auto mx-md-0"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
+    </div> <!-- Hamburger Button -->
+    <div class="col-6 col-md-4 d-flex"> <!-- Logo -->
+      <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-16 text-dark mx-auto mx-md-0 my-auto"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
     </div> <!-- Logo -->
-    <div class="col d-none d-md-block"> <!-- Search -->
+    <div class="col-0 col-md-4 d-none d-md-block mx-auto"> <!-- Search -->
       <form action="/search" method="post">
         <div class="input-group">
           <input type="text" class="form-control roboto" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton">
@@ -17,23 +17,23 @@
         </div>
       </form>
     </div> <!-- Search -->
-    <div class="col d-flex align-content-center justify-content-end"> <!-- SVG Buttons -->
+    <div class="col-4 col-md-4 d-flex align-content-center justify-content-end"> <!-- SVG Buttons -->
       <a class="btn btn-dark d-block d-md-none" href=" {{ url_for('search') }}"><i class="fas fa-search"></i></a> <!-- Search -->
-      <div class="dropdown mx-4 my-auto"> <!-- User -->
+      <div class="dropdown mx-3 my-auto"> <!-- User -->
         <a id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user fcs-12"></i>
+          <i class="fa fa-user fcs-16"></i>
         </a>
-        <div class="dropdown-menu" aria-labelledby="userDropdown">
-          <a class="dropdown-item d-none d-lg-block" href="{{ url_for('login') }}">Login / Registrar</a>
-          <a class="dropdown-item d-block d-lg-none" href="{{ url_for('login') }}">Login</a>
-          <a class="dropdown-item d-block d-lg-none" href="{{ url_for('register') }}">Registrar</a>
+        <div class="dropdown-menu" aria-labelledby="userDropdown" style="right: 50%; left: auto; transform: translateX(50%);">
+          <a class="dropdown-item d-none d-md-block" href="{{ url_for('login') }}">Login / Registrar</a>
+          <a class="dropdown-item d-block d-md-none" href="{{ url_for('login') }}">Login</a>
+          <a class="dropdown-item d-block d-md-none" href="{{ url_for('register') }}">Registrar</a>
           <hr class="dropdown-divider">
           <a class="dropdown-item" href="#">Meus pedidos</a>
           <a class="dropdown-item" href="#">Meus cupons</a>
         </div>
       </div> <!-- User -->
       <a class="position-relative text-decoration-none text-dark my-auto" href="{{ url_for('cart') }}"> <!-- Cart -->
-        <i class="fa fa-shopping-cart fcs-12"></i>
+        <i class="fa fa-shopping-cart fcs-16"></i>
         <span id="cartLength" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           {{ cartLength }}
         </span>
@@ -46,13 +46,17 @@
     <div class="row">
       <div class="col-10 collapse navbar-collapse" id="navbarSupportedContent">
         <ul id="categoryList" class="navbar-nav me-auto">
-          {% for category in categories %}
+          <p class="roboto d-block d-md-none mb-1 mt-3 fw-bold">Categorias:</p>
           <li class="nav-item me-3 no-wrap">
+            <a href="{{ url_for('products') }}" class="nav-link roboto ps-0">Ver todos</a>
+          </li>
+          {% for category in categories %}
+          <li class="nav-item me-3 no-wrap roboto">
             <a href="#" class="nav-link">{{ category.name }}</a>
           </li>
           {% endfor %}
           <li class="nav-item dropdown me-3" id="moreDropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle roboto" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Mais
             </a>
             <ul class="dropdown-menu" aria-labelledby="moreDropdown" id="moreItems">
@@ -61,7 +65,7 @@
           </li>
         </ul>
       </div> <!-- Navbar -->
-      <div class="col-2 d-none d-lg-flex justify-content-end roboto my-auto">
+      <div class="col-2 d-none d-md-flex justify-content-end roboto my-auto">
         <a href="{{ url_for('login') }}" class="text-decoration-none text-dark me-3">Login</a>
         <a href="{{ url_for('register') }}" class="text-decoration-none text-dark">Registrar</a>
       </div>

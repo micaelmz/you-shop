@@ -16,6 +16,13 @@
       float: left; /* Alinha os li's lado a lado */
       margin: 0 0 1.5% 1.5%; /* Margem de 1% entre os li's */
     }
+    @media (max-width: 768px) { /* Ou qualquer outra resolução que você considerar como o limite */
+      ul.list-unstyled.list-inline li {
+        width: 49%; /* 50% para cada li */
+        margin: 1.5% .5% 1.5% .5%; /* Margem de 1% entre os li's */
+      }
+    }
+
 
     /* Limpa o float para o próximo elemento após o UL */
     ul.list-unstyled.list-inline::after {
@@ -30,7 +37,7 @@
 <section id="products" class="mt-5">
   <div class="container-lg">
     <div class="row">
-      <div class="col-3"> <!-- Filters -->
+      <div class="col-12 col-md-3"> <!-- Filters -->
         <div id="byPrice" class="filter mb-5">
           <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por preço</h2>
           <form id="priceForm" action="/seu_backend" method="POST">
@@ -143,17 +150,17 @@
         </form>
         </div>
       </div> <!-- Filters -->
-      <div class="col-9"> <!-- Products -->
-        <div class="row mb-2"> <!-- Search -->
-          <div class="col-8">
+      <div class="col-12 col-md-9"> <!-- Products -->
+        <div class="row mb-2"> <!-- Menu -->
+          <div class="col-8"> <!-- Search -->
             <form action="" method="post">
               <div class="input-group">
                 <input type="text" class="form-control roboto" placeholder="Pesquisar por nome" aria-label="Pesquisar por nome" aria-describedby="button-addon2">
                 <button class="btn btn-outline-secondary" type="submit" id="button-addon3"><i class="fas fa-search"></i></button>
               </div>
             </form>
-          </div>
-          <div class="col-4 dropdown roboto d-flex justify-content-end">
+          </div> <!-- Search -->
+          <div class="col-4 dropdown roboto d-flex justify-content-end"> <!-- Order By -->
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Ordenar por
             </button>
@@ -161,14 +168,16 @@
               <li><a class="dropdown-item" href="#">Preço</a></li>
               <li><a class="dropdown-item" href="#">Avaliação</a></li>
             </ul>
-          </div>
-        </div> <!-- Search -->
-        <div class="row"> <!-- Products -->
+          </div> <!-- Order By -->
+        </div> <!-- Menu -->
+        <div class="row mx-1 mx-md-0"> <!-- Products -->
           <ul class="list-unstyled list-inline">
             {% for product in products %}
             <li class="list-inline-item">
               <div class="card">
-                <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                <a href="{{ url_for('detail', id=product.id) }}"s>
+                  <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
                 <div class="card-body text-center roboto">
                   <h5 class="card-title fw-bold text-truncate">{{ product.name }}</h5>
                   <p class="card-text">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
@@ -176,7 +185,10 @@
                       <del class="text-danger">{{ product.price.format_price(product.price.old) }}</del>
                     {% endif %}
                   </p>
-                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
+                    <span class="d-none d-md-inline-block">Detalhes</span>
+                    <span class="d-inline-block d-md-none">Ver</span>
+                  </a>
                   <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                 </div>
               </div>

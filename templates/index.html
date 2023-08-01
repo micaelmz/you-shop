@@ -1,8 +1,7 @@
 {% extends 'main-template.html' %}
 
 {% block title %}You Shop{% endblock %}
-{% block extra_style %}
-    <style>
+{% block extra_style %}<style>
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
       filter: invert(100%);
@@ -13,11 +12,10 @@
     .nav-link:hover {
       color: #000;
     }
-  </style>
-{% endblock %}
+  </style>{% endblock %}
 
 {% block content %}
-<section id="promotions" class="my-4">
+<section id="promotions" class="mt-4">
   <div class="container-lg">
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
@@ -39,46 +37,46 @@
 </div>
   </div>
 </section>
-<section id="advantages">
+<section id="advantages" class="mt-4">
   <div class="container-lg">
-    <div class="row">
-      <div class="col-3"> <!-- Free Shipping -->
-        <div class="d-flex align-items-center border mb-4 p-4">
+    <div class="row flex-nowrap overflow-auto">
+      <div class="col"> <!-- Free Shipping -->
+        <div class="d-flex align-items-center border p-4">
           <i class="fa fa-shipping-fast text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Frete Grátis</h5>
+          <h5 class="fw-medium m-0 roboto fcs-13">Frete Grátis</h5>
         </div>
       </div> <!-- Free Shipping -->
-      <div class="col-3"> <!-- Security Payment -->
-        <div class="d-flex align-items-center border mb-4 p-4">
+      <div class="col"> <!-- Security Payment -->
+        <div class="d-flex align-items-center border p-4">
           <i class="fa fa-lock text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">100% Seguro</h5>
-      </div>
+          <h5 class="fw-medium m-0 roboto fcs-13">100% Seguro</h5>
+        </div>
       </div> <!-- Security Payment -->
-      <div class="col-3"> <!-- 24/7 Support -->
-        <div class="d-flex align-items-center border mb-4 p-4">
+      <div class="col"> <!-- 24/7 Support -->
+        <div class="d-flex align-items-center border p-4">
           <i class="fa fa-headset text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Suporte 24/7</h5>
+          <h5 class="fw-medium m-0 roboto fcs-13">Suporte 24/7</h5>
         </div>
       </div> <!-- 24/7 Support -->
-      <div class="col-3"> <!-- Money Return -->
-        <div class="d-flex align-items-center border mb-4 p-4">
+      <div class="col"> <!-- Money Return -->
+        <div class="d-flex align-items-center border p-4">
           <i class="fa fa-undo text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Devolução Grátis</h5>
+          <h5 class="fw-medium m-0 roboto fcs-13">Devolução Grátis</h5>
         </div>
       </div> <!-- Money Return -->
     </div>
   </div>
 </section>
-<section id="category">
+<section id="category" class="mt-4">
   <div class="container-lg">
-    <div class="text-center mb-4">
+    <div class="text-center mb-2">
       <h2 class="section-title px-5"><span class="px-2">Por categoria</span></h2>
     </div>
     <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
       {% for category in categories %}
-      <li class="align-items-center m-5"> <!-- Feminino -->
+      <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
         <a href="#" class="text-decoration-none text-dark">
-          <img src="{{ category.image_url }}" class="rounded-circle category-img" alt="">
+          <img src="{{ category.image_url }}" class="rounded-circle category-img p-3 p-md-0" alt="">
           <h3 class="fcs-13 fw-bold roboto text-center">{{ category.name }}</h3>
         </a>
       </li>
@@ -86,55 +84,46 @@
     </ul>
   </div>
 </section>
-<section id="ad">
-  <div class="container-lg my-5">
+<section id="ad" class="mt-3">
+  <div class="container-lg">
     <div class="row">
       <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp" alt="">
     </div>
   </div>
 </section>
-<section id="hot">
+<section id="hot" class="mt-4">
   <div class="container-lg">
     <div class="text-center">
-      <h2 class="section-title px-5"><span class="px-2">Produtos em promoção</span></h2>
+      <h2 class="section-title px-5">
+        <span class="px-2">Em promoção</span>
+      </h2>
     </div>
-    <div id="card-carousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-    <!--TODO: fazer apenas 1, 2 ou 3 cards tomarem o msm espaço, atualmente quando so tem 1 card ele toma o tamanho de 3 -->
-      {% for i in range(0, recommended_products|length, 3) %}
-      <div class="carousel-item {% if i == 0 %}active{% endif %}">
-        <div class="row">
-          {% for j in range(i, i + 3) %}
-          {% if j < recommended_products|length %}
-          <div class="col">
-            <div class="card">
-                <img src="{{ recommended_products[j].image_thumb }}" class="card-img-top" alt="{{ recommended_products[j].name }}">
+    <div class="row">
+      <div class="slider">
+        <div class="slide-track ">
+          <div class="" style="width: 88vw;"></div>
+          {% for product in recommended_products %}
+            <div class="slide ">
+              <div class="card me-3 mt-3">
+                <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
                 <div class="card-body text-center roboto">
-                  <h5 class="card-title fw-bold text-truncate">{{ recommended_products[j].name }}</h5>
-                  <p class="card-text">R$<span class="value-product me-1">{{ recommended_products[j].price.format_price(recommended_products[j].price.new) }}</span>
-                    {% if recommended_products[j].price.old %}
-                      <del class="text-danger">{{ recommended_products[j].price.format_price(recommended_products[j].price.old) }}</del>
+                  <h5 class="card-title fw-bold text-truncate">{{ product.name }}</h5>
+                  <p class="card-text">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                    {% if product.price.old %}
+                      <del class="text-danger">{{ product.price.format_price(product.price.old) }}</del>
                     {% endif %}
                   </p>
-                  <a href="{{ url_for('detail', id=recommended_products[j].id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
                   <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                 </div>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">
+                  {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
+                </span>
               </div>
-          </div>
-          {% endif %}
+            </div>
           {% endfor %}
         </div>
       </div>
-      {% endfor %}
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#card-carousel" data-bs-slide="prev" style="left: -5%;">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#card-carousel" data-bs-slide="next" style="right: -5%;">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
     </div>
   </div>
 </section>

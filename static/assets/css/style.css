@@ -6,6 +6,8 @@
     --responsible-font-size-14: calc(0.7rem + 1.2vh);
     --responsible-font-size-15: calc(0.7rem + 0.8vh);
 
+    --responsible-font-size-16: calc(1.3rem + 0.5vh);
+
 }
 
 .poppins{
@@ -31,6 +33,10 @@
 .fcs-15{
     font-size: var(--responsible-font-size-15);
 }
+.fcs-16{
+    font-size: var(--responsible-font-size-16);
+}
+
 
 .category-img{
     width: calc(7rem + 7vh);
@@ -93,4 +99,57 @@
     color:var(--bs-dropdown-link-active-color);
     text-decoration:none;
     background-color:var(--bs-dark)
+}
+
+
+@-webkit-keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 8)); /* 4 = number of cards */
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 8)); /* 4 = number of cards */
+  }
+}
+.slider {
+  background: white;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+  width: 87.5vw;
+
+}
+.slider::before, .slider::after {
+  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
+  content: "";
+  height: 100%;
+  position: absolute;
+  width: 50px;
+  z-index: 2;
+}
+.slider::after {
+  right: 0;
+  top: 0;
+  transform: rotateZ(180deg);
+}
+.slider::before {
+  left: 0;
+  top: 0;
+}
+.slider .slide-track {
+  -webkit-animation: scroll 30s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+    animation: scroll 30s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+  display: flex;
+  width: calc(250px * 14);
+}
+.slider .slide {
+  width: 250px;
 }
