@@ -2,6 +2,12 @@ from colorthief import ColorThief
 import requests
 import datetime
 from database import Database, db_handler
+import json
+from typing import Dict
+
+
+# TODO: usar pydantic para validar os dados
+# TODO: usar SQLAlchemy para fazer o mapeamento objeto-relacional
 
 
 class Grade:
@@ -28,7 +34,8 @@ class Price:
 
 
 class Review:
-    def __init__(self, id: int, author_id: int, product_id: int, content: str, grade: float, date: str, author_name=None):
+    def __init__(self, id: int, author_id: int, product_id: int, content: str, grade: float, date: str,
+                 author_name=None):
         self.id = id
         self.author_id = author_id
         self.product_id = product_id
@@ -85,7 +92,7 @@ class Review:
 
 class Product:
     def __init__(self, id: int, name: str, price: float, price_old: float, category: str, promotion: bool,
-                 image_url: str, description: str, color=None, reviews=None):
+                 image_url: str, description: str, color=None, add_info: str = None, reviews=None):
         self.id = id
         self.name = name
         # todo: receber o price como um objeto Price
@@ -98,6 +105,7 @@ class Product:
         self.reviews = reviews if reviews else []
         self.grade = self.calculate_product_grade(self.reviews)
         self.color = color if color else self.detect_color(self.image_thumb)
+        self.additional_info = json.loads(add_info) if add_info else None
 
     def __str__(self):
         return f"{self.name} - {self.price}"
@@ -147,7 +155,7 @@ class Product:
     @staticmethod
     @db_handler
     def commit_product(db: Database, product: 'Product') -> int:
-        db.cursor.execute('INSERT INTO product VALUES (?,?,?,?,?,?,?,?,?)', (
+        db.cursor.execute('INSERT INTO product VALUES (?,?,?,?,?,?,?,?,?,?)', (
             product.id,
             product.name,
             product.price.new,
@@ -156,7 +164,8 @@ class Product:
             product.promotion,
             product.image_thumb,
             product.description,
-            ""  # product.color
+            "",  # product.color
+            product.additional_info
         ))
         db.conn.commit()
         return db.cursor.lastrowid
@@ -167,3 +176,10 @@ class Product:
         db.cursor.execute('DELETE FROM product WHERE id = ?', (product_id,))
         db.conn.commit()
         return db.cursor.rowcount
+
+if __name__ == '__main__':
+    db = Database('../database.db')
+    product = Product.get_product_by_id(db, 2)
+    for key, value in product.additional_info.items():
+        print(f"{key}: {value}")
+

@@ -18,10 +18,10 @@
       </form>
     </div> <!-- Search -->
     <div class="col-4 col-md-4 d-flex align-content-center justify-content-end"> <!-- SVG Buttons -->
-      <a class="btn btn-dark d-block d-md-none" href=" {{ url_for('search') }}"><i class="fas fa-search"></i></a> <!-- Search -->
+      <a class="text-decoration-none text-dark d-block d-md-none my-auto" href=" {{ url_for('search') }}"><i class="bi bi-search fcs-16"></i></a> <!-- Search -->
       <div class="dropdown mx-3 my-auto"> <!-- User -->
         <a id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user fcs-16"></i>
+          <i class="fa-regular fa-user fcs-16"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="userDropdown" style="right: 50%; left: auto; transform: translateX(50%);">
           <a class="dropdown-item d-none d-md-block" href="{{ url_for('login') }}">Login / Registrar</a>
@@ -32,8 +32,8 @@
           <a class="dropdown-item" href="#">Meus cupons</a>
         </div>
       </div> <!-- User -->
-      <a class="position-relative text-decoration-none text-dark my-auto" href="{{ url_for('cart') }}"> <!-- Cart -->
-        <i class="fa fa-shopping-cart fcs-16"></i>
+      <a class="position-relative text-decoration-none text-dark" href="{{ url_for('cart') }}"> <!-- Cart -->
+        <i class="bi bi-cart fcs-16 my-auto"></i>
         <span id="cartLength" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           {{ cartLength }}
         </span>
@@ -46,12 +46,13 @@
     <div class="row">
       <div class="col-10 collapse navbar-collapse" id="navbarSupportedContent">
         <ul id="categoryList" class="navbar-nav me-auto">
-          <p class="roboto d-block d-md-none mb-1 mt-3 fw-bold">Categorias:</p>
+          <p class="roboto d-block d-md-none mb-1 mt-3 fw-bold">Ver produtos por categoria:</p>
           <li class="nav-item me-3 no-wrap">
-            <a href="{{ url_for('products') }}" class="nav-link roboto ps-0">Ver todos</a>
+            <a href="{{ url_for('products') }}" class="nav-link roboto ps-0">Todos produtos</a>
           </li>
           {% for category in categories %}
-          <li class="nav-item me-3 no-wrap roboto">
+          <li class="nav-item me-3 no-wrap roboto d-flex">
+            <img src="{{ category.image_url }}" alt="{{ category.name }}" class="me-2 my-auto d-block d-md-none" style="width: 20px; height: 20px; object-fit: cover; object-position: center; border-radius: 50%;">
             <a href="#" class="nav-link">{{ category.name }}</a>
           </li>
           {% endfor %}

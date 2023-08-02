@@ -28,7 +28,7 @@ test_products = [
         description='Test Description',
         reviews=test_reviews
     ),
-Product(
+    Product(
         id=2,
         name="Test Product 1",
         price=16.99,
@@ -120,6 +120,7 @@ def test_product_calculate_grade():
     assert str(test_products[0].grade) == "4,1"
     assert str(test_products[1].grade) == "0,0"
 
+
 def test_commit_product():
     first = Product.commit_product(db, test_products[0])
     assert first == 1
@@ -145,3 +146,7 @@ def test_db_handle():
     with pytest.raises(Exception) as e:
         Product.get_product_by_id(db, 999)  # 999 is an invalid id
     assert "Erro na função 'Get Product By Id' do banco de dados: " in str(e.value)
+
+
+def test_more_information_json():
+    pass

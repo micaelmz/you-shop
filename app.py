@@ -56,7 +56,7 @@ def detail():
 
 @app.route('/login')
 def login():
-    return 'Place holder for login.'
+    return render_template('login.html')
 
 
 @app.route('/register')
@@ -76,4 +76,4 @@ def cart():
 
 @app.route('/search')
 def search():
-    return 'Place holder for search.'
+    return render_template('mobile-search.html')

@@ -42,26 +42,26 @@
     <div class="row flex-nowrap overflow-auto">
       <div class="col"> <!-- Free Shipping -->
         <div class="d-flex align-items-center border p-4">
-          <i class="fa fa-shipping-fast text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto fcs-13">Frete Grátis</h5>
+          <i class="fa fa-shipping-fast text-dark me-2 fcs-12"></i>
+          <h5 class="fw-medium m-0 roboto fcs-14">Frete Grátis</h5>
         </div>
       </div> <!-- Free Shipping -->
       <div class="col"> <!-- Security Payment -->
         <div class="d-flex align-items-center border p-4">
-          <i class="fa fa-lock text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto fcs-13">100% Seguro</h5>
+          <i class="fa fa-lock text-dark me-2 fcs-12"></i>
+          <h5 class="fw-medium m-0 roboto fcs-14">100% Seguro</h5>
         </div>
       </div> <!-- Security Payment -->
       <div class="col"> <!-- 24/7 Support -->
         <div class="d-flex align-items-center border p-4">
-          <i class="fa fa-headset text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto fcs-13">Suporte 24/7</h5>
+          <i class="fa fa-headset text-dark me-2 fcs-12"></i>
+          <h5 class="fw-medium m-0 roboto fcs-14">Suporte 24/7</h5>
         </div>
       </div> <!-- 24/7 Support -->
       <div class="col"> <!-- Money Return -->
         <div class="d-flex align-items-center border p-4">
-          <i class="fa fa-undo text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto fcs-13">Devolução Grátis</h5>
+          <i class="fa fa-undo text-dark me-2 fcs-12"></i>
+          <h5 class="fw-medium m-0 roboto fcs-14s">Devolução Grátis</h5>
         </div>
       </div> <!-- Money Return -->
     </div>
@@ -73,7 +73,7 @@
       <h2 class="section-title px-5"><span class="px-2">Por categoria</span></h2>
     </div>
     <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
-      {% for category in categories %}
+      {% for category in categories[:8] %}
       <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
         <a href="#" class="text-decoration-none text-dark">
           <img src="{{ category.image_url }}" class="rounded-circle category-img p-3 p-md-0" alt="">
@@ -105,12 +105,14 @@
           {% for product in recommended_products %}
             <div class="slide ">
               <div class="card me-3 mt-3">
-                <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                <a href=" {{ url_for('detail', id=product.id) }}" class="text-decoration-none">
+                  <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
                 <div class="card-body text-center roboto">
-                  <h5 class="card-title fw-bold text-truncate">{{ product.name }}</h5>
-                  <p class="card-text">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                  <h5 class="card-title fw-bold text-truncate fcs-15 mb-3">{{ product.name }}</h5>
+                  <p class="card-text fw-medium">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
                     {% if product.price.old %}
-                      <del class="text-danger">{{ product.price.format_price(product.price.old) }}</del>
+                      <del class="text-danger fw-light">{{ product.price.format_price(product.price.old) }}</del>
                     {% endif %}
                   </p>
                   <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
