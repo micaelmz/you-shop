@@ -7,7 +7,7 @@
   <form action="{{ url_for('search') }}" method="post">
     <div class="input-group shadow-lg">
       <a class="btn btn-outline-secondary" href="{{ url_for('home') }}"><i class="fas fa-arrow-left"></i></a>
-      <input type="text" name="search" class="form-control border-dark roboto" id="searchInput" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton" autofocus>
+      <input type="text" name="search" class="form-control border-dark roboto custom-focus-outline" id="searchInput" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton" autofocus>
       <button id="searchButton" class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
     </div>
   </form>

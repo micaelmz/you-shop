@@ -23,16 +23,13 @@ def home():
 @app.route('/products')
 def products(custom_product_list=None):
     db = Database('database.db')
-    if custom_product_list:
-        products = custom_product_list
-    else:
-        products = Product.get_all_products(db)
     categories = Category.get_all_categories(db)
+
     return render_template(
         'products.html',
         categories=categories,
         cartLength=cartLengthExample,
-        products=products
+        products=custom_product_list if custom_product_list else Product.get_all_products(db)
     )
 
 
@@ -57,6 +54,26 @@ def detail():
     )
 
 
+@app.route('/search', methods=['GET'])
+def search():
+    db = Database('database.db')
+    return render_template('mobile-search.html')
+
+
+@app.route('/search', methods=['POST'])
+def search_post():
+    db = Database('database.db')
+    search_query = request.form['search'].strip()
+    products_list = Product.search_products_by_string(db, search_query)
+    if not products_list:
+        # todo: tornar o no results uma pagina e incluir quando tbm não encontra a id do produto
+        return render_template(
+            'no-results.html',
+            search_query=search_query
+        )
+    return products(products_list)
+
+
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -77,21 +94,4 @@ def cart():
     return 'Place holder for cart.'
 
 
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    db = Database('database.db')
-    categories = Category.get_all_categories(db)
-    if request.method == 'GET':
-        return render_template('mobile-search.html')
-    elif request.method == 'POST':
-        search_query = request.form.get('search')
-        products_list = Product.search_products_by_string(db, search_query)
-        if not products_list:
-            return render_template(
-                'no-results.html',
-                search_query=search_query,
-                categories=categories,
-                cartLength=cartLengthExample,
-            )
-        return products(products_list)
 

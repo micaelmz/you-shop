@@ -7,6 +7,7 @@
     --responsible-font-size-15: calc(0.7rem + 0.8vh);
 
     --responsible-font-size-16: calc(1.3rem + 0.5vh);
+    --responsible-font-size-17: calc(1rem + 0.1vh);;
 
 }
 
@@ -35,6 +36,9 @@
 }
 .fcs-16{
     font-size: var(--responsible-font-size-16);
+}
+.fcs-17{
+    font-size: var(--responsible-font-size-17);
 }
 
 
@@ -152,4 +156,12 @@
 }
 .slider .slide {
   width: 250px;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+input:focus {
+  box-shadow: 0 0 0 1px #000000 !important;
 }
