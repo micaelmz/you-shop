@@ -1,11 +1,16 @@
 import pytest
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from models.product import Product, Price
 from mock_data import test_products, test_reviews
 from database import Database
 import datetime
 
 # todo: criar DDL para o mock do banco de dados, para que os testes não dependam do arquivo test_db.db
-db = Database('../test_db.db')
+db = Database('test_db.db')
 
 
 def test_price_format_price():
