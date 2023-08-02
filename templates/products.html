@@ -23,14 +23,18 @@
       }
     }
 
-
     /* Limpa o float para o próximo elemento após o UL */
     ul.list-unstyled.list-inline::after {
       content: "";
       display: table;
       clear: both;
     }
-    </style>
+
+    .accordion-button:not(.collapsed) {
+      color: #343a40;
+      background-color: #f5f5f5;
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -38,9 +42,16 @@
   <div class="container-lg">
     <div class="row">
       <div class="col-12 col-md-3"> <!-- Filters -->
-        <div id="byPrice" class="filter mb-5">
-          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por preço</h2>
-          <form id="priceForm" action="/seu_backend" method="POST">
+        <div class="accordion" id="accordionFilter">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <span class="roboto fw-bold fcs-15">Filtar por preço</span>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <form id="priceForm" action="/seu_backend" method="POST">
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="0to50" checked name="checkbox2">
             <label class="form-check-label roboto fcs-15" for="0to50">
@@ -72,10 +83,18 @@
             </label>
           </div>
         </form>
-        </div>
-        <div id="byColor" class="filter mb-5">
-          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por cor</h2>
-          <form id="colorForm" action="/seu_backend" method="POST">
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <span class="roboto fw-bold fcs-15">Filtar por cor</span>
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <form id="colorForm" action="/seu_backend" method="POST">
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="allcolors" checked name="checkbox2">
             <label class="form-check-label roboto fcs-15" for="allcolors">
@@ -113,10 +132,18 @@
           </label>
         </div>
         </form>
-        </div>
-        <div id="bySize" class="filter mb-5">
-          <h2 class="roboto fw-bold fcs-13 mb-3">Filtar por tamanho</h2>
-          <form id="sizeForm" action="/seu_backend" method="POST">
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <span class="roboto fw-bold fcs-15">Filtar por tamanho</span>
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <form id="sizeForm" action="/seu_backend" method="POST">
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="allsizes" checked name="checkbox2">
             <label class="form-check-label roboto fcs-15" for="allsizes">
@@ -148,11 +175,14 @@
             </label>
           </div>
         </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div> <!-- Filters -->
-      <div class="col-12 col-md-9"> <!-- Products -->
+      <div class="col-12 col-md-9 mt-3 mt-md-0"> <!-- Products -->
         <div class="row mb-2"> <!-- Menu -->
-          <div class="col-8"> <!-- Search -->
+          <div class="col-8 ps-3 ps-md-4"> <!-- Search -->
             <form action="" method="post">
               <div class="input-group">
                 <input type="text" class="form-control roboto" placeholder="Pesquisar por nome" aria-label="Pesquisar por nome" aria-describedby="button-addon2">
@@ -160,7 +190,7 @@
               </div>
             </form>
           </div> <!-- Search -->
-          <div class="col-4 dropdown roboto d-flex justify-content-end"> <!-- Order By -->
+          <div class="col-4 pe-3 pe-md-4 dropdown roboto d-flex justify-content-end"> <!-- Order By -->
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Ordenar por
             </button>
@@ -198,7 +228,7 @@
       </div> <!-- Products -->
     </div> <!-- Products -->
     </div>
-    <div class="row">
+    <div class="row mt-3">
       <nav aria-label="Page navigation" class="d-flex justify-content-center">
         <ul class="pagination">
           <li class="page-item disabled">
@@ -206,9 +236,9 @@
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item active"><a class="page-link text-dark" href="#">1</a></li>
-          <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-          <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+          <li class="page-item active"><a class="page-link text-dark px-3" href="#">1</a></li>
+          <li class="page-item"><a class="page-link text-dark px-3" href="#">2</a></li>
+          <li class="page-item"><a class="page-link text-dark px-3" href="#">3</a></li>
           <li class="page-item">
             <a class="page-link text-dark" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
@@ -219,4 +249,20 @@
     </div>
   </div>
 </section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+   function collapseOnSmallScreen() {
+    if ($(window).width() < 768) {
+      $('.accordion-collapse').removeClass('show');
+      $('.accordion-button').addClass('collapsed');
+    } else {
+      $('.accordion-collapse').addClass('show');
+      $('.accordion-button').removeClass('collapsed');
+    }
+  }
+ document.addEventListener('DOMContentLoaded', function () {
+    collapseOnSmallScreen();
+  });
+</script>
 {% endblock %}

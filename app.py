@@ -21,9 +21,12 @@ def home():
 
 
 @app.route('/products')
-def products():
+def products(custom_product_list=None):
     db = Database('database.db')
-    products = Product.get_all_products(db)
+    if custom_product_list:
+        products = custom_product_list
+    else:
+        products = Product.get_all_products(db)
     categories = Category.get_all_categories(db)
     return render_template(
         'products.html',
@@ -74,6 +77,21 @@ def cart():
     return 'Place holder for cart.'
 
 
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    return render_template('mobile-search.html')
+    db = Database('database.db')
+    categories = Category.get_all_categories(db)
+    if request.method == 'GET':
+        return render_template('mobile-search.html')
+    elif request.method == 'POST':
+        search_query = request.form.get('search')
+        products_list = Product.search_products_by_string(db, search_query)
+        if not products_list:
+            return render_template(
+                'no-results.html',
+                search_query=search_query,
+                categories=categories,
+                cartLength=cartLengthExample,
+            )
+        return products(products_list)
+

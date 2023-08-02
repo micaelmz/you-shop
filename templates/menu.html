@@ -10,9 +10,9 @@
       <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-16 text-dark mx-auto mx-md-0 my-auto"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
     </div> <!-- Logo -->
     <div class="col-0 col-md-4 d-none d-md-block mx-auto"> <!-- Search -->
-      <form action="/search" method="post">
+      <form action="{{ url_for('search') }}" method="post">
         <div class="input-group">
-          <input type="text" class="form-control roboto" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton">
+          <input type="text" name="search" class="form-control roboto" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton">
           <button id="searchButton" class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
         </div>
       </form>

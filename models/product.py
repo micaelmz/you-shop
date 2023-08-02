@@ -177,6 +177,18 @@ class Product:
         db.conn.commit()
         return db.cursor.rowcount
 
+    @staticmethod
+    @db_handler
+    def search_products_by_string(db: Database, search_string: str) -> list['Product']:
+        db.cursor.execute(
+            "SELECT * FROM product WHERE LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
+            ('%' + search_string + '%', '%' + search_string + '%'))
+        rows = db.cursor.fetchall()
+        products = []
+        for row in rows:
+            products.append(Product(*row))
+        return products
+
 if __name__ == '__main__':
     db = Database('../database.db')
     product = Product.get_product_by_id(db, 2)

@@ -107,7 +107,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * 8)); /* 4 = number of cards */
+    transform: translateX(calc(-250px * 10)); /* 4 = number of cards */
   }
 }
 
@@ -116,7 +116,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * 8)); /* 4 = number of cards */
+    transform: translateX(calc(-250px * 10)); /* 4 = number of cards */
   }
 }
 .slider {
@@ -145,8 +145,8 @@
   top: 0;
 }
 .slider .slide-track {
-  -webkit-animation: scroll 30s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
-    animation: scroll 30s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+  -webkit-animation: scroll 35s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+    animation: scroll 35s linear infinite; /* o tempo tem que se baseado na quantidade de itens */
   display: flex;
   width: calc(250px * 14);
 }
