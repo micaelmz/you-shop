@@ -1,7 +1,15 @@
 <!-- todo: fazer todas imagens terem a mesma proporção, no width todas são iguais porém tem umas mais altas -->
 {% extends 'main-template.html' %}
 
-{% block title %}You Shop - Produtos{% endblock %}
+{% block title %}
+
+{% if search_query %}Procurar {{ search_query }}
+{% elif category_id and category_id > 0 %}{{ categories[category_id - 1].name }}
+{% else %}Produtos
+{% endif %}
+| You Shop
+{% endblock %}
+
 {% block extra_style %}
   <style>
       ul.list-unstyled.list-inline {
@@ -224,20 +232,18 @@
       </div> <!-- Products -->
     </div>
     <div class="row mt-3">
-      <nav aria-label="Page navigation" class="d-flex justify-content-center">
-        <ul class="pagination">
-          <li class="page-item disabled">
-            <a class="page-link text-dark" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+            <a class="page-link text-dark" href="{{ url_for('products', search=search_query, category=category_id, page=current_page - 1) }}">Anterior</a>
           </li>
-          <li class="page-item active"><a class="page-link text-dark px-3" href="#">1</a></li>
-          <li class="page-item"><a class="page-link text-dark px-3" href="#">2</a></li>
-          <li class="page-item"><a class="page-link text-dark px-3" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link text-dark" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
+          {% for page in range(1, total_pages + 1) %}
+          <li class="page-item {% if current_page == page %}active{% endif %}">
+            <a class="page-link text-dark px-3" href="{{ url_for('products', search=search_query, category=category_id, page=page) }}">{{ page }}</a>
+          </li>
+          {% endfor %}
+          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+            <a class="page-link text-dark"  href="{{ url_for('products', search=search_query, category=category_id, page=current_page + 1) }}">Próximo</a>
           </li>
         </ul>
       </nav>
