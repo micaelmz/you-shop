@@ -2,6 +2,7 @@ from database import Database, db_handler
 import json
 from models.review import Review, Grade
 
+
 # TODO: usar pydantic para validar os dados
 # TODO: usar SQLAlchemy
 
@@ -21,7 +22,8 @@ class Price:
 
 class Product:
     def __init__(self, id: int, name: str, price: float, price_old: float, category: str, promotion: bool,
-                 image_url: str, description: str, color=None, add_info: str = None, extra_img: str = None, reviews=None):
+                 image_url: str, description: str, color=None, additional_info: str = None, extra_images: str = None,
+                 reviews=None):
         self.id = id
         self.name = name
         # todo: receber o price como um objeto Price
@@ -33,8 +35,8 @@ class Product:
         self.reviews = reviews if reviews else []
         self.grade = self.calculate_product_grade(self.reviews)
         self.color = color if color else self.detect_color(self.image_thumb)
-        self.additional_info = json.loads(add_info) if add_info else None
-        self.extra_images = json.loads(extra_img) if extra_img else {}
+        self.additional_info = json.loads(additional_info) if additional_info else None
+        self.extra_images = json.loads(extra_images) if extra_images else {}
 
     def __str__(self):
         return f"{self.name} - {self.price}"
@@ -91,8 +93,8 @@ class Product:
             product.image_thumb,
             product.description,
             "",  # product.color
-            product.additional_info,
-            json.dumps(product.extra_images)
+            str(product.additional_info).replace("'", '"').replace('xa0', ' ').replace('\\', '') if product.additional_info else "{}",
+            str(product.extra_images).replace("'", '"').replace('xa0', ' ').replace('\\', '') if product.extra_images else "{}"
         ))
         db.conn.commit()
         return db.cursor.lastrowid
@@ -125,11 +127,4 @@ class Product:
         for row in rows:
             products.append(Product(*row))
         return products
-
-
-if __name__ == '__main__':
-    db = Database('../database.db')
-    product = Product.get_product_by_id(db, 2)
-    for key, value in product.additional_info.items():
-        print(f"{key}: {value}")
 
