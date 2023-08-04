@@ -1,0 +1,54 @@
+{% extends 'main-template-without-menu-footer.html' %}
+{% block title %}Login | You Shop{% endblock %}
+
+{% block content %}
+
+{% block extra_style %}
+  <style>
+    #loginBox{
+        max-width: 30%;
+    }
+    @media (max-width: 996px) {
+      #loginBox{
+        max-width: 50%;
+      }
+    }
+    @media (max-width: 768px) {
+      #loginBox{
+        max-width: 90%;
+      }
+    }
+  </style>
+{% endblock %}
+<section>
+<div class="container-lg" id="loginBox">
+  <form style="margin-top: 20vh;">
+    <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-12 text-dark"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
+    <h1 class="mb-2 ms-2 mt-3 fcs-13 roboto">Login</h1>
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Endereço de email</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Senha</label>
+    </div>
+    <div class="form-check text-start my-2">
+      <label class="form-check-label" for="flexCheckDefault">
+        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+        Manter conectado
+      </label>
+    </div>
+    <div class="d-flex align-content-between mb-2">
+      <a href="{{ url_for('register') }}" class="text-dark ms-1">Criar conta</a>
+      <a href="#" class="text-dark ms-auto me-1">Esqueceu a senha?</a>
+    </div>
+    <button disabled class="btn btn-dark w-100 py-2 mt-2" type="submit">Entrar</button>
+    <button disabled class="btn btn-outline-dark w-100 py-2 mt-2">
+      <i class="fab fa-google me-2"></i>
+      Entrar com o Google
+    </button>
+  </form>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'main-template-without-menu-footer.html' %}
+{% block title %}Pesquisa | You Shop{% endblock %}
+
+{% block content %}
+<section id="mobile-search">
+<div class="container-lg mt-3">
+  <form action="{{ url_for('search') }}" method="post">
+    <div class="input-group shadow-lg">
+      <a class="btn btn-outline-secondary" href="{{ url_for('home') }}"><i class="fas fa-arrow-left"></i></a>
+      <input type="text" name="search" class="form-control border-dark roboto custom-focus-outline" id="searchInput" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton" autofocus>
+      <button id="searchButton" class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+    </div>
+  </form>
+</div>
+<hr>
+<div class="container-lg mt-3">
+  <p class="poppins fw-bold text-uppercase fcs-15">🔥 Tendências</p>
+  <ul class="list-inline">
+    <li class="list-inline-item border border-dark-subtle py-1 px-2" style="background-color: #efefef"><a href="{{ url_for('products') }}" class="text-decoration-none text-dark roboto">Moletons</a></li>
+    <li class="list-inline-item border border-dark-subtle py-1 px-2" style="background-color: #efefef"><a href="{{ url_for('products') }}" class="text-decoration-none text-dark roboto">Camisetas</a></li>
+    <li class="list-inline-item border border-dark-subtle py-1 px-2" style="background-color: #efefef"><a href="{{ url_for('products') }}" class="text-decoration-none text-dark roboto">Calças</a></li>
+  </ul>
+</div>
+</section>
+{% endblock %}

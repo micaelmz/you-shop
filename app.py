@@ -4,7 +4,7 @@ from models.product import Product, Price, Grade, Review
 from database import Database
 
 app = Flask(__name__)
-cartLengthExample = 5
+cartLengthExample = 0
 
 
 @app.route('/')
@@ -22,14 +22,60 @@ def home():
 
 @app.route('/products')
 def products():
+    # TODO: refatorar essa bagunça de rota
     db = Database('database.db')
-    products = Product.get_all_products(db)
     categories = Category.get_all_categories(db)
+
+    search_query = request.args.get('search')
+    category_id = request.args.get('category')
+    page = int(request.args.get('page', 1))  # Default to page 1 if 'page' parameter is not provided
+    page_size = 6  # MMC entre 2(quantidade de colunas mobile) e 3 (quantidade de colunas desktop)
+
+    if search_query:
+        products_list = Product.search_products_by_string(db, search_query.strip())
+        if not products_list:
+            return render_template(
+                'no-results.html',
+                search_query=search_query
+            )
+    elif category_id:
+        products_list = Product.get_products_by_category_id(db, int(category_id))
+        if not products_list:
+            return render_template(
+                'no-results.html',
+                search_query=f"Categoria {Category.get_category_by_id(db, int(category_id)).name}"
+            )
+    else:
+        products_list = Product.get_all_products(db)
+
+    # Implement pagination using list slices
+    total_items = len(products_list)  # 6
+    start_index = (page - 1) * page_size  # 0
+    end_index = start_index + page_size  # 6
+    products_list = products_list[start_index:end_index]
+    total_pages = total_items // page_size + (1 if total_items % page_size > 0 else 0)
+
+    if start_index >= total_items:
+        if search_query:
+            warning_text = f"página {page} da busca '{search_query}'"
+        elif category_id:
+            warning_text = f"página {page} da categoria {Category.get_category_by_id(db, int(category_id)).name}"
+        else:
+            warning_text = f"página {page}"
+        return render_template(
+            'no-results.html',
+            search_query=warning_text
+        )
+
     return render_template(
         'products.html',
         categories=categories,
         cartLength=cartLengthExample,
-        products=products
+        products=products_list,
+        current_page=page,
+        total_pages=total_pages,
+        search_query=search_query,
+        category_id=int(category_id) if category_id else None
     )
 
 
@@ -54,14 +100,25 @@ def detail():
     )
 
 
+@app.route('/search', methods=['GET'])
+def search():
+    db = Database('database.db')
+    return render_template('mobile-search.html')
+
+
+@app.route('/search', methods=['POST'])
+def search_post():
+    return redirect(url_for('products', search=request.form['search']))
+
+
 @app.route('/login')
 def login():
-    return 'Place holder for login.'
+    return render_template('login.html')
 
 
 @app.route('/register')
 def register():
-    return 'Place holder for register.'
+    return render_template('register.html')
 
 
 @app.route('/register/validation')
@@ -72,8 +129,3 @@ def register_validation():
 @app.route('/cart')
 def cart():
     return 'Place holder for cart.'
-
-
-@app.route('/search')
-def search():
-    return 'Place holder for search.'

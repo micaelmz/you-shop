@@ -19,3 +19,12 @@ class Category:
         except Exception as e:
             raise e
 
+    @staticmethod
+    def get_category_by_id(db, category_id: int):
+        try:
+            db.cursor.execute('SELECT * FROM category WHERE id = ?', (category_id,))
+            row = db.cursor.fetchone()
+            return Category(*row)
+        except Exception as e:
+            raise e
+

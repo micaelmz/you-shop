@@ -1,0 +1,32 @@
+{% extends 'main-template.html' %}
+
+{% block title %}Nenhum resultado encontrado | You Shop{% endblock %}
+
+{% block content %}
+<section>
+  <div class="container-lg">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('home') }}">
+              <i class="fa-solid fa-house"></i>
+              <span class="visually-hidden">Home</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ url_for('products') }}">Produtos</a>
+          </li>
+          <li class="breadcrumb-item active text-truncate" aria-current="page" style="max-width: 55vw;">
+            Busca por: {{ search_query }}
+          </li>
+        </ol>
+      </nav>
+      <div class="row my-5 text-center">
+        <div class="col-md-12">
+          <h1 class="poppins">Nenhum resultado encontrado</h1>
+          <p class="roboto">Infelizmente não encontramos nenhum resultado para "{{ search_query }}".</p>
+        </div>
+      </div>
+  </div>
+</section>
+{% endblock %}

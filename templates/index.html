@@ -1,8 +1,7 @@
 {% extends 'main-template.html' %}
 
 {% block title %}You Shop{% endblock %}
-{% block extra_style %}
-    <style>
+{% block extra_style %}<style>
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
       filter: invert(100%);
@@ -13,129 +12,121 @@
     .nav-link:hover {
       color: #000;
     }
-  </style>
-{% endblock %}
+  </style>{% endblock %}
 
 {% block content %}
-<section id="promotions" class="my-4">
+  <section id="advantages" class="mt-3">
   <div class="container-lg">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="2500">
-      <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item" data-bs-interval="2500">
-      <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp" class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-  </div>
-</section>
-<section id="advantages">
-  <div class="container-lg">
-    <div class="row">
-      <div class="col-3"> <!-- Free Shipping -->
-        <div class="d-flex align-items-center border mb-4 p-4">
-          <i class="fa fa-shipping-fast text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Frete Grátis</h5>
+    <div class="row flex-nowrap overflow-auto">
+      <div class="col bg-secondary-subtle"> <!-- Free Shipping -->
+        <div class="text-center border p-2">
+          <i class="fa fa-shipping-fast text-dark fcs-13"></i>
+          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Frete Grátis</h5>
         </div>
       </div> <!-- Free Shipping -->
-      <div class="col-3"> <!-- Security Payment -->
-        <div class="d-flex align-items-center border mb-4 p-4">
-          <i class="fa fa-lock text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">100% Seguro</h5>
-      </div>
+      <div class="col bg-secondary-subtle"> <!-- Security Payment -->
+        <div class="text-center border p-2">
+          <i class="fa fa-lock text-dark fcs-13"></i>
+          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">100% Seguro</h5>
+        </div>
       </div> <!-- Security Payment -->
-      <div class="col-3"> <!-- 24/7 Support -->
-        <div class="d-flex align-items-center border mb-4 p-4">
-          <i class="fa fa-headset text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Suporte 24/7</h5>
+      <div class="col bg-secondary-subtle"> <!-- 24/7 Support -->
+        <div class="text-center border p-2">
+          <i class="fa fa-headset text-dark fcs-13"></i>
+          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Suporte 24/7</h5>
         </div>
       </div> <!-- 24/7 Support -->
-      <div class="col-3"> <!-- Money Return -->
-        <div class="d-flex align-items-center border mb-4 p-4">
-          <i class="fa fa-undo text-dark me-2 fcs-11"></i>
-          <h5 class="fw-medium m-0 roboto">Devolução Grátis</h5>
+      <div class="col bg-secondary-subtle"> <!-- Money Return -->
+        <div class="text-center border p-2">
+          <i class="fa fa-undo text-dark me-2 fcs-13"></i>
+          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Devolução Grátis</h5>
         </div>
       </div> <!-- Money Return -->
     </div>
   </div>
 </section>
-<section id="category">
-  <div class="container-lg">
-    <div class="text-center mb-4">
-      <h2 class="section-title px-5"><span class="px-2">Por categoria</span></h2>
+  <section id="promotions" class="mt-3">
+    <div class="container-lg p-0">
+      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="2500">
+            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item" data-bs-interval="2500">
+            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
-    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
-      {% for category in categories %}
-      <li class="align-items-center m-5"> <!-- Feminino -->
-        <a href="#" class="text-decoration-none text-dark">
-          <img src="{{ category.image_url }}" class="rounded-circle category-img" alt="">
-          <h3 class="fcs-13 fw-bold roboto text-center">{{ category.name }}</h3>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</section>
-<section id="ad">
-  <div class="container-lg my-5">
-    <div class="row">
-      <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp" alt="">
+  </section>
+  <section id="category" class="mt-4">
+    <div class="container-lg">
+      <div class="text-center mb-2">
+        <h2 class="section-title px-5"><span class="px-2">Por categoria</span></h2>
+      </div>
+      <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+        {% for category in categories[:8] %}
+        <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
+          <a href="{{ url_for('products', category=category.id) }}" class="text-decoration-none text-dark">
+            <img src="{{ category.image_url }}" class="rounded-circle category-img p-3 p-md-0" alt="">
+            <h3 class="fcs-13 fw-bold roboto text-center">{{ category.name }}</h3>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-  </div>
-</section>
-<section id="hot">
-  <div class="container-lg">
-    <div class="text-center">
-      <h2 class="section-title px-5"><span class="px-2">Produtos em promoção</span></h2>
+  </section>
+  <section id="ad" class="mt-3">
+    <div class="container-lg">
+      <div class="row">
+        <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp" alt="">
+      </div>
     </div>
-    <div id="card-carousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-    <!--TODO: fazer apenas 1, 2 ou 3 cards tomarem o msm espaço, atualmente quando so tem 1 card ele toma o tamanho de 3 -->
-      {% for i in range(0, recommended_products|length, 3) %}
-      <div class="carousel-item {% if i == 0 %}active{% endif %}">
-        <div class="row">
-          {% for j in range(i, i + 3) %}
-          {% if j < recommended_products|length %}
-          <div class="col">
-            <div class="card">
-                <img src="{{ recommended_products[j].image_thumb }}" class="card-img-top" alt="{{ recommended_products[j].name }}">
-                <div class="card-body text-center roboto">
-                  <h5 class="card-title fw-bold text-truncate">{{ recommended_products[j].name }}</h5>
-                  <p class="card-text">R$<span class="value-product me-1">{{ recommended_products[j].price.format_price(recommended_products[j].price.new) }}</span>
-                    {% if recommended_products[j].price.old %}
-                      <del class="text-danger">{{ recommended_products[j].price.format_price(recommended_products[j].price.old) }}</del>
-                    {% endif %}
-                  </p>
-                  <a href="{{ url_for('detail', id=recommended_products[j].id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
-                  <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+  </section>
+  <section id="hot" class="mt-4">
+    <div class="container-lg">
+      <div class="text-center">
+        <h2 class="section-title px-5">
+          <span class="px-2">Em promoção</span>
+        </h2>
+      </div>
+      <div class="row">
+        <div class="slider">
+          <div class="slide-track ">
+            <div class="" style="width: 88vw;"></div>
+            {% for product in recommended_products %}
+              <div class="slide ">
+                <div class="card me-3 mt-3">
+                  <a href=" {{ url_for('detail', id=product.id) }}" class="text-decoration-none">
+                    <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
+                  </a>
+                  <div class="card-body text-center roboto">
+                    <h5 class="card-title fw-bold text-truncate fcs-15 mb-3">{{ product.name }}</h5>
+                    <p class="card-text fw-medium">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                      {% if product.price.old %}
+                        <del class="text-danger fw-light">{{ product.price.format_price(product.price.old) }}</del>
+                      {% endif %}
+                    </p>
+                    <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                    <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                  </div>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">
+                    {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
+                  </span>
                 </div>
               </div>
+            {% endfor %}
           </div>
-          {% endif %}
-          {% endfor %}
         </div>
       </div>
-      {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#card-carousel" data-bs-slide="prev" style="left: -5%;">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#card-carousel" data-bs-slide="next" style="right: -5%;">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-    </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
