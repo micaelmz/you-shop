@@ -6,11 +6,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import pytest
 from models.review import Review, Grade
-from mock_data import test_reviews, test_products
+from mock_data import test_reviews, test_products, db
 from database import Database
 import datetime
-
-db = Database('test_db.db')
 
 
 def test_grade_str():
