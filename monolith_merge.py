@@ -40,7 +40,7 @@ def add_shop_prefix_to_routes(app_content):
         else:
             new_content.append(line)
 
-    return "\n".join(new_content)
+    return "\n".join(new_content).replace(")')", "')").replace("']')", "'])")
 
 
 def update_monolito():
