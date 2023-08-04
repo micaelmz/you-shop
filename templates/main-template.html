@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>{% block title %}You Shop{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="You Shop, sua loja virtual. Um projeto demonstrativo com painel administrativo aberto, faça as alterações que deseja, e as veja sendo aplicadas em tempo real.">
+  <meta name="description" content="{% block meta_description %}You Shop, sua loja virtual. Um projeto demonstrativo com painel administrativo aberto, faça as alterações que deseja, e as veja sendo aplicadas em tempo real.{% endblock %}">
   <meta name="author" content="Micael Muniz">
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.png') }}" type="image/x-icon">
