@@ -212,17 +212,17 @@
                   <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
                 </a>
                 <div class="card-body text-center roboto">
-                  <h5 class="card-title fw-bold text-truncate fcs-15">{{ product.name }}</h5>
-                  <p class="card-text">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                  <h5 class="card-title fw-normal text-truncate fcs-15">{{ product.name }}</h5>
+                  <p class="card-text fw-medium">R$<span class="fcs-14 value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
                     {% if product.price.old %}
-                      <del class="text-danger">{{ product.price.format_price(product.price.old) }}</del>
+                      <del class="text-danger fw-light fcs-15">{{ product.price.format_price(product.price.old) }}</del>
                     {% endif %}
                   </p>
-                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
-                    <span class="d-none d-md-inline-block">Detalhes</span>
+                  <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
+                    <span class="d-none d-md-inline-block ">Detalhes</span>
                     <span class="d-inline-block d-md-none">Ver</span>
                   </a>
-                  <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                  <a href="#" class="text-decoration-none fw-normal text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                 </div>
               </div>
             </li>

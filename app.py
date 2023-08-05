@@ -36,6 +36,8 @@ def products():
         if not products_list:
             return render_template(
                 'no-results.html',
+                categories=categories,
+                cartLength=cartLengthExample,
                 search_query=search_query
             )
     elif category_id:
@@ -43,6 +45,8 @@ def products():
         if not products_list:
             return render_template(
                 'no-results.html',
+                categories=categories,
+                cartLength=cartLengthExample,
                 search_query=f"Categoria {Category.get_category_by_id(db, int(category_id)).name}"
             )
     else:
@@ -64,7 +68,9 @@ def products():
             warning_text = f"página {page}"
         return render_template(
             'no-results.html',
-            search_query=warning_text
+            categories=categories,
+            search_query=warning_text,
+            cartLength=cartLengthExample
         )
 
     return render_template(
