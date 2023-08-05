@@ -70,14 +70,14 @@
   <section id="category" class="mt-4">
     <div class="container-lg">
       <div class="text-center mb-2">
-        <h2 class="section-title px-5"><span class="px-2">Por categoria</span></h2>
+        <h2 class="section-title px-5 garamond"><span class="px-2">Por categoria</span></h2>
       </div>
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         {% for category in categories[:8] %}
         <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
           <a href="{{ url_for('products', category=category.id) }}" class="text-decoration-none text-dark">
             <img src="{{ category.image_url }}" class="rounded-circle category-img p-3 p-md-0" alt="">
-            <h3 class="fcs-13 fw-bold roboto text-center">{{ category.name }}</h3>
+            <h3 class="fcs-13 fw-medium roboto text-center mt-1">{{ category.name }}</h3>
           </a>
         </li>
         {% endfor %}
@@ -95,7 +95,7 @@
     <div class="container-lg">
       <div class="text-center">
         <h2 class="section-title px-5">
-          <span class="px-2">Em promoção</span>
+          <span class="px-2 garamond">Em promoção</span>
         </h2>
       </div>
       <div class="row">
@@ -109,14 +109,14 @@
                     <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
                   </a>
                   <div class="card-body text-center roboto">
-                    <h5 class="card-title fw-bold text-truncate fcs-15 mb-3">{{ product.name }}</h5>
-                    <p class="card-text fw-medium">R$<span class="value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
+                    <h5 class="card-title fw-normal text-truncate fcs-15 mb-3">{{ product.name }}</h5>
+                    <p class="card-text fw-medium">R$<span class="fcs-14 value-product me-1">{{ product.price.format_price(product.price.new) }}</span>
                       {% if product.price.old %}
-                        <del class="text-danger fw-light">{{ product.price.format_price(product.price.old) }}</del>
+                        <del class="text-danger fw-light fcs-15">{{ product.price.format_price(product.price.old) }}</del>
                       {% endif %}
                     </p>
-                    <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
-                    <a href="#" class="text-decoration-none text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                    <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                    <a href="#" class="text-decoration-none fw-normal text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                   </div>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">
                     {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
