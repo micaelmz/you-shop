@@ -29,6 +29,17 @@
       width: 49% !important;
     }
   }
+  input[disabled] + label{
+    cursor: not-allowed !important;
+    pointer-events: visible !important;
+  }
+  .color-selector:checked + label {
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+  }
+  .custom-tooltip {
+  --bs-tooltip-bg: #777777;
+  --bs-tooltip-color: #fff;
+}
   </style>
 
 {% endblock %}
@@ -96,82 +107,69 @@
           {% endif %}
         </div>
         <div id="sizesOptions" class="row">
-          <div class="col-12 col-md-auto">
-            <span class="fcs-15 roboto fw-semibold me-4">Tamanho:</span>
+          <div class="col-12 col-md-2">
+            <span class="fcs-15 roboto fw-semibold me-4 mb-0">Tamanho:</span>
           </div>
-          <div class="col-12 col-md-auto">
-            <div class="form-check d-inline-block me-4">
-              <input class="form-check-input" type="radio" name="size" id="sizeP" checked>
-              <label class="form-check-label" for="sizeP">
-                P
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-4">
-              <input class="form-check-input" type="radio" name="size" id="sizeM">
-              <label class="form-check-label" for="sizeM">
-                M
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-4">
-              <input class="form-check-input" type="radio" name="size" id="sizeG">
-              <label class="form-check-label" for="sizeG">
-                G
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-4">
-              <input class="form-check-input" type="radio" name="size" id="sizeGG">
-              <label class="form-check-label" for="sizeGG">
-                GG
-              </label>
-            </div>
+          <div class="col-12 col-md-10">
+            <input type="radio" class="btn-check" name="options-outlined" id="p-size" autocomplete="off">
+            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="p-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip"
+                   title="📏 Medição do produto <br> Tórax: 94cm; Comp: 68cm; Ombro: 12cm; Manga: 21cm">
+              P
+            </label>
+
+            <input type="radio" class="btn-check" name="options-outlined" id="m-size" autocomplete="off" disabled>
+            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="m-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip"
+                    title="📏 Medição do produto <br> Tórax: 98cm; Comp: 70cm; Ombro: 15cm; Manga: 22cm">
+              M
+            </label>
+
+            <input type="radio" class="btn-check" name="options-outlined" id="g-size" autocomplete="off">
+            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="g-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip"
+                    title="📏 Medição do produto <br> Tórax: 104cm; Comp: 72cm; Ombro: 18cm; Manga: 23cm">
+              G
+            </label>
+
+            <input type="radio" class="btn-check" name="options-outlined" id="gg-size" autocomplete="off">
+            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="gg-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip"
+                    title="📏 Medição do produto <br> Tórax: 110cm; Comp: 74cm; Ombro: 21cm; Manga: 24cm">
+              GG
+            </label>
           </div>
         </div>
         <div id="colorOptions" class="mt-2 mt-md-1 row">
           <!-- TODO: Implementar seleção de cores -->
           <input type="color" class="form-control form-control-color d-none" id="exampleColorInput" value="#563d7c" title="Choose your color">
 
-          <div class="col-12 col-md-auto">
-            <span class="fcs-15 roboto fw-semibold me-4">Cores:</span>
+          <div class="col-12 col-md-2">
+            <span class="fcs-15 roboto fw-semibold me-4 mb-0">Cores:</span>
           </div>
-          <div class="col-12 col-md-auto">
-            <div class="form-check d-inline-block me-1 me-md-4">
-              <input class="form-check-input" type="radio" name="color" id="colorBlack" checked>
-              <label class="form-check-label" for="colorBlack">
-                Preto
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-1 me-md-4">
-              <input class="form-check-input" type="radio" name="color" id="colorWhite">
-              <label class="form-check-label" for="colorWhite">
-                Branco
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-1 me-md-4">
-              <input class="form-check-input" type="radio" name="color" id="colorRed">
-              <label class="form-check-label" for="colorRed">
-                Rubro
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-1 me-md-4">
-              <input class="form-check-input" type="radio" name="color" id="colorBlue">
-              <label class="form-check-label" for="colorBlue">
-                Azul
-              </label>
-            </div>
-            <div class="form-check d-inline-block me-1 me-md-4">
-              <input class="form-check-input" type="radio" name="color" id="colorGreen">
-              <label class="form-check-label" for="colorGreen">
-                Verde
-              </label>
-            </div>
+          <div class="col-12 col-md-10">
+            <input type="radio" class="btn-check color-selector" name="color-options" id="color-black" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-black" style="width: 2rem; height: 2rem; background-color: #282828;" title="Preto"></label>
+
+            <input type="radio" class="btn-check color-selector" name="color-options" id="color-white" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-white" style="width: 2rem; height: 2rem; background-color: white;" title="Branco"></label>
+
+            <input type="radio" class="btn-check color-selector" name="color-options" id="color-red" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-red" style="width: 2rem; height: 2rem; background-color: #af0c0c;" title="Vermelho"></label>
+
+            <input type="radio" class="btn-check color-selector" name="color-options" id="color-green" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-green" style="width: 2rem; height: 2rem; background-color: #00b000;" title="Verde"></label>
+
+            <input type="radio" class="btn-check color-selector" name="color-options" id="color-blue" autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-blue" style="width: 2rem; height: 2rem; background-color: #0e0ed7;" title="Azul"></label>
           </div>
         </div>
         <div class="d-flex">
 
             <div class="input-group mt-3 cart-qnt-control">
-              <button id="cart-qnt-remove1" class="btn btn-outline-secondary" type="button"><i class="fas fa-minus"></i></button>
+              <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i class="fas fa-minus"></i></button>
               <input id="cart-qnt-input" type="text" class="form-control text-center fcs-15" placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
-              <button id="cart-qnt-add1" class="btn btn-outline-secondary" type="button"><i class="fas fa-plus"></i></button>
+              <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i class="fas fa-plus"></i></button>
             </div>
 
 
@@ -264,6 +262,8 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   $(document).ready(function() {
 
   var $input = $("#cart-qnt-input");
