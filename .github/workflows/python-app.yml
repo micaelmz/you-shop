@@ -1,0 +1,93 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - "development"
+
+jobs:
+  analyze:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+
+  merge-branch:
+      needs: analyze
+      if: ${{ needs.analyze.result == 'success' }}
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@master
+
+        - name: Merge branch to master
+          uses: devmasx/merge-branch@1.4.0
+          with:
+            type: now
+            from_branch: development
+            target_branch: master
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: analyze
+    if: ${{ needs.analyze.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.3                   # Essa ação faz o checkout do repositório no ambiente do GitHub Actions
+
+      - name: Exclude files
+        run: |
+          rm -rf node_modules
+          rm -rf .github
+          rm -rf .git
+          rm -rf _temp
+          rm -rf _PipelineMapping
+          rm -rf _actions
+          rm -rf you-shop-backend
+
+      - name: Send files via SFTP
+        uses: wangyucode/sftp-upload-action@v2.0.2
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          localDir: '.'                                   # Required, Absolute or relative to cwd.
+          remoteDir: '/home/micaelmz/api'                 # Required, Absolute path only.
+          exclude: '.github,.git,_temp,_PipelineMapping,_actions,you-shop-backend'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
+
+      - name: Merge app to monolith
+        uses: spcily/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          script: |
+            cd /home/micaelmz/api
+            python monolith_merge.py
+
+      - name: Reload pythonanywhere webapp
+        uses: jensvog/pythonanywhere-webapp-reload-action@v1
+        with:
+          host: 'www.pythonanywhere.com'
+          username: ${{ secrets.SFTP_USERNAME }}
+          api-token: ${{ secrets.PYTHON_ANYWHERE_API_TOKEN }}
+          domain-name: ${{ secrets.DOMAIN_NAME }}
