@@ -1,7 +1,5 @@
-import json
 from models.review import Review, Grade
 from database import db
-from sqlalchemy import event
 
 
 class Price:
@@ -18,8 +16,8 @@ class Price:
 
 
 class Product(db.Model):
-    __tablename__ = 'product'
 
+    __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200), nullable=False)
     price_current = db.Column(db.Float, nullable=False)
@@ -31,7 +29,7 @@ class Product(db.Model):
     color = db.Column(db.String(50), nullable=False)
     additional_info = db.Column(db.JSON, nullable=True)
     extra_images = db.Column(db.JSON, nullable=True)
-    reviews = Review.get_reviews_by_product_id(id)
+    reviews = db.relationship('Review', backref='product')
 
     def __str__(self):
         return f"{self.name} - {self.price_current}"
@@ -48,6 +46,14 @@ class Product(db.Model):
         db.session.delete(self)
         db.session.commit()
         return True
+
+    @property
+    def grade(self) -> Grade:
+        return Grade.calcule_grade_from_reviews(self.reviews)
+
+    @property
+    def price(self) -> Price:
+        return Price(self.price_current, self.price_old)
 
     @staticmethod
     def detect_color(img_url: str) -> str:
@@ -71,14 +77,5 @@ class Product(db.Model):
         return cls.query.filter_by(category=category_id).all()
 
     @classmethod
-    # todo: test if it's insensitive
     def search_products_by_string(cls, search_string: str) -> list['Product']:
         return cls.query.filter(cls.name.contains(search_string) | cls.description.contains(search_string)).all()
-
-
-@event.listens_for(Product, 'before_insert')
-@event.listens_for(Product, 'load')
-def initialize(product, *args, **kwargs):
-    product.price = Price(product.price_current, product.price_old)
-    product.reviews = Review.get_reviews_by_product_id(product.id)
-    product.grade = Grade.calcule_grade_from_reviews(product.reviews)

@@ -1,7 +1,7 @@
 import datetime
 from database import db
-from sqlalchemy import event
 from models.user import User
+
 
 class Grade:
     def __init__(self, grade: float):
@@ -11,9 +11,6 @@ class Grade:
 
     def __str__(self):
         return f"{self.integer},{self.decimal}"
-
-    def __float__(self):
-        return self.grade
 
     @staticmethod
     def calcule_grade_from_reviews(reviews: list['Review']) -> 'Grade':
@@ -25,12 +22,11 @@ class Grade:
 class Review(db.Model):
 
     __tablename__ = 'review'
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     content = db.Column(db.String(500), nullable=False)
-    grade = db.Column(db.Float, nullable=False)
+    review_grade = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
 
     def __str__(self):
@@ -49,6 +45,14 @@ class Review(db.Model):
         db.session.commit()
         return True
 
+    @property
+    def author_name(self) -> str:
+        return User.get_user_name_by_id(self.author_id)
+
+    @property
+    def grade(self) -> Grade:
+        return Grade(self.review_grade)
+
     @classmethod
     def get_all_reviews(cls) -> list['Review']:
         return cls.query.all()
@@ -60,9 +64,3 @@ class Review(db.Model):
     @classmethod
     def get_reviews_by_product_id(cls, product_id: int) -> list['Review']:
         return cls.query.filter_by(product_id=product_id).all()
-
-
-@event.listens_for(Review, 'load')
-def initialize(review, *args, **kwargs):
-    review.author_name = User.get_user_by_id(review.author_id).name
-    review.grade = Grade(review.grade)
