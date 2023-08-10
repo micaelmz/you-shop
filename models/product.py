@@ -1,10 +1,7 @@
-from database import Database, db_handler
 import json
 from models.review import Review, Grade
-
-
-# TODO: usar pydantic para validar os dados
-# TODO: usar SQLAlchemy
+from database import db
+from sqlalchemy import event
 
 
 class Price:
@@ -13,118 +10,75 @@ class Price:
         self.old = old
 
     def __str__(self):
-        return self.format_price(self.new)
+        return self.label_price(self.new)
 
     @staticmethod
-    def format_price(price) -> str:
+    def label_price(price: float) -> str:
         return "{:.2f}".format(price).replace('.', ',')
 
 
-class Product:
-    def __init__(self, id: int, name: str, price: float, price_old: float, category: str, promotion: bool,
-                 image_url: str, description: str, color=None, additional_info: str = None, extra_images: str = None,
-                 reviews=None):
-        self.id = id
-        self.name = name
-        # todo: receber o price como um objeto Price
-        self.price = Price(price, price_old)
-        self.category = category
-        self.promotion = promotion
-        self.image_thumb = image_url
-        self.description = description
-        self.reviews = reviews if reviews else []
-        self.grade = self.calculate_product_grade(self.reviews)
-        self.color = color if color else self.detect_color(self.image_thumb)
-        self.additional_info = json.loads(additional_info) if additional_info else None
-        self.extra_images = json.loads(extra_images) if extra_images else {}
+class Product(db.Model):
+    __tablename__ = 'product'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(200), nullable=False)
+    price_current = db.Column(db.Float, nullable=False)
+    price_old = db.Column(db.Float, nullable=False)
+    category = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    promotion = db.Column(db.Boolean, nullable=False)
+    image_thumb = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(500), nullable=False)
+    color = db.Column(db.String(50), nullable=False)
+    additional_info = db.Column(db.JSON, nullable=True)
+    extra_images = db.Column(db.JSON, nullable=True)
+    reviews = Review.get_reviews_by_product_id(id)
 
     def __str__(self):
-        return f"{self.name} - {self.price}"
+        return f"{self.name} - {self.price_current}"
 
-    @staticmethod
-    def calculate_product_grade(reviews: list['Review']) -> Grade:
-        if len(reviews) == 0:
-            return Grade(0)
-        grades = [review.grade.grade for review in reviews]
-        return Grade(sum(grades) / len(grades))
+    def __repr__(self):
+        return "<Product {}>" % self.id
+
+    def commit(self) -> int:
+        db.session.add(self)
+        db.session.commit()
+        return self.id
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return True
 
     @staticmethod
     def detect_color(img_url: str) -> str:
         dominant_color = 'Neutro'
         return dominant_color
 
-    @staticmethod
-    @db_handler
-    def get_all_products(db: Database) -> list['Product']:
-        db.cursor.execute('SELECT * FROM product')
-        rows = db.cursor.fetchall()
-        products = []
-        for row in rows:
-            products.append(Product(*row))
-        return products
+    @classmethod
+    def get_all_products(cls) -> list['Product']:
+        return cls.query.all()
 
-    @staticmethod
-    @db_handler
-    def get_promotion_products(db: Database) -> list['Product']:
-        db.cursor.execute('SELECT * FROM product WHERE promotion = 1')
-        rows = db.cursor.fetchall()
-        products = []
-        for row in rows:
-            products.append(Product(*row))
-        return products
+    @classmethod
+    def get_product_by_id(cls, product_id: int) -> 'Product':
+        return cls.query.get(product_id)
 
-    @staticmethod
-    @db_handler
-    def get_product_by_id(db: Database, product_id: int) -> 'Product':
-        db.cursor.execute('SELECT * FROM product WHERE id = ?', (product_id,))
-        row = db.cursor.fetchone()
-        return Product(*row)
+    @classmethod
+    def get_promotional_products(cls) -> list['Product']:
+        return cls.query.filter_by(promotion=True).all()
 
-    @staticmethod
-    @db_handler
-    def commit_product(db: Database, product: 'Product') -> int:
-        db.cursor.execute('INSERT INTO product VALUES (?,?,?,?,?,?,?,?,?,?,?)', (
-            product.id,
-            product.name,
-            product.price.new,
-            product.price.old,
-            product.category,
-            product.promotion,
-            product.image_thumb,
-            product.description,
-            "",  # product.color
-            str(product.additional_info).replace("'", '"').replace('xa0', ' ').replace('\\', '') if product.additional_info else "{}",
-            str(product.extra_images).replace("'", '"').replace('xa0', ' ').replace('\\', '') if product.extra_images else "{}"
-        ))
-        db.conn.commit()
-        return db.cursor.lastrowid
+    @classmethod
+    def get_products_by_category_id(cls, category_id: int) -> list['Product']:
+        return cls.query.filter_by(category=category_id).all()
 
-    @staticmethod
-    @db_handler
-    def delete_product(db: Database, product_id: int) -> int:
-        db.cursor.execute('DELETE FROM product WHERE id = ?', (product_id,))
-        db.conn.commit()
-        return db.cursor.rowcount
+    @classmethod
+    # todo: test if it's insensitive
+    def search_products_by_string(cls, search_string: str) -> list['Product']:
+        return cls.query.filter(cls.name.contains(search_string) | cls.description.contains(search_string)).all()
 
-    @staticmethod
-    @db_handler
-    def search_products_by_string(db: Database, search_string: str) -> list['Product']:
-        db.cursor.execute(
-            "SELECT * FROM product WHERE LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
-            ('%' + search_string + '%', '%' + search_string + '%'))
-        rows = db.cursor.fetchall()
-        products = []
-        for row in rows:
-            products.append(Product(*row))
-        return products
 
-    @staticmethod
-    @db_handler
-    def get_products_by_category_id(db: Database, category: int) -> list['Product']:
-        db.cursor.execute('SELECT * FROM product WHERE category = ?', (category,))
-        rows = db.cursor.fetchall()
-        products = []
-        for row in rows:
-            products.append(Product(*row))
-        return products
-
+@event.listens_for(Product, 'before_insert')
+@event.listens_for(Product, 'load')
+def initialize(product, *args, **kwargs):
+    product.price = Price(product.price_current, product.price_old)
+    product.reviews = Review.get_reviews_by_product_id(product.id)
+    product.grade = Grade.calcule_grade_from_reviews(product.reviews)
