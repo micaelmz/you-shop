@@ -3,62 +3,13 @@ from models.category import Category
 from models.product import Product, Price, Grade, Review
 from models.user import User
 from database import db
-from datetime import datetime
-import sqlite3
-import json
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 
 cartLengthExample = 0
-
-
-@app.route('/migration')
-def migration():
-    conn = sqlite3.connect('old_database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM review')
-    reviews = cursor.fetchall()
-    for review in reviews:
-        new_review = Review(
-            author_id=review[1],
-            product_id=review[2],
-            content=review[3],
-            grade=review[4],
-            date=datetime.strptime(review[5], '%d-%m-%Y')
-        )
-        new_review.commit()
-    return 'Migration complete'
-
-@app.route("/test")
-def test():
-    # new_product = Product(
-    #     name='Teste',
-    #     price_current=10,
-    #     price_old=33,
-    #     category=1,
-    #     promotion=True,
-    #     image_thumb_url='https://www.google.com.br',
-    #     description='Teste',
-    #     color='',
-    #     additional_info={'teste': 'testando cé mã ! isso mesmo ', 'teste2': 'testando2'},
-    #     extra_images={'teste': 'testando', 'teste2': 'testando2'}
-    # )
-    # id_new = new_product.commit()
-    product = Product.get_product_by_id(7)
-
-    # new_review = Review(
-    #     author_id=1,
-    #     product_id=1,
-    #     content='Teste',
-    #     grade=5,
-    #     date=datetime.now()
-    # )
-    # id_new_review = new_review.commit()
-    # review = Review.get_review_by_id(id_new_review)
-
-    return str(product.additional_info)
 
 
 @app.route('/')

@@ -10,7 +10,7 @@ from time import sleep
 
 
 driver = webdriver.Chrome()
-db = Database('database.db')
+db = Database('old_database.db')
 products_to_scrap = [
     {'category': 1, 'url': 'https://br.shein.com/SHEIN-Belle-Square-Neck-Slant-Pocket-Wedding-Dress-p-19154675-cat-3089.html?src_identifier=on%3DIMAGE_COMPONENT%60cn%3Dshopbycate%60hz%3DhotZone_13%60ps%3D4_12%60jc%3DitemPicking_001121425&src_module=Women&src_tab_page_id=page_home1691027241335&mallCode=1'},
     {'category': 1, 'url': 'https://br.shein.com/SHEIN-Priv-Colorblock-Button-Front-Crop-Blouse-Split-Thigh-Skirt-p-17904473-cat-1780.html?src_identifier=on%3DIMAGE_COMPONENT%60cn%3Dshopbycate%60hz%3DhotZone_13%60ps%3D4_12%60jc%3DitemPicking_001121425&src_module=Women&src_tab_page_id=page_home1691027241335&mallCode=1'},
