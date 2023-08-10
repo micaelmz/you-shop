@@ -1,17 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from models.category import Category
 from models.product import Product, Price, Grade, Review
-from database import Database
+from models.user import User
+from database import db
+
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+db.init_app(app)
+
 cartLengthExample = 0
 
 
 @app.route('/')
 def home():
-    db = Database('database.db')
-    categories = Category.get_all_categories(db)
-    recommended_products = Product.get_promotion_products(db)
+    categories = Category.get_all_categories()
+    recommended_products = Product.get_promotional_products()
     return render_template(
         'index.html',
         categories=categories,
@@ -23,8 +27,8 @@ def home():
 @app.route('/products')
 def products():
     # TODO: refatorar essa bagunça de rota
-    db = Database('database.db')
-    categories = Category.get_all_categories(db)
+    # todo: implementar paginação do sqlachemy
+    categories = Category.get_all_categories()
 
     search_query = request.args.get('search')
     category_id = request.args.get('category')
@@ -32,7 +36,7 @@ def products():
     page_size = 6  # MMC entre 2(quantidade de colunas mobile) e 3 (quantidade de colunas desktop)
 
     if search_query:
-        products_list = Product.search_products_by_string(db, search_query.strip())
+        products_list = Product.search_products_by_string(search_query.strip())
         if not products_list:
             return render_template(
                 'no-results.html',
@@ -41,16 +45,16 @@ def products():
                 search_query=search_query
             )
     elif category_id:
-        products_list = Product.get_products_by_category_id(db, int(category_id))
+        products_list = Product.get_products_by_category_id(int(category_id))
         if not products_list:
             return render_template(
                 'no-results.html',
                 categories=categories,
                 cartLength=cartLengthExample,
-                search_query=f"Categoria {Category.get_category_by_id(db, int(category_id)).name}"
+                search_query=f"Categoria {Category.get_category_by_id(int(category_id))}"
             )
     else:
-        products_list = Product.get_all_products(db)
+        products_list = Product.get_all_products()
 
     # Implement pagination using list slices
     total_items = len(products_list)  # 6
@@ -63,7 +67,7 @@ def products():
         if search_query:
             warning_text = f"página {page} da busca '{search_query}'"
         elif category_id:
-            warning_text = f"página {page} da categoria {Category.get_category_by_id(db, int(category_id)).name}"
+            warning_text = f"página {page} da categoria {Category.get_category_by_id(int(category_id))}"
         else:
             warning_text = f"página {page}"
         return render_template(
@@ -87,16 +91,14 @@ def products():
 
 @app.route('/detail')
 def detail():
-    db = Database('database.db')
     product_id = int(request.args.get('id'))
-    product = Product.get_product_by_id(db, product_id)
+    product = Product.get_product_by_id(product_id)
 
     if not product:
         return redirect(url_for('home'))
 
-    product.reviews = Review.get_reviews_by_product_id(db, product_id)
-    product.grade = product.calculate_product_grade(product.reviews)
-    categories = Category.get_all_categories(db)
+
+    categories = Category.get_all_categories()
 
     return render_template(
         'detail.html',
@@ -108,7 +110,6 @@ def detail():
 
 @app.route('/search', methods=['GET'])
 def search():
-    db = Database('database.db')
     return render_template('mobile-search.html')
 
 
@@ -135,3 +136,6 @@ def register_validation():
 @app.route('/cart')
 def cart():
     return 'Place holder for cart.'
+
+# with app.app_context():
+#     db.create_all()

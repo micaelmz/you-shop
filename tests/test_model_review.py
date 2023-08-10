@@ -1,73 +1,77 @@
+from flask_testing import TestCase
 import pytest
 import sys
 import os
+from flask import Flask
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+if not __name__ == "__main__":
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import pytest
+from mock_data import *
 from models.review import Review, Grade
-from mock_data import test_reviews, test_products, db
-from database import Database
-import datetime
+from database import db
 
 
-def test_grade_str():
-    grade = Grade(3.2)
-    assert str(grade) == "3,2"
+class TestModels(TestCase):
+    def create_app(self):
+        if os.path.exists("test.db"):
+            os.remove("test.db")
+        app = Flask(__name__)
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+        db.init_app(app)
+        with app.app_context():
+            db.create_all()
+        return app
 
+    def setUp(self):
+        db.create_all()
+        db.session.add_all(test_users)
+        db.session.add_all(test_categories)
+        db.session.add_all(test_products)
+        db.session.commit()
 
-def test_product_calculate_grade():
-    assert str(test_products[0].grade) == "4,1"
-    assert str(test_products[1].grade) == "0,0"
+    def test_grade_str(self):
+        grade = Grade(3.2)
+        assert str(grade) == "3,2"
 
+    def test_commit_review(self):
+        first_review = test_reviews[0]
+        first_review.commit()
+        assert first_review.id == 1
+        second_review = test_reviews[1]
+        second_review.commit()
+        assert second_review.id == 2
+        third_review = test_reviews[2]
+        third_review.commit()
+        assert third_review.id == 3
 
-def test_review_initial_values():
-    review = test_reviews[0]
-    assert review.id == 1
-    assert review.author_id == 1
-    assert review.product_id == 1
-    assert review.content == "Good"
-    assert review.author_name == "User1"
+    def test_product_calculate_grade(self):
+        review = Review.get_reviews_by_product_id(1)
+        assert len(review) == 3
+        product_grade = Grade.calcule_grade_from_reviews(review)
+        assert str(product_grade) == "4,1"
 
+    def test_review_initial_values(self):
+        review = Review.get_review_by_id(1)
+        assert review.id == 1
+        assert review.author_id == 1
+        assert review.product_id == 1
+        assert review.content == "Good"
+        assert review.author_name == "User1"
 
-def test_review_subobject_values():
-    review = test_reviews[0]
-    assert type(review.grade) == Grade
-    assert review.grade.integer == 4
-    assert review.grade.decimal == 0
-    assert type(review.date) == datetime.datetime
-    assert review.date.year == 2021
-    assert review.date.month == 1
-    assert review.date.day == 1
+    def test_review_subobject_values(self):
+        now = datetime.now()
+        review = Review.get_review_by_id(1)
+        assert type(review.grade) == Grade
+        assert review.grade.integer == 4
+        assert review.grade.decimal == 0
+        assert type(review.date) == datetime
+        assert review.date.year == now.year
+        assert review.date.month == now.month
+        assert review.date.day == now.day
 
+    def test_review_str(self):
+        review = Review.get_review_by_id(1)
+        assert str(review) == "User1: Good (4,0)"
 
-def test_review_str():
-    review = test_reviews[0]
-    assert str(review) == "User1: Good (4,0)"
-
-
-# Test Review database related operations
-def test_commit_review():
-    first = Review.commit_review(db, test_reviews[0])
-    assert first == 1
-    second = Review.commit_review(db, test_reviews[1])
-    assert second == 2
-    third = Review.commit_review(db, test_reviews[2])
-    assert third == 3
-
-
-def test_get_committed_reviews():
-    reviews = Review.get_all_reviews(db)
-    assert len(reviews) == len(test_reviews)
-
-    for i in range(len(reviews)):
-        assert str(reviews[i]) == str(test_reviews[i])
-
-
-def test_delete_reviews():
-    first = Review.delete_review(db, test_reviews[0].id)
-    assert first == 1
-    second = Review.delete_review(db, test_reviews[1].id)
-    assert second == 1
-    third = Review.delete_review(db, test_reviews[2].id)
-    assert third == 1
