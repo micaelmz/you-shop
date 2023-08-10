@@ -101,9 +101,9 @@
           <span class="fcs-15 roboto ">{{ product.grade }} ({{ product.reviews|length }} Avaliações)</span>
         </div>
         <div id="price" class="my-5">
-          <span class="fcs-12 roboto fw-semibold">R${{ product.price.format_price(product.price.new) }}</span>
+          <span class="fcs-12 roboto fw-semibold">R${{ product.price.label_price(product.price.new) }}</span>
           {% if product.price.old %}
-            <del class="fcs-14 roboto fw-semibold text-danger ms-3">R${{ product.price.format_price(product.price.old) }}</del>
+            <del class="fcs-14 roboto fw-semibold text-danger ms-3">R${{ product.price.label_price(product.price.old) }}</del>
           {% endif %}
         </div>
         <div id="sizesOptions" class="row">

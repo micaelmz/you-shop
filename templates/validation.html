@@ -1,0 +1,24 @@
+
+<section>
+<div class="container-lg" style="max-width: 30%;">
+  <form style="margin-top: 20vh;">
+    <a href="index.html" class="text-decoration-none poppins fw-bold fcs-12 text-dark"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
+    <h1 class="mb-2 ms-2 mt-3 fcs-13 roboto">Registrar</h1>
+
+    <div class="form-floating">
+      <input type="password" class="form-control" id="code" placeholder="Password">
+      <label for="code">Codigo de confirmação</label>
+    </div>
+    <div class="text-start my-3 ms-1 d-flex justify-content-between">
+       Já tem uma conta cadastrada?
+      <a href=" {{ url_for('login') }}" class="ms-auto text-dark">Faça login</a>
+    </div>
+    <button class="btn btn-dark w-100 py-2" type="submit">Criar conta</button>
+  </form>
+  <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+    <strong>Quase lá!</strong> Enviamos um código de confirmação para o seu email. Verifique sua caixa de entrada e insira o código no campo acima.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+</section>
+
