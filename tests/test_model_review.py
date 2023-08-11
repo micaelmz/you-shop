@@ -1,5 +1,4 @@
 from flask_testing import TestCase
-import pytest
 import sys
 import os
 from flask import Flask
@@ -9,7 +8,7 @@ if not __name__ == "__main__":
 
 from mock_data import *
 from models.review import Review, Grade
-from database import db
+from utils.database import db
 
 
 class TestModels(TestCase):

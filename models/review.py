@@ -1,5 +1,4 @@
-import datetime
-from database import db
+from utils.database import db
 from models.user import User
 
 
