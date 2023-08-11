@@ -1,4 +1,4 @@
-from flask import Blueprint, request, url_for, redirect
+from flask import Blueprint, request, url_for, redirect, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from models.category import Category
 from models.product import Product
@@ -9,7 +9,28 @@ api = Api(api_blueprint)
 
 class ProductResource(Resource):
     def get(self):
-        return redirect(url_for('view.products'))
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=int, required=False)
+        parser.add_argument('category', type=int, required=False)
+        parser.add_argument('search', type=str, required=False)
+        args = parser.parse_args()
+        if args['id']:
+            product = Product.get_product_by_id(args['id'])
+            if not product:
+                abort(404, message='Product not found')
+            return product.name
+        elif args['category']:
+            products = Product.get_products_by_category(args['category'])
+            if not products:
+                abort(404, message='Products not found for this category')
+            return products
+        elif args['search']:
+            products = Product.get_products_by_search(args['search'])
+            if not products:
+                abort(404, message='Products not found for this search')
+            return products
+        else:
+            return 'You need to specify an id, category or search term', 400
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -69,3 +90,6 @@ class ProductResource(Resource):
         args = parser.parse_args()
         updated_fields = {key: value for key, value in args.items() if value is not None}
         return self.update_product(updated_fields, product)
+
+
+api.add_resource(ProductResource, '/api/products')
