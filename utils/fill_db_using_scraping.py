@@ -1,9 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from random import randint, choice
-from models.review import Review, Grade
-from models.product import Product, Price
-from database import Database
+from models.review import Review
+from models.product import Product
+from utils.database import Database
 import datetime
 import json
 from time import sleep

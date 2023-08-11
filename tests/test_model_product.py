@@ -9,7 +9,7 @@ if not __name__ == "__main__":
 
 from mock_data import *
 from models.product import Product, Price
-from database import db
+from utils.database import db
 
 
 class TestModels(TestCase):

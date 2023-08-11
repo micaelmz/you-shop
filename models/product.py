@@ -1,5 +1,5 @@
-from models.review import Review, Grade
-from database import db
+from models.review import Grade
+from utils.database import db
 
 
 class Price:
@@ -41,6 +41,12 @@ class Product(db.Model):
         db.session.add(self)
         db.session.commit()
         return self.id
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        db.session.commit()
+        return self.serialize()
 
     def delete(self):
         db.session.delete(self)
