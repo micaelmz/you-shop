@@ -75,7 +75,7 @@
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         {% for category in categories[:8] %}
         <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
-          <a href="{{ url_for('products', category=category.id) }}" class="text-decoration-none text-dark">
+          <a href="{{ url_for('view.products', category=category.id) }}" class="text-decoration-none text-dark">
             <img src="{{ category.image_url }}" class="rounded-circle category-img p-3 p-md-0" alt="">
             <h3 class="fcs-13 fw-medium roboto text-center mt-1">{{ category.name }}</h3>
           </a>
@@ -105,7 +105,7 @@
             {% for product in recommended_products %}
               <div class="slide ">
                 <div class="card me-3 mt-3">
-                  <a href=" {{ url_for('detail', id=product.id) }}" class="text-decoration-none">
+                  <a href=" {{ url_for('view.detail', id=product.id) }}" class="text-decoration-none">
                     <img src="{{ product.image_thumb }}" class="card-img-top" alt="{{ product.name }}">
                   </a>
                   <div class="card-body text-center roboto">
@@ -115,7 +115,7 @@
                         <del class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
                       {% endif %}
                     </p>
-                    <a href="{{ url_for('detail', id=product.id) }}" class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                    <a href="{{ url_for('view.detail', id=product.id) }}" class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
                     <a href="#" class="text-decoration-none fw-normal text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                   </div>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">

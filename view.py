@@ -1,23 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 from models.category import Category
 from models.product import Product
-from utils.database import db
-from flask import Blueprint
 
 view_blueprint = Blueprint('view', __name__)
-
-
-
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-db.init_app(app)
-
-#todo: usar o flask_restapi com blueprint
-
 cartLengthExample = 0
 
-
-@app.route('/')
+@view_blueprint.route('/')
 def home():
     categories = Category.get_all_categories()
     recommended_products = Product.get_promotional_products()
@@ -29,7 +17,7 @@ def home():
     )
 
 
-@app.route('/products', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+@view_blueprint.route('/products', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def products():
     if request.method == 'GET':
         pass
@@ -96,7 +84,7 @@ def products():
     )
 
 
-@app.route('/detail')
+@view_blueprint.route('/detail')
 def detail():
     product_id = int(request.args.get('id'))
     product = Product.get_product_by_id(product_id)
@@ -115,32 +103,32 @@ def detail():
     )
 
 
-@app.route('/search', methods=['GET'])
+@view_blueprint.route('/search', methods=['GET'])
 def search():
     return render_template('mobile-search.html')
 
 
-@app.route('/search', methods=['POST'])
+@view_blueprint.route('/search', methods=['POST'])
 def search_post():
     return redirect(url_for('products', search=request.form['search']))
 
 
-@app.route('/login')
+@view_blueprint.route('/login')
 def login():
     return render_template('login.html')
 
 
-@app.route('/register')
+@view_blueprint.route('/register')
 def register():
     return render_template('register.html')
 
 
-@app.route('/register/validation')
+@view_blueprint.route('/register/validation')
 def register_validation():
     return 'Place holder for register validation.'
 
 
-@app.route('/cart')
+@view_blueprint.route('/cart')
 def cart():
     return 'Place holder for cart.'
 
