@@ -26,7 +26,7 @@ class Product(db.Model):
     promotion = db.Column(db.Boolean, nullable=False)
     image_thumb = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500), nullable=False)
-    color = db.Column(db.String(50), nullable=False)
+    color = db.Column(db.String(50), nullable=True)
     additional_info = db.Column(db.JSON, nullable=True)
     extra_images = db.Column(db.JSON, nullable=True)
     reviews = db.relationship('Review', backref='product')
@@ -49,7 +49,7 @@ class Product(db.Model):
         for key, value in kwargs.items():
             setattr(self, key, value)
         db.session.commit()
-        return self.serialize()
+        return self
 
     def delete(self):
         db.session.delete(self)
