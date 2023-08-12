@@ -34,6 +34,9 @@ class Review(db.Model):
     def __repr__(self):
         return "<Review {}>" % self.id
 
+    def to_dict(self) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
     def commit(self) -> int:
         db.session.add(self)
         db.session.commit()

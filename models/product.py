@@ -37,6 +37,9 @@ class Product(db.Model):
     def __repr__(self):
         return "<Product {}>" % self.id
 
+    def to_dict(self: object) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
     def commit(self) -> int:
         db.session.add(self)
         db.session.commit()
