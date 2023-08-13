@@ -6,7 +6,7 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200), nullable=False)
-    image_url = db.Column(db.String(500), nullable=False)
+    image = db.Column(db.String(500), nullable=False)
 
     def __str__(self):
         return self.name

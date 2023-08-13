@@ -1,5 +1,6 @@
 from utils.database import db
 from models.user import User
+from datetime import datetime
 
 
 class Grade:
@@ -26,7 +27,7 @@ class Review(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     content = db.Column(db.String(500), nullable=False)
     review_grade = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     def __str__(self):
         return f"{self.author_name}: {self.content} ({self.grade})"
