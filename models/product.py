@@ -23,7 +23,7 @@ class Product(db.Model):
     name = db.Column(db.String(200), nullable=False)
     price_current = db.Column(db.Float, nullable=False)
     price_old = db.Column(db.Float, nullable=False, default=0)
-    promotion = db.Column(db.Boolean, nullable=False, default=False)
+    on_sale = db.Column(db.Boolean, nullable=False, default=False)
     image = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500), nullable=True)
     color = db.Column(db.String(50), nullable=True)
@@ -37,8 +37,12 @@ class Product(db.Model):
     def __repr__(self):
         return "<Product {}>" % self.id
 
-    def to_dict(self: object) -> dict:
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    def to_dict(self: object, properties: bool = False) -> dict:
+        # todo: criar documentação disso
+        product_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        product_dict['rating'] = self.rating
+        return product_dict
+
 
     def commit(self) -> int:
         db.session.add(self)
