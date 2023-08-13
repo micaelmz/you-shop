@@ -1,4 +1,4 @@
-from models.review import Grade
+from models.review import Rating
 from utils.database import db
 
 
@@ -57,8 +57,8 @@ class Product(db.Model):
         return True
 
     @property
-    def grade(self) -> Grade:
-        return Grade.calcule_grade_from_reviews(self.reviews)
+    def rating(self) -> Rating:
+        return Rating.calculate_rating_from_reviews(self.reviews)
 
     @property
     def price(self) -> Price:

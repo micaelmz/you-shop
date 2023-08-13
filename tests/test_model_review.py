@@ -7,7 +7,7 @@ if not __name__ == "__main__":
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mock_data import *
-from models.review import Review, Grade
+from models.review import Review, Rating
 from utils.database import db
 
 
@@ -31,7 +31,7 @@ class TestModels(TestCase):
         db.session.commit()
 
     def test_grade_str(self):
-        grade = Grade(3.2)
+        grade = Rating(3.2)
         assert str(grade) == "3,2"
 
     def test_commit_review(self):
@@ -45,10 +45,10 @@ class TestModels(TestCase):
         third_review.commit()
         assert third_review.id == 3
 
-    def test_product_calculate_grade(self):
+    def test_product_calculate_rating(self):
         review = Review.get_reviews_by_product_id(1)
         assert len(review) == 3
-        product_grade = Grade.calcule_grade_from_reviews(review)
+        product_grade = Rating.calculate_rating_from_reviews(review)
         assert str(product_grade) == "4,1"
 
     def test_review_initial_values(self):
@@ -62,9 +62,9 @@ class TestModels(TestCase):
     def test_review_subobject_values(self):
         now = datetime.now()
         review = Review.get_review_by_id(1)
-        assert type(review.grade) == Grade
-        assert review.grade.integer == 4
-        assert review.grade.decimal == 0
+        assert type(review.rating) == Rating
+        assert review.rating.integer == 4
+        assert review.rating.decimal == 0
         assert type(review.date) == datetime
         assert review.date.year == now.year
         assert review.date.month == now.month

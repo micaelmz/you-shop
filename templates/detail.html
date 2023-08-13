@@ -88,17 +88,17 @@
       </div> <!-- Product Image Carrousel -->
       <div class="col-12 col-md-8 ps-3">
         <h2 class="fcs-13 poppins fw-bold" id="productName">{{ product.name }}</h2>
-        <div id="grade" class="mt-3">
+        <div id="rating" class="mt-3">
           {% for i in range(5) %}
-            {% if i < product.grade.integer %}
+            {% if i < product.rating.integer %}
               <i class="fas fa-star fcs-15 text-warning"></i>
-            {% elif i == product.grade.integer and product.grade.decimal >= 3 %}
+            {% elif i == product.rating.integer and product.rating.decimal >= 3 %}
               <i class="fa-solid fa-star-half-stroke fcs-15 text-warning"></i>
             {% else %}
               <i class="fa-regular fa-star fcs-15 text-warning"></i>
             {% endif %}
           {% endfor %}
-          <span class="fcs-15 roboto ">{{ product.grade }} ({{ product.reviews|length }} Avaliações)</span>
+          <span class="fcs-15 roboto ">{{ product.rating }} ({{ product.reviews|length }} Avaliações)</span>
         </div>
         <div id="price" class="my-5">
           <span class="fcs-12 roboto fw-semibold">R${{ product.price.label_price(product.price.new) }}</span>
@@ -236,9 +236,9 @@
                   <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span></p>
                   <div class="userRating">
                     {% for i in range(5) %}
-                      {% if i < review.grade.integer %}
+                      {% if i < review.rating.integer %}
                         <i class="fas fa-star text-warning"></i>
-                      {% elif i == review.grade.integer and review.grade.decimal >= 3 %}
+                      {% elif i == review.rating.integer and review.rating.decimal >= 3 %}
                         <i class="fa-solid fa-star-half-stroke text-warning"></i>
                       {% else %}
                         <i class="fa-regular fa-star text-warning"></i>
