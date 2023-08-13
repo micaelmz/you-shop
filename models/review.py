@@ -1,5 +1,6 @@
 from utils.database import db
 from models.user import User
+from datetime import datetime
 
 
 class Grade:
@@ -26,7 +27,7 @@ class Review(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     content = db.Column(db.String(500), nullable=False)
     review_grade = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return f"{self.author_name}: {self.content} ({self.grade})"
@@ -34,8 +35,12 @@ class Review(db.Model):
     def __repr__(self):
         return "<Review {}>" % self.id
 
-    def to_dict(self) -> dict:
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    def to_dict(self, author_name: bool = False) -> dict:
+        review_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        review_dict['date'] = self.date.strftime('%Y-%m-%d %H:%M:%S')
+        if author_name:
+            review_dict['author_name'] = self.author_name
+        return review_dict
 
     def commit(self) -> int:
         db.session.add(self)
@@ -62,6 +67,10 @@ class Review(db.Model):
     @classmethod
     def get_review_by_id(cls, review_id: int) -> 'Review':
         return cls.query.get(review_id)
+
+    @classmethod
+    def get_reviews_by_author_id(cls, author_id: int) -> list['Review']:
+        return cls.query.filter_by(author_id=author_id).all()
 
     @classmethod
     def get_reviews_by_product_id(cls, product_id: int) -> list['Review']:

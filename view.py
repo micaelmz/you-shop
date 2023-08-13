@@ -5,6 +5,7 @@ from models.product import Product
 view_blueprint = Blueprint('view', __name__)
 cartLengthExample = 0
 
+
 @view_blueprint.route('/')
 def home():
     categories = Category.get_all_categories()
@@ -92,7 +93,6 @@ def detail():
     if not product:
         return redirect(url_for('home'))
 
-
     categories = Category.get_all_categories()
 
     return render_template(
@@ -132,5 +132,3 @@ def register_validation():
 def cart():
     return 'Place holder for cart.'
 
-# with app.app_context():
-#     db.create_all()

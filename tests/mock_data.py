@@ -19,11 +19,11 @@ test_users = [
 test_categories = [
     Category(
         name="Test Category",
-        image_url="https://www.test.com/test.jpg"
+        image="https://www.test.com/test.jpg"
     ),
     Category(
         name="Test Category 2",
-        image_url="https://www.test.com/test2.jpg"
+        image="https://www.test.com/test2.jpg"
     )
 ]
 
@@ -55,24 +55,24 @@ test_products = [
         name="Test Product",
         price_current=25.99,
         price_old=50.0,
-        category=1,
+        category_id=1,
         promotion=True,
-        image_thumb='https://www.test.com/test.jpg',
+        image='https://www.test.com/test.jpg',
         description='Test Description',
         color='Test Color',
         additional_info={'Test Info': 'Test Value'},
-        extra_images={'img1': 'https://www.test.com/test1.jpg'}
+        additional_images={'img1': 'https://www.test.com/test1.jpg'}
     ),
     Product(
         name="Test Product 2",
         price_current=18.0,
         price_old=0,
-        category=2,
+        category_id=2,
         promotion=False,
-        image_thumb='https://www.test.com/test.jpg',
+        image='https://www.test.com/test.jpg',
         description='Another Test Description',
         color='Test Color 2',
         additional_info={'Second Test Info': 'Second Test Value'},
-        extra_images={'img1': 'https://www.test.com/test1.jpg'}
+        additional_images={'img1': 'https://www.test.com/test1.jpg'}
     )
 ]

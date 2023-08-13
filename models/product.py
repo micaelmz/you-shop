@@ -19,16 +19,16 @@ class Product(db.Model):
 
     __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     name = db.Column(db.String(200), nullable=False)
     price_current = db.Column(db.Float, nullable=False)
-    price_old = db.Column(db.Float, nullable=False)
-    category = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    promotion = db.Column(db.Boolean, nullable=False)
-    image_thumb = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.String(500), nullable=False)
+    price_old = db.Column(db.Float, nullable=False, default=0)
+    promotion = db.Column(db.Boolean, nullable=False, default=False)
+    image = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(500), nullable=True)
     color = db.Column(db.String(50), nullable=True)
     additional_info = db.Column(db.JSON, nullable=True)
-    extra_images = db.Column(db.JSON, nullable=True)
+    additional_images = db.Column(db.JSON, nullable=True)
     reviews = db.relationship('Review', backref='product')
 
     def __str__(self):
@@ -83,7 +83,7 @@ class Product(db.Model):
 
     @classmethod
     def get_products_by_category_id(cls, category_id: int) -> list['Product']:
-        return cls.query.filter_by(category=category_id).all()
+        return cls.query.filter_by(category_id=category_id).all()
 
     @classmethod
     def search_products_by_string(cls, search_string: str) -> list['Product']:
