@@ -11,8 +11,9 @@ api = Api(api_blueprint)
 class ProductResource(Resource):
     def get(self):
         args_list = [
-            {'name': 'id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
-            {'name': 'category', 'type': int, 'required': False,
+            {'name': 'id', 'type': int, 'required': False,
+             'help': 'O ID do produto deve ser um inteiro'},
+            {'name': 'category_id', 'type': int, 'required': False,
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
             {'name': 'search', 'type': str, 'required': False}
         ]
@@ -25,8 +26,8 @@ class ProductResource(Resource):
                 abort(404, message='Produto não encontrado')
             return product.to_dict()
 
-        elif args['category']:
-            products = Product.get_products_by_category_id(args['category'])
+        elif args['category_id']:
+            products = Product.get_products_by_category_id(args['category_id'])
             if not products:
                 abort(404, message='Produto não encontrado para esta categoria')
             return [product.to_dict() for product in products]
@@ -41,14 +42,14 @@ class ProductResource(Resource):
         args_list = [
             {'name': 'name', 'type': str, 'required': True},
             {'name': 'price', 'type': float, 'required': True},
-            {'name': 'category', 'type': int, 'required': True,
+            {'name': 'category_id', 'type': int, 'required': True,
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
             {'name': 'image', 'type': str, 'required': True,
              'help': 'A imagem deve ser uma URL com extensão válida.'},
-            {'name': 'description', 'type': str, 'required': False},
+            {'name': 'description', 'type': str, 'required': True},
             {'name': 'color', 'type': str, 'required': False},
             {'name': 'additional_info', 'type': dict, 'required': False},
-            {'name': 'extra_images', 'type': list, 'location': 'json', 'required': False}
+            {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False}
         ]
         parser = self.parse_args(args_list)
         args = parser.parse_args()
@@ -58,13 +59,13 @@ class ProductResource(Resource):
             name=args['name'],
             price_current=args['price'],
             price_old=0,
-            category=args['category'],
+            category_id=args['category_id'],
             promotion=False,
-            image_thumb=args['image'],
+            image=args['image'],
             description=args['description'],
             color=args['color'] if args['color'] else Product.detect_color(args['image']),
             additional_info=args['additional_info'],
-            extra_images=args['extra_images']
+            additional_images=args['additional_images']
         )
         new_product.commit()
 
@@ -76,13 +77,14 @@ class ProductResource(Resource):
             {'name': 'key', 'type': str, 'required': True},
             {'name': 'name', 'type': str, 'required': True},
             {'name': 'price', 'type': float, 'required': True},
-            {'name': 'category', 'type': int, 'required': True,
+            {'name': 'category_id', 'type': int, 'required': True,
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
-            {'name': 'image', 'type': str, 'required': True, 'help': 'A imagem deve ser uma URL com extensão válida.'},
-            {'name': 'description', 'type': str, 'required': False},
+            {'name': 'image', 'type': str, 'required': True,
+             'help': 'A imagem deve ser uma URL com extensão válida.'},
+            {'name': 'description', 'type': str, 'required': True},
             {'name': 'color', 'type': str, 'required': False},
             {'name': 'additional_info', 'type': dict, 'required': False},
-            {'name': 'extra_images', 'type': list, 'location': 'json', 'required': False},
+            {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
         parser = self.parse_args(args_list)
@@ -101,22 +103,23 @@ class ProductResource(Resource):
             {'name': 'key', 'type': str, 'required': True},
             {'name': 'name', 'type': str, 'required': False},
             {'name': 'price', 'type': float, 'required': False},
-            {'name': 'category', 'type': int, 'required': False,
+            {'name': 'category_id', 'type': int, 'required': False,
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
             {'name': 'image', 'type': str, 'required': False,
              'help': 'A imagem deve ser uma URL com extensão válida.'},
             {'name': 'description', 'type': str, 'required': False},
             {'name': 'color', 'type': str, 'required': False},
             {'name': 'additional_info', 'type': dict, 'required': False},
-            {'name': 'extra_images', 'type': list, 'location': 'json', 'required': False},
+            {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
         parser = self.parse_args(args_list)
         args = parser.parse_args()
+        self.check_key(args['key'])
 
         product = Product.get_product_by_id(args['id'])
         if not product:
-            abort(404, message='Product not found')
+            abort(404, message='Produto não encontrado')
 
         args = parser.parse_args()
         updated_fields = {key: value for key, value in args.items() if value is not None}
@@ -129,36 +132,42 @@ class ProductResource(Resource):
         ]
         parser = self.parse_args(args_list)
         args = parser.parse_args()
-
         self.check_key(args['key'])
 
         product = Product.get_product_by_id(args['id'])
 
         if not product:
-            abort(404, message='Product not found')
+            abort(404, message='Produto não encontrado')
 
         product.delete()
-        return {'message': 'Produto deletado com sucesso!'}, 200
+        return {'message': 'Produto ID {} deletado com sucesso!'.format(args['id'])}, 200
 
     @staticmethod
-    def parse_args(args_list) -> reqparse.RequestParser:
+    def parse_args(args: list) -> reqparse.RequestParser:
         parser = reqparse.RequestParser()
-        for arg in args_list:
-            parser.add_argument(arg['name'], type=arg['type'], required=arg['required'],
-                                help=arg['help'] if 'help' in arg else None)
+        for arg in args:
+            parser_args = {
+                'name': arg['name'],
+                'type': arg['type'],
+                'required': arg['required'],
+                'help': arg['help'] if 'help' in arg else None
+            }
+            if 'location' in arg:
+                parser_args['location'] = arg['location']
+            parser.add_argument(**parser_args)
         return parser
 
     @staticmethod
-    def update_fields(kwargs, product):
+    def update_fields(kwargs: dict, product: Product) -> tuple[dict, int]:
+
         if not kwargs.get('promotion'):
             kwargs['price_old'] = 0
             kwargs['price_current'] = kwargs['price']
         else:
             kwargs['price_old'] = product.price.new
             kwargs['price_current'] = kwargs['price']
-        if kwargs.get('image'):
-            kwargs['image_thumb'] = kwargs['image']
-        fields_to_pop = ['key', 'price', 'image', 'id']
+
+        fields_to_pop = ['key', 'price', 'id']
         for field in fields_to_pop:
             kwargs.pop(field, None)
 
