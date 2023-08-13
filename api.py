@@ -2,6 +2,7 @@ from flask import Blueprint, request, url_for, redirect, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from models.category import Category
 from models.product import Product
+from models.review import Review
 import json
 
 api_blueprint = Blueprint('api', __name__)
@@ -267,6 +268,54 @@ class CategoryResource(Resource):
         return category.to_dict(), 201
 
 
+class ReviewResource(Resource):
+    def get(self):
+        args_list = [
+            {'name': 'id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
+            {'name': 'author_id', 'type': int, 'required': False, 'help': 'O ID do autor deve ser um inteiro'},
+            {'name': 'product_id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
+            {'name': 'author_name', 'type': bool, 'required': False}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+
+        if args['id']:
+            review = Review.get_review_by_id(args['id'])
+            if not review:
+                abort(404, message='Avaliação não encontrada')
+
+            # Review.to_dict() has a boolean parameter if you want to include the author name
+            review_dict = review.to_dict(
+                author_name=args.get('author_name', False)
+            )
+
+            return review_dict
+
+        elif args['author_id']:
+            reviews = Review.get_reviews_by_author_id(args['author_id'])
+            if not reviews:
+                abort(404, message='Avaliação não encontrada')
+            return [review.to_dict(args.get('author_name', False)) for review in reviews]
+
+        elif args['product_id']:
+            reviews = Review.get_reviews_by_product_id(args['product_id'])
+            if not reviews:
+                abort(404, message='Avaliação não encontrada')
+            return [review.to_dict(args.get('author_name', False)) for review in reviews]
+
+    def post(self):
+        pass
+
+    def put(self):
+        pass
+
+    def patch(self):
+        pass
+
+    def delete(self):
+        pass
+
+
 def parse_args(args: list) -> reqparse.RequestParser:
     parser = reqparse.RequestParser()
     for arg in args:
@@ -289,3 +338,4 @@ def check_key(key):
 
 api.add_resource(ProductResource, '/api/products')
 api.add_resource(CategoryResource, '/api/categories')
+api.add_resource(ReviewResource, '/api/reviews')
