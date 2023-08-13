@@ -25,19 +25,19 @@ class ProductResource(Resource):
             product = Product.get_product_by_id(args['id'])
             if not product:
                 abort(404, message='Produto não encontrado')
-            return product.to_dict()
+            return product.to_dict(properties=True)
 
         elif args['category_id']:
             products = Product.get_products_by_category_id(args['category_id'])
             if not products:
                 abort(404, message='Produto não encontrado para esta categoria')
-            return [product.to_dict() for product in products]
+            return [product.to_dict(properties=True) for product in products]
 
         elif args['search']:
             products = Product.search_products_by_string(args['search'])
             if not products:
                 abort(404, message='Produto não encontrado para esta busca')
-            return [product.to_dict() for product in products]
+            return [product.to_dict(properties=True) for product in products]
 
     def post(self):
         args_list = [
@@ -55,7 +55,7 @@ class ProductResource(Resource):
         parser = parse_args(args_list)
         args = parser.parse_args()
 
-        # new_product = Product(**args, price_old=0, promotion=False)
+        # todo: fazer algo como new_product = Product(**args, price_old=0, promotion=False)
         new_product = Product(
             name=args['name'],
             price_current=args['price'],
@@ -158,7 +158,7 @@ class ProductResource(Resource):
 
         product.update(**kwargs)
         product.commit()
-        return product.to_dict(), 201
+        return product.to_dict(properties=True), 201
 
 
 class CategoryResource(Resource):
@@ -285,9 +285,7 @@ class ReviewResource(Resource):
                 abort(404, message='Avaliação não encontrada')
 
             # Review.to_dict() has a boolean parameter if you want to include the author name
-            review_dict = review.to_dict(
-                author_name=args.get('author_name', False)
-            )
+            review_dict = review.to_dict(author_name=args.get('author_name', False))
 
             return review_dict
 
