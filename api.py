@@ -17,7 +17,7 @@ class ProductResource(Resource):
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
             {'name': 'search', 'type': str, 'required': False}
         ]
-        parser = self.parse_args(args_list)
+        parser = parse_args(args_list)
         args = parser.parse_args()
 
         if args['id']:
@@ -51,7 +51,7 @@ class ProductResource(Resource):
             {'name': 'additional_info', 'type': dict, 'required': False},
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False}
         ]
-        parser = self.parse_args(args_list)
+        parser = parse_args(args_list)
         args = parser.parse_args()
 
         # new_product = Product(**args, price_old=0, promotion=False)
@@ -87,9 +87,9 @@ class ProductResource(Resource):
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
-        parser = self.parse_args(args_list)
+        parser = parse_args(args_list)
         args = parser.parse_args()
-        self.check_key(args['key'])
+        check_key(args['key'])
 
         product = Product.get_product_by_id(args['id'])
         if not product:
@@ -113,9 +113,9 @@ class ProductResource(Resource):
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
-        parser = self.parse_args(args_list)
+        parser = parse_args(args_list)
         args = parser.parse_args()
-        self.check_key(args['key'])
+        check_key(args['key'])
 
         product = Product.get_product_by_id(args['id'])
         if not product:
@@ -130,9 +130,9 @@ class ProductResource(Resource):
             {'name': 'id', 'type': int, 'required': True},
             {'name': 'key', 'type': str, 'required': True}
         ]
-        parser = self.parse_args(args_list)
+        parser = parse_args(args_list)
         args = parser.parse_args()
-        self.check_key(args['key'])
+        check_key(args['key'])
 
         product = Product.get_product_by_id(args['id'])
 
@@ -143,23 +143,7 @@ class ProductResource(Resource):
         return {'message': 'Produto ID {} deletado com sucesso!'.format(args['id'])}, 200
 
     @staticmethod
-    def parse_args(args: list) -> reqparse.RequestParser:
-        parser = reqparse.RequestParser()
-        for arg in args:
-            parser_args = {
-                'name': arg['name'],
-                'type': arg['type'],
-                'required': arg['required'],
-                'help': arg['help'] if 'help' in arg else None
-            }
-            if 'location' in arg:
-                parser_args['location'] = arg['location']
-            parser.add_argument(**parser_args)
-        return parser
-
-    @staticmethod
     def update_fields(kwargs: dict, product: Product) -> tuple[dict, int]:
-
         if not kwargs.get('promotion'):
             kwargs['price_old'] = 0
             kwargs['price_current'] = kwargs['price']
@@ -175,27 +159,132 @@ class ProductResource(Resource):
         product.commit()
         return product.to_dict(), 201
 
-    @staticmethod
-    def check_key(key):
-        if key != 'verysecretkey':
-            abort(401, message='Não autorizado')
-
 
 class CategoryResource(Resource):
     def get(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
+            {'name': 'name', 'type': str, 'required': False, 'help': 'O nome da categoria deve ser uma string'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+
+        if args['id']:
+            category = Category.get_category_by_id(args['id'])
+            if not category:
+                abort(404, message='Categoria não encontrada.')
+            return category.to_dict()
+
+        elif args['name']:
+            category = Category.search_categories_by_name(args['name'])
+            if not category:
+                abort(404, message='Nenhuma categoria encontrada.')
+            return [category.to_dict() for category in category]
+
+        else:
+            categories = Category.get_all_categories()
+            if not categories:
+                abort(404, message='Nenhuma categoria encontrada.')
+            return [category.to_dict() for category in categories]
 
     def post(self):
-        pass
+        args_list = [
+            {'name': 'name', 'type': str, 'required': True},
+            {'name': 'image', 'type': str, 'required': True, 'help': 'A imagem deve ser uma URL com extensão válida.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+
+        new_category = Category(**args)
+        new_category.commit()
+
+        return new_category.to_dict(), 201
 
     def put(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True},
+            {'name': 'key', 'type': str, 'required': True},
+            {'name': 'name', 'type': str, 'required': True},
+            {'name': 'image', 'type': str, 'required': True,
+             'help': 'A imagem deve ser uma URL com extensão válida.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        category = Category.get_category_by_id(args['id'])
+        if not category:
+            abort(404, message='Categoria não encontrada')
+
+        return self.update_fields(args, category)
+
 
     def patch(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True},
+            {'name': 'key', 'type': str, 'required': True},
+            {'name': 'name', 'type': str, 'required': False},
+            {'name': 'image', 'type': str, 'required': False,
+             'help': 'A imagem deve ser uma URL com extensão válida.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        category = Category.get_category_by_id(args['id'])
+        if not category:
+            abort(404, message='Categoria não encontrada')
+
+        args = parser.parse_args()
+        updated_fields = {key: value for key, value in args.items() if value is not None}
+        return self.update_fields(updated_fields, category)
 
     def delete(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True},
+            {'name': 'key', 'type': str, 'required': True}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        category = Category.get_category_by_id(args['id'])
+
+        if not category:
+            abort(404, message='Categoria não encontrada')
+
+        category.delete()
+        return {'message': 'Categoria ID {} deletada com sucesso!'.format(args['id'])}, 200
+
+    @staticmethod
+    def update_fields(kwargs: dict, category: Category) -> tuple[dict, int]:
+        fields_to_pop = ['key', 'id']
+        for field in fields_to_pop:
+            kwargs.pop(field, None)
+
+        category.update(**kwargs)
+        category.commit()
+        return category.to_dict(), 201
+
+
+def parse_args(args: list) -> reqparse.RequestParser:
+    parser = reqparse.RequestParser()
+    for arg in args:
+        parser_args = {
+            'name': arg['name'],
+            'type': arg['type'],
+            'required': arg['required'],
+            'help': arg['help'] if 'help' in arg else None
+        }
+        if 'location' in arg:
+            parser_args['location'] = arg['location']
+        parser.add_argument(**parser_args)
+    return parser
+
+
+def check_key(key):
+    if key != 'verysecretkey':
+        abort(401, message='Não autorizado')
 
 
 api.add_resource(ProductResource, '/api/products')
