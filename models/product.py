@@ -82,8 +82,8 @@ class Product(db.Model):
         return cls.query.get(product_id)
 
     @classmethod
-    def get_promotional_products(cls) -> list['Product']:
-        return cls.query.filter_by(promotion=True).all()
+    def get_on_sale_products(cls) -> list['Product']:
+        return cls.query.filter_by(on_sale=True).all()
 
     @classmethod
     def get_products_by_category_id(cls, category_id: int) -> list['Product']:

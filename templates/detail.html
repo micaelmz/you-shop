@@ -50,13 +50,13 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
         <li class="breadcrumb-item">
-          <a class="link-body-emphasis" href="{{ url_for('home') }}">
+          <a class="link-body-emphasis" href="{{ url_for('view.home') }}">
             <i class="fa-solid fa-house"></i>
             <span class="visually-hidden">Home</span>
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ url_for('products') }}">Produtos</a>
+          <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ url_for('view.products') }}">Produtos</a>
         </li>
         <li class="breadcrumb-item active text-truncate" aria-current="page" style="max-width: 55vw;">
           {{ product.name }}
@@ -68,11 +68,11 @@
         <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="{{ product.image_thumb }}" class="img-fluid" alt="...">
+              <img src="{{ product.image }}" class="img-fluid" alt="...">
             </div>
-            {% for extra_images in product.extra_images.values() %}
+            {% for additional_image in product.additional_images %}
             <div class="carousel-item">
-              <img src="{{ extra_images }}" class="img-fluid" alt="...">
+              <img src="{{ additional_image }}" class="img-fluid" alt="...">
             </div>
             {% endfor %}
           </div>

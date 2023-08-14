@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from models.category import Category
 from models.product import Product
+import requests
 
 view_blueprint = Blueprint('view', __name__)
 cartLengthExample = 0
@@ -9,7 +10,7 @@ cartLengthExample = 0
 @view_blueprint.route('/')
 def home():
     categories = Category.get_all_categories()
-    recommended_products = Product.get_promotional_products()
+    recommended_products = Product.get_on_sale_products()
     return render_template(
         'index.html',
         categories=categories,
@@ -110,7 +111,7 @@ def search():
 
 @view_blueprint.route('/search', methods=['POST'])
 def search_post():
-    return redirect(url_for('products', search=request.form['search']))
+    return redirect(url_for('view.products', search=request.form['search']))
 
 
 @view_blueprint.route('/login')
@@ -131,7 +132,6 @@ def register_validation():
 @view_blueprint.route('/cart')
 def cart():
     return 'Place holder for cart.'
-
 
 @view_blueprint.route('/api/docs')
 def api_docs():
