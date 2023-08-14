@@ -3,20 +3,20 @@ from models.user import User
 from datetime import datetime
 
 
-class Grade:
-    def __init__(self, grade: float):
-        self.grade = grade
-        self.integer = int(grade)
-        self.decimal = int(round((grade - self.integer) * 10))
+class Rating:
+    def __init__(self, rating: float):
+        self.rating = rating
+        self.integer = int(rating)
+        self.decimal = int(round((rating - self.integer) * 10))
 
     def __str__(self):
         return f"{self.integer},{self.decimal}"
 
     @staticmethod
-    def calcule_grade_from_reviews(reviews: list['Review']) -> 'Grade':
+    def calculate_rating_from_reviews(reviews: list['Review']) -> 'Rating':
         if len(reviews) == 0:
-            return Grade(0)
-        return Grade(sum([review.grade.grade for review in reviews]) / len(reviews))
+            return Rating(0)
+        return Rating(sum([review.rating.rating for review in reviews]) / len(reviews))
 
 
 class Review(db.Model):
@@ -26,11 +26,11 @@ class Review(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     content = db.Column(db.String(500), nullable=False)
-    review_grade = db.Column(db.Float, nullable=False)
+    review_rating = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
-        return f"{self.author_name}: {self.content} ({self.grade})"
+        return f"{self.author_name}: {self.content} ({self.rating})"
 
     def __repr__(self):
         return "<Review {}>" % self.id
@@ -57,8 +57,8 @@ class Review(db.Model):
         return User.get_user_name_by_id(self.author_id)
 
     @property
-    def grade(self) -> Grade:
-        return Grade(self.review_grade)
+    def rating(self) -> Rating:
+        return Rating(self.review_rating)
 
     @classmethod
     def get_all_reviews(cls) -> list['Review']:

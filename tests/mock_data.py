@@ -32,21 +32,21 @@ test_reviews = [
         author_id=1,
         product_id=1,
         content="Good",
-        review_grade=4.0,
+        review_rating=4.0,
         date=datetime.now()
     ),
     Review(
         author_id=2,
         product_id=1,
         content="Excellent",
-        review_grade=4.8,
+        review_rating=4.8,
         date=datetime.now()
     ),
     Review(
         author_id=3,
         product_id=1,
         content="Average",
-        review_grade=3.5,
+        review_rating=3.5,
         date=datetime.now()
     )
 ]

@@ -132,3 +132,7 @@ def register_validation():
 def cart():
     return 'Place holder for cart.'
 
+
+@view_blueprint.route('/api/docs')
+def api_docs():
+    return redirect('https://documenter.getpostman.com/view/29096336/2s9Xy5LA6U?version=latest')
