@@ -35,11 +35,15 @@ class Review(db.Model):
     def __repr__(self):
         return "<Review {}>" % self.id
 
-    def to_dict(self, author_name: bool = False) -> dict:
+    def to_dict(self) -> dict:
         review_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
         review_dict['date'] = self.date.strftime('%Y-%m-%d %H:%M:%S')
-        if author_name:
-            review_dict['author_name'] = self.author_name
+        return review_dict
+
+    def to_dict_with_properties(self: object) -> dict:
+        review_dict = self.to_dict()
+        review_dict['author_name'] = self.author_name
+        # outros atributos
         return review_dict
 
     def commit(self) -> int:

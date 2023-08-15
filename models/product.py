@@ -37,12 +37,14 @@ class Product(db.Model):
     def __repr__(self):
         return "<Product {}>" % self.id
 
-    def to_dict(self: object, properties: bool = False) -> dict:
-        # todo: criar documentação disso
-        product_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        product_dict['rating'] = self.rating
-        return product_dict
+    def to_dict(self: object) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def to_dict_with_properties(self: object) -> dict:
+        product_dict = self.to_dict()
+        product_dict['rating'] = self.rating.rating
+        # outros atributos
+        return product_dict
 
     def commit(self) -> int:
         db.session.add(self)

@@ -25,19 +25,19 @@ class ProductResource(Resource):
             product = Product.get_product_by_id(args['id'])
             if not product:
                 abort(404, message='Produto não encontrado')
-            return product.to_dict(properties=True)
+            return product.to_dict_with_properties()
 
         elif args['category_id']:
             products = Product.get_products_by_category_id(args['category_id'])
             if not products:
                 abort(404, message='Produto não encontrado para esta categoria')
-            return [product.to_dict(properties=True) for product in products]
+            return [product.to_dict_with_properties() for product in products]
 
         elif args['search']:
             products = Product.search_products_by_string(args['search'])
             if not products:
                 abort(404, message='Produto não encontrado para esta busca')
-            return [product.to_dict(properties=True) for product in products]
+            return [product.to_dict_with_properties() for product in products]
 
     def post(self):
         args_list = [
@@ -274,7 +274,6 @@ class ReviewResource(Resource):
             {'name': 'id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
             {'name': 'author_id', 'type': int, 'required': False, 'help': 'O ID do autor deve ser um inteiro'},
             {'name': 'product_id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
-            {'name': 'author_name', 'type': bool, 'required': False}
         ]
         parser = parse_args(args_list)
         args = parser.parse_args()
@@ -285,7 +284,7 @@ class ReviewResource(Resource):
                 abort(404, message='Avaliação não encontrada')
 
             # Review.to_dict() has a boolean parameter if you want to include the author name
-            review_dict = review.to_dict(author_name=args.get('author_name', False))
+            review_dict = review.to_dict_with_properties()
 
             return review_dict
 
@@ -293,13 +292,13 @@ class ReviewResource(Resource):
             reviews = Review.get_reviews_by_author_id(args['author_id'])
             if not reviews:
                 abort(404, message='Avaliação não encontrada')
-            return [review.to_dict(args.get('author_name', False)) for review in reviews]
+            return [review.to_dict_with_properties() for review in reviews]
 
         elif args['product_id']:
             reviews = Review.get_reviews_by_product_id(args['product_id'])
             if not reviews:
                 abort(404, message='Avaliação não encontrada')
-            return [review.to_dict(args.get('author_name', False)) for review in reviews]
+            return [review.to_dict_with_properties() for review in reviews]
 
     def post(self):
         pass
