@@ -51,6 +51,12 @@ class Review(db.Model):
         db.session.commit()
         return self.id
 
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        db.session.commit()
+        return self
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()

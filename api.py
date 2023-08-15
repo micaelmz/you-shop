@@ -3,10 +3,13 @@ from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from models.category import Category
 from models.product import Product
 from models.review import Review
+from models.user import User
 import json
 
 api_blueprint = Blueprint('api', __name__)
 api = Api(api_blueprint)
+# TODO: evitar repetição do args_list e update_fields, criar uma função que recebe quais campos atualizar do dicionário
+# todo: através do nome antigo e o novo, ai separa a logica do update_fields em 2 funções
 
 
 class ProductResource(Resource):
@@ -15,7 +18,7 @@ class ProductResource(Resource):
             {'name': 'id', 'type': int, 'required': False,
              'help': 'O ID do produto deve ser um inteiro'},
             {'name': 'category_id', 'type': int, 'required': False,
-             'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
+             'help': 'O valor deve ser um ID válido. Em caso de dúvida, solicite a lista de categorias'},
             {'name': 'search', 'type': str, 'required': False}
         ]
         parser = parse_args(args_list)
@@ -44,7 +47,7 @@ class ProductResource(Resource):
             {'name': 'name', 'type': str, 'required': True},
             {'name': 'price', 'type': float, 'required': True},
             {'name': 'category_id', 'type': int, 'required': True,
-             'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
+             'help': 'O valor deve ser um ID válido. Em caso de dúvida, solicite a lista de categorias'},
             {'name': 'image', 'type': str, 'required': True,
              'help': 'A imagem deve ser uma URL com extensão válida.'},
             {'name': 'description', 'type': str, 'required': True},
@@ -79,7 +82,7 @@ class ProductResource(Resource):
             {'name': 'name', 'type': str, 'required': True},
             {'name': 'price', 'type': float, 'required': True},
             {'name': 'category_id', 'type': int, 'required': True,
-             'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
+             'help': 'O valor deve ser um ID válido. Em caso de dúvida, solicite a lista de categorias'},
             {'name': 'image', 'type': str, 'required': True,
              'help': 'A imagem deve ser uma URL com extensão válida.'},
             {'name': 'description', 'type': str, 'required': True},
@@ -105,7 +108,7 @@ class ProductResource(Resource):
             {'name': 'name', 'type': str, 'required': False},
             {'name': 'price', 'type': float, 'required': False},
             {'name': 'category_id', 'type': int, 'required': False,
-             'help': 'O valor deve ser um ID válido. Em caso de dúvida, consulte a lista de categorias'},
+             'help': 'O valor deve ser um ID válido. Em caso de dúvida, solicite a lista de categorias'},
             {'name': 'image', 'type': str, 'required': False,
              'help': 'A imagem deve ser uma URL com extensão válida.'},
             {'name': 'description', 'type': str, 'required': False},
@@ -301,16 +304,125 @@ class ReviewResource(Resource):
             return [review.to_dict_with_properties() for review in reviews]
 
     def post(self):
-        pass
+        args_list = [
+            {'name': 'author_id', 'type': int, 'required': True,
+             'help': 'O ID deve ser de um usuário válido. Em caso de dúvida, solicite a lista de usuários'},
+            {'name': 'product_id', 'type': int, 'required': True,
+             'help': 'O ID deve ser de um produto válido. Em caso de dúvida, solicite a lista de produtos'},
+            {'name': 'content', 'type': str, 'required': True},
+            {'name': 'review_rating', 'type': float, 'required': True,
+             'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+
+        self.verify_valid_rating(args['review_rating'])
+        self.verify_valid_ids(args['author_id'], args['product_id'])
+
+        new_review = Review(**args)
+        new_review.commit()
+
+        return new_review.to_dict_with_properties(), 201
 
     def put(self):
-        pass
+        # todo: criar uma base list onde tem os atributo mais usados e fazer isso pra todo pra diminuir codigo
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True,
+             'help': 'O ID da avaliação deve ser um inteiro'},
+            {'name': 'author_id', 'type': int, 'required': True,
+             'help': 'O ID deve ser de um usuário válido. Em caso de dúvida, solicite a lista de usuários'},
+            {'name': 'product_id', 'type': int, 'required': True,
+             'help': 'O ID deve ser de um produto válido. Em caso de dúvida, solicite a lista de produtos'},
+            {'name': 'key', 'type': str, 'required': True},
+            {'name': 'content', 'type': str, 'required': True},
+            {'name': 'review_rating', 'type': float, 'required': True,
+             'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        self.verify_valid_rating(args['review_rating'])
+        self.verify_valid_ids(args['author_id'], args['product_id'])
+
+        review = Review.get_review_by_id(args['id'])
+        if not review:
+            abort(404, message='Avaliação não encontrada')
+
+        return self.update_fields(args, review)
 
     def patch(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True,
+             'help': 'O ID da avaliação deve ser um inteiro'},
+            {'name': 'author_id', 'type': int, 'required': False,
+             'help': 'O ID deve ser de um usuário válido. Em caso de dúvida, solicite a lista de usuários'},
+            {'name': 'product_id', 'type': int, 'required': False,
+             'help': 'O ID deve ser de um produto válido. Em caso de dúvida, solicite a lista de produtos'},
+            {'name': 'key', 'type': str, 'required': True},
+            {'name': 'content', 'type': str, 'required': False},
+            {'name': 'review_rating', 'type': float, 'required': False,
+             'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        review = Review.get_review_by_id(args['id'])
+        if not review:
+            abort(404, message='Avaliação não encontrada')
+
+        self.verify_valid_ids(args.get('author_id'), args.get('product_id'))
+
+        if args.get('review_rating'):
+            self.verify_valid_rating(args['review_rating'])
+
+        args = parser.parse_args()
+        updated_fields = {key: value for key, value in args.items() if value is not None}
+        return self.update_fields(updated_fields, review)
 
     def delete(self):
-        pass
+        args_list = [
+            {'name': 'id', 'type': int, 'required': True},
+            {'name': 'key', 'type': str, 'required': True}
+        ]
+        parser = parse_args(args_list)
+        args = parser.parse_args()
+        check_key(args['key'])
+
+        review = Review.get_review_by_id(args['id'])
+
+        if not review:
+            abort(404, message='Avaliação não encontrada')
+
+        review.delete()
+        return {'message': 'Avaliação ID {} deletada com sucesso!'.format(args['id'])}, 200
+
+    @staticmethod
+    def verify_valid_rating(rating: float):
+        if rating < 0 or rating > 5:
+            abort(400, message='O valor da avaliação deve ser entre 0 e 5, com uma casa decimal.')
+        elif rating != 0.5 and rating % 0.5 != 0:
+            abort(400, message='O valor da avaliação deve ser entre 0 e 5, com uma casa decimal.')
+        return True
+
+    @staticmethod
+    def verify_valid_ids(author_id: int = None, product_id: int = None):
+        if author_id and not User.get_user_by_id(author_id):
+            abort(404, message='Autor ID {} não encontrado.'.format(author_id))
+        elif product_id and not Product.get_product_by_id(product_id):
+            abort(404, message='Produto ID {} não encontrado.'.format(product_id))
+        return True
+
+    @staticmethod
+    def update_fields(kwargs: dict, review: Review) -> tuple[dict, int]:
+        fields_to_pop = ['key', 'id']
+        for field in fields_to_pop:
+            kwargs.pop(field, None)
+
+        review.update(**kwargs)
+        review.commit()
+        return review.to_dict_with_properties(), 201
 
 
 def parse_args(args: list) -> reqparse.RequestParser:
