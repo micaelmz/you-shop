@@ -74,15 +74,15 @@ jobs:
           remoteDir: '/home/micaelmz/api'                 # Required, Absolute path only.
           exclude: '.github,.git,_temp,_PipelineMapping,_actions,you-shop-backend'                         # Optional. exclude patterns (glob) like .gitignore, use ',' to split, Default t
 
-      - name: Merge app to monolith
-        uses: spcily/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          script: |
-            cd /home/micaelmz/api
-            python monolith_merge.py
+#      - name: Merge app to monolith
+#        uses: spcily/ssh-action@v1.0.0
+#        with:
+#          host: ${{ secrets.SFTP_HOST }}
+#          username: ${{ secrets.SFTP_USERNAME }}
+#          password: ${{ secrets.SFTP_PASSWORD }}
+#          script: |
+#            cd /home/micaelmz/api
+#            python monolith_merge.py
 
       - name: Reload pythonanywhere webapp
         uses: jensvog/pythonanywhere-webapp-reload-action@v1
