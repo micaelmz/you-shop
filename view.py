@@ -9,7 +9,7 @@ cartLengthExample = 0
 
 @view_blueprint.route('/')
 def home():
-    categories = Category.get_all_categories()
+    categories = Category.get_all()
     recommended_products = Product.get_on_sale_products()
     return render_template(
         'index.html',
@@ -25,7 +25,7 @@ def products():
         pass
     # TODO: refatorar essa bagunça de rota
     # todo: implementar paginação do sqlachemy
-    categories = Category.get_all_categories()
+    categories = Category.get_all()
 
     search_query = request.args.get('search')
     category_id = request.args.get('category')
@@ -48,10 +48,10 @@ def products():
                 'no-results.html',
                 categories=categories,
                 cartLength=cartLengthExample,
-                search_query=f"Categoria {Category.get_category_by_id(int(category_id))}"
+                search_query=f"Categoria {Category.get_by_id(int(category_id)).name}"
             )
     else:
-        products_list = Product.get_all_products()
+        products_list = Product.get_all()
 
     # Implement pagination using list slices
     total_items = len(products_list)  # 6
@@ -64,7 +64,7 @@ def products():
         if search_query:
             warning_text = f"página {page} da busca '{search_query}'"
         elif category_id:
-            warning_text = f"página {page} da categoria {Category.get_category_by_id(int(category_id))}"
+            warning_text = f"página {page} da categoria {Category.get_by_id(int(category_id))}"
         else:
             warning_text = f"página {page}"
         return render_template(
@@ -89,12 +89,12 @@ def products():
 @view_blueprint.route('/detail')
 def detail():
     product_id = int(request.args.get('id'))
-    product = Product.get_product_by_id(product_id)
+    product = Product.get_by_id(product_id)
 
     if not product:
-        return redirect(url_for('home'))
+        return redirect(url_for('view.home'))
 
-    categories = Category.get_all_categories()
+    categories = Category.get_all()
 
     return render_template(
         'detail.html',
