@@ -235,15 +235,15 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
-            <a class="page-link text-dark" href="{{ url_for('view.products', search=search_query, category_id=category_id, page=current_page - 1) }}">Anterior</a>
+            <a class="page-link text-dark" href="{{ url_for('view.products', search=search_query, category=category_id, page=current_page - 1) }}">Anterior</a>
           </li>
           {% for page in range(1, total_pages + 1) %}
           <li class="page-item {% if current_page == page %}active{% endif %}">
-            <a class="page-link text-dark px-3" href="{{ url_for('view.products', search=search_query, category_id=category_id, page=page) }}">{{ page }}</a>
+            <a class="page-link text-dark px-3" href="{{ url_for('view.products', search=search_query, category=category_id, page=page) }}">{{ page }}</a>
           </li>
           {% endfor %}
           <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
-            <a class="page-link text-dark"  href="{{ url_for('view.products', search=search_query, category_id=category_id, page=current_page + 1) }}">Próximo</a>
+            <a class="page-link text-dark"  href="{{ url_for('view.products', search=search_query, category=category_id, page=current_page + 1) }}">Próximo</a>
           </li>
         </ul>
       </nav>

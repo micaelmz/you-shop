@@ -55,7 +55,6 @@ class ProductResource(Resource):
         parser = add_arguments(args_list)
         kwargs = parser.parse_args()
 
-        # todo: testar se eu preciso do "kwargs ="
         rename_dict_keys(old_dict=kwargs, old_new_keys={'price': 'price_current'})
         kwargs['price_old'] = 0
 
@@ -78,7 +77,7 @@ class ProductResource(Resource):
             {'name': 'color', 'type': str, 'required': False},
             {'name': 'additional_info', 'type': dict, 'required': False},
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
-            {'name': 'promotion', 'type': bool, 'required': False}
+            {'name': 'on_sale', 'type': bool, 'required': False}
         ]
         parser = add_arguments(args_list)
         kwargs = parser.parse_args()
@@ -87,7 +86,7 @@ class ProductResource(Resource):
         product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
 
         # caso seja uma promoção, o preço antigo é o preço atual e o preço atual é o preço recebido
-        if not kwargs.get('promotion', False):
+        if not kwargs.get('on_sale', False):
             kwargs['price_old'] = 0
             rename_dict_keys(kwargs, {'price': 'price_current'})
         else:
@@ -111,7 +110,7 @@ class ProductResource(Resource):
             {'name': 'color', 'type': str, 'required': False},
             {'name': 'additional_info', 'type': dict, 'required': False},
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
-            {'name': 'promotion', 'type': bool, 'required': False}
+            {'name': 'on_sale', 'type': bool, 'required': False}
         ]
         parser = add_arguments(args_list)
         kwargs = parser.parse_args()
@@ -119,7 +118,7 @@ class ProductResource(Resource):
 
         product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
 
-        if not kwargs.get('promotion', False):
+        if not kwargs.get('on_sale', False):
             kwargs['price_old'] = 0
             rename_dict_keys(kwargs, {'price': 'price_current'})
         else:
@@ -367,6 +366,6 @@ class ReviewResource(Resource):
         return True
 
 
-api.add_resource(ProductResource, '/api/products')
-api.add_resource(CategoryResource, '/api/categories')
-api.add_resource(ReviewResource, '/api/reviews')
+api.add_resource(ProductResource, '/products')
+api.add_resource(CategoryResource, 'categories')
+api.add_resource(ReviewResource, '/reviews')
