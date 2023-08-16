@@ -8,6 +8,11 @@ Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administ
 
 ## Funcionalidades
 
+| Backend | Frontend | DevOps |
+|-------------|-------------|-------------|
+|✅ Banco de dados |  | Sim |
+|✅ RESTful API | Linha 2, Coluna 2 | Linha 2, Coluna 3 |
+
 ### Backend
 - [x] Banco de dados
 - [x] RESTful API
