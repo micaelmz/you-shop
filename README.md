@@ -10,16 +10,30 @@ Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administ
 
 | Backend | Frontend | DevOps |
 |-------------|-------------|-------------|
-|✅ Banco de dados |  | Sim |
-|✅ RESTful API | Linha 2, Coluna 2 | Linha 2, Coluna 3 |
+|✅ Banco de dados| | |
+|✅ RESTful API| | |
+|✅ Paginação| | |
+|✅ Sistema de busca| | |
+|✅ Sistema de avaliação| | |
+|✅ Sistema de categorías| | |
+|⬜ Sistema de usuários e Autenticação|||
+|⬜ Sistema de estoque|||
+|⬜ Sistema de pedidos e pagamentos|||
+|⬜ Sistema de cupons|||
+|⬜ Sistema de frete|||
+|⬜ Sistema de carrinho|||
+|⬜ Sistema de notificações|||
+|⬜ Sistema de recomendações|||
+|⬜ Sistema de atendimento|||
+|⬜ Filtros de busca|||
+|🟩 Painel administrativo|||
+
+
+
 
 ### Backend
-- [x] Banco de dados
-- [x] RESTful API
 - [ ] Sistema de usuários e Autenticação
 - [ ] Sistema de estoque
-- [x] Sistema de categorias
-- [x] Sistema de avaliações
 - [ ] Sistema de pedidos e pagamentos
 - [ ] Sistema de cupons
 - [ ] Sistema de frete
@@ -27,9 +41,7 @@ Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administ
 - [ ] Sistema de notificações
 - [ ] Sistema de recomendações
 - [ ] Sistema de atendimento
-- [x] Sistema de busca
 - [ ] Filtros de busca
-- [x] Páginação
 - [ ] Painel administrativo
 
 ### Frontend
