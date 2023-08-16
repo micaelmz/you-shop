@@ -28,6 +28,9 @@ class Review(BaseModel):
     review_rating = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    def __str__(self):
+        return f"{self.author_name}: {self.content} ({self.rating})"
+
     @property
     def author_name(self) -> str:
         return User.get_user_name_by_id(self.author_id)

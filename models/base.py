@@ -8,9 +8,6 @@ class BaseModel(db.Model):
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    def __str__(self):
-        return f"{self.__class__.__name__} {self.id}"
-
     def __repr__(self):
         return f"<{self.__class__.__name__} {self.id}>"
 
