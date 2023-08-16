@@ -1,17 +1,16 @@
-from flask import Blueprint, request, url_for, redirect, jsonify
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
+from flask import Blueprint
+from flask_restful import Api, Resource, abort
 from models.category import Category
 from models.product import Product
 from models.review import Review
 from models.user import User
-import json
+from utils.api_common import add_arguments, check_key, rename_dict_keys, update_fields, find_or_abort
 
 api_blueprint = Blueprint('api', __name__)
 api = Api(api_blueprint)
-# TODO: evitar repetição do args_list e update_fields, criar uma função que recebe quais campos atualizar do dicionário
-# todo: através do nome antigo e o novo, ai separa a logica do update_fields em 2 funções
 
 
+# noinspection PyMethodMayBeStatic
 class ProductResource(Resource):
     def get(self):
         args_list = [
@@ -21,26 +20,24 @@ class ProductResource(Resource):
              'help': 'O valor deve ser um ID válido. Em caso de dúvida, solicite a lista de categorias'},
             {'name': 'search', 'type': str, 'required': False}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        if args['id']:
-            product = Product.get_product_by_id(args['id'])
-            if not product:
-                abort(404, message='Produto não encontrado')
-            return product.to_dict_with_properties()
+        if kwargs['id']:
+            product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
+            return product.to_dict_with_selected_properties(['rating']), 200
 
-        elif args['category_id']:
-            products = Product.get_products_by_category_id(args['category_id'])
+        elif kwargs['category_id']:
+            products = Product.get_products_by_category_id(kwargs['category_id'])
             if not products:
                 abort(404, message='Produto não encontrado para esta categoria')
-            return [product.to_dict_with_properties() for product in products]
+            return [product.to_dict_with_selected_properties(['rating']) for product in products], 200
 
-        elif args['search']:
-            products = Product.search_products_by_string(args['search'])
+        elif kwargs['search']:
+            products = Product.search_products_by_string(kwargs['search'])
             if not products:
                 abort(404, message='Produto não encontrado para esta busca')
-            return [product.to_dict_with_properties() for product in products]
+            return [product.to_dict_with_selected_properties(['rating']) for product in products], 200
 
     def post(self):
         args_list = [
@@ -55,25 +52,17 @@ class ProductResource(Resource):
             {'name': 'additional_info', 'type': dict, 'required': False},
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        # todo: fazer algo como new_product = Product(**args, price_old=0, promotion=False)
-        new_product = Product(
-            name=args['name'],
-            price_current=args['price'],
-            price_old=0,
-            category_id=args['category_id'],
-            promotion=False,
-            image=args['image'],
-            description=args['description'],
-            color=args['color'] if args['color'] else Product.detect_color(args['image']),
-            additional_info=args['additional_info'],
-            additional_images=args['additional_images']
-        )
+        # todo: testar se eu preciso do "kwargs ="
+        rename_dict_keys(old_dict=kwargs, old_new_keys={'price': 'price_current'})
+        kwargs['price_old'] = 0
+
+        new_product = Product(**kwargs)
         new_product.commit()
 
-        return new_product.to_dict(), 201
+        return new_product.to_dict_with_selected_properties(['rating']), 201
 
     def put(self):
         args_list = [
@@ -91,15 +80,22 @@ class ProductResource(Resource):
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        product = Product.get_product_by_id(args['id'])
-        if not product:
-            abort(404, message='Product not found')
+        product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
 
-        return self.update_fields(args, product)
+        # caso seja uma promoção, o preço antigo é o preço atual e o preço atual é o preço recebido
+        if not kwargs.get('promotion', False):
+            kwargs['price_old'] = 0
+            rename_dict_keys(kwargs, {'price': 'price_current'})
+        else:
+            kwargs['price_old'] = product.price.new
+            rename_dict_keys(kwargs, {'price': 'price_current'})
+
+        updated_model = update_fields(from_=kwargs, to=product)
+        return updated_model.to_dict_with_selected_properties(['rating']), 201
 
     def patch(self):
         args_list = [
@@ -117,89 +113,73 @@ class ProductResource(Resource):
             {'name': 'additional_images', 'type': list, 'location': 'json', 'required': False},
             {'name': 'promotion', 'type': bool, 'required': False}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        product = Product.get_product_by_id(args['id'])
-        if not product:
-            abort(404, message='Produto não encontrado')
+        product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
 
-        args = parser.parse_args()
-        updated_fields = {key: value for key, value in args.items() if value is not None}
-        return self.update_fields(updated_fields, product)
+        if not kwargs.get('promotion', False):
+            kwargs['price_old'] = 0
+            rename_dict_keys(kwargs, {'price': 'price_current'})
+        else:
+            kwargs['price_old'] = product.price.new
+            rename_dict_keys(kwargs, {'price': 'price_current'})
+
+        updated_fields = {key: value for key, value in kwargs.items() if value is not None}
+        updated_model = update_fields(from_=updated_fields, to=product)
+        return updated_model.to_dict_with_selected_properties(['rating']), 201
 
     def delete(self):
         args_list = [
             {'name': 'id', 'type': int, 'required': True},
             {'name': 'key', 'type': str, 'required': True}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        product = Product.get_product_by_id(args['id'])
-
-        if not product:
-            abort(404, message='Produto não encontrado')
-
+        product = find_or_abort(Product, id=kwargs['id'], message='Produto não encontrado')
         product.delete()
-        return {'message': 'Produto ID {} deletado com sucesso!'.format(args['id'])}, 200
 
-    @staticmethod
-    def update_fields(kwargs: dict, product: Product) -> tuple[dict, int]:
-        if not kwargs.get('promotion'):
-            kwargs['price_old'] = 0
-            kwargs['price_current'] = kwargs['price']
-        else:
-            kwargs['price_old'] = product.price.new
-            kwargs['price_current'] = kwargs['price']
-
-        fields_to_pop = ['key', 'price', 'id']
-        for field in fields_to_pop:
-            kwargs.pop(field, None)
-
-        product.update(**kwargs)
-        product.commit()
-        return product.to_dict(properties=True), 201
+        return {'message': 'Produto ID {} deletado com sucesso!'.format(kwargs['id'])}, 200
 
 
+# noinspection PyMethodMayBeStatic
 class CategoryResource(Resource):
     def get(self):
         args_list = [
             {'name': 'id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
             {'name': 'name', 'type': str, 'required': False, 'help': 'O nome da categoria deve ser uma string'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        if args['id']:
-            category = Category.get_category_by_id(args['id'])
-            if not category:
-                abort(404, message='Categoria não encontrada.')
-            return category.to_dict()
+        if kwargs['id']:
+            category = find_or_abort(Category, id=kwargs['id'], message='Categoria não encontrada')
+            return category.to_dict(), 200
 
-        elif args['name']:
-            category = Category.search_categories_by_name(args['name'])
+        elif kwargs['name']:
+            category = Category.search_by_name(kwargs['name'])
             if not category:
                 abort(404, message='Nenhuma categoria encontrada.')
-            return [category.to_dict() for category in category]
+            return [category.to_dict() for category in category], 200
 
         else:
-            categories = Category.get_all_categories()
+            categories = Category.get_all()
             if not categories:
                 abort(404, message='Nenhuma categoria encontrada.')
-            return [category.to_dict() for category in categories]
+            return [category.to_dict() for category in categories], 200
 
     def post(self):
         args_list = [
             {'name': 'name', 'type': str, 'required': True},
             {'name': 'image', 'type': str, 'required': True, 'help': 'A imagem deve ser uma URL com extensão válida.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        new_category = Category(**args)
+        new_category = Category(**kwargs)
         new_category.commit()
 
         return new_category.to_dict(), 201
@@ -212,16 +192,14 @@ class CategoryResource(Resource):
             {'name': 'image', 'type': str, 'required': True,
              'help': 'A imagem deve ser uma URL com extensão válida.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        category = Category.get_category_by_id(args['id'])
-        if not category:
-            abort(404, message='Categoria não encontrada')
+        category = find_or_abort(Category, id=kwargs['id'], message='Categoria não encontrada')
 
-        return self.update_fields(args, category)
-
+        updated_model = update_fields(from_=kwargs, to=category)
+        return updated_model.to_dict(), 201
 
     def patch(self):
         args_list = [
@@ -231,46 +209,32 @@ class CategoryResource(Resource):
             {'name': 'image', 'type': str, 'required': False,
              'help': 'A imagem deve ser uma URL com extensão válida.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        category = Category.get_category_by_id(args['id'])
-        if not category:
-            abort(404, message='Categoria não encontrada')
+        category = find_or_abort(Category, id=kwargs['id'], message='Categoria não encontrada')
 
-        args = parser.parse_args()
-        updated_fields = {key: value for key, value in args.items() if value is not None}
-        return self.update_fields(updated_fields, category)
+        updated_fields = {key: value for key, value in kwargs.items() if value is not None}
+        updated_model = update_fields(from_=updated_fields, to=category)
+        return updated_model.to_dict(), 201
 
     def delete(self):
         args_list = [
             {'name': 'id', 'type': int, 'required': True},
             {'name': 'key', 'type': str, 'required': True}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        category = Category.get_category_by_id(args['id'])
-
-        if not category:
-            abort(404, message='Categoria não encontrada')
-
+        category = find_or_abort(Category, id=kwargs['id'], message='Categoria não encontrada')
         category.delete()
-        return {'message': 'Categoria ID {} deletada com sucesso!'.format(args['id'])}, 200
 
-    @staticmethod
-    def update_fields(kwargs: dict, category: Category) -> tuple[dict, int]:
-        fields_to_pop = ['key', 'id']
-        for field in fields_to_pop:
-            kwargs.pop(field, None)
-
-        category.update(**kwargs)
-        category.commit()
-        return category.to_dict(), 201
+        return {'message': 'Categoria ID {} deletada com sucesso!'.format(kwargs['id'])}, 200
 
 
+# noinspection PyMethodMayBeStatic
 class ReviewResource(Resource):
     def get(self):
         args_list = [
@@ -278,30 +242,24 @@ class ReviewResource(Resource):
             {'name': 'author_id', 'type': int, 'required': False, 'help': 'O ID do autor deve ser um inteiro'},
             {'name': 'product_id', 'type': int, 'required': False, 'help': 'O ID do produto deve ser um inteiro'},
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        if args['id']:
-            review = Review.get_review_by_id(args['id'])
-            if not review:
-                abort(404, message='Avaliação não encontrada')
+        if kwargs['id']:
+            review = find_or_abort(Review, id=kwargs['id'], message='Avaliação não encontrada')
+            return review.to_dict_with_selected_properties(['author_name']), 200
 
-            # Review.to_dict() has a boolean parameter if you want to include the author name
-            review_dict = review.to_dict_with_properties()
-
-            return review_dict
-
-        elif args['author_id']:
-            reviews = Review.get_reviews_by_author_id(args['author_id'])
+        elif kwargs['author_id']:
+            reviews = Review.get_reviews_by_author_id(kwargs['author_id'])
             if not reviews:
                 abort(404, message='Avaliação não encontrada')
-            return [review.to_dict_with_properties() for review in reviews]
+            return [review.to_dict_with_selected_properties(['author_name']) for review in reviews], 200
 
-        elif args['product_id']:
-            reviews = Review.get_reviews_by_product_id(args['product_id'])
+        elif kwargs['product_id']:
+            reviews = Review.get_reviews_by_product_id(kwargs['product_id'])
             if not reviews:
                 abort(404, message='Avaliação não encontrada')
-            return [review.to_dict_with_properties() for review in reviews]
+            return [review.to_dict_with_selected_properties(['author_name']) for review in reviews], 200
 
     def post(self):
         args_list = [
@@ -313,19 +271,18 @@ class ReviewResource(Resource):
             {'name': 'review_rating', 'type': float, 'required': True,
              'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
 
-        self.verify_valid_rating(args['review_rating'])
-        self.verify_valid_ids(args['author_id'], args['product_id'])
+        self.verify_valid_rating(kwargs['review_rating'])
+        self.verify_valid_ids(kwargs['author_id'], kwargs['product_id'])
 
-        new_review = Review(**args)
+        new_review = Review(**kwargs)
         new_review.commit()
 
-        return new_review.to_dict_with_properties(), 201
+        return new_review.to_dict_with_selected_properties(['author_name']), 201
 
     def put(self):
-        # todo: criar uma base list onde tem os atributo mais usados e fazer isso pra todo pra diminuir codigo
         args_list = [
             {'name': 'id', 'type': int, 'required': True,
              'help': 'O ID da avaliação deve ser um inteiro'},
@@ -338,18 +295,18 @@ class ReviewResource(Resource):
             {'name': 'review_rating', 'type': float, 'required': True,
              'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        self.verify_valid_rating(args['review_rating'])
-        self.verify_valid_ids(args['author_id'], args['product_id'])
+        review = find_or_abort(Review, id=kwargs['id'], message='Avaliação não encontrada')
 
-        review = Review.get_review_by_id(args['id'])
-        if not review:
-            abort(404, message='Avaliação não encontrada')
+        # if isn't a valid rating, abort
+        self.verify_valid_rating(kwargs['review_rating'])
+        self.verify_valid_ids(kwargs['author_id'], kwargs['product_id'])
 
-        return self.update_fields(args, review)
+        updated_model = update_fields(from_=kwargs, to=review)
+        return updated_model.to_dict_with_selected_properties(['author_name']), 201
 
     def patch(self):
         args_list = [
@@ -364,39 +321,34 @@ class ReviewResource(Resource):
             {'name': 'review_rating', 'type': float, 'required': False,
              'help': 'O valor deve ser um número entre 0 e 5, com uma casa decimal.'}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        review = Review.get_review_by_id(args['id'])
-        if not review:
-            abort(404, message='Avaliação não encontrada')
+        review = find_or_abort(Review, id=kwargs['id'], message='Avaliação não encontrada')
 
-        self.verify_valid_ids(args.get('author_id'), args.get('product_id'))
+        self.verify_valid_ids(kwargs.get('author_id'), kwargs.get('product_id'))
 
-        if args.get('review_rating'):
-            self.verify_valid_rating(args['review_rating'])
+        if kwargs.get('review_rating'):
+            self.verify_valid_rating(kwargs['review_rating'])
 
-        args = parser.parse_args()
-        updated_fields = {key: value for key, value in args.items() if value is not None}
-        return self.update_fields(updated_fields, review)
+        updated_fields = {key: value for key, value in kwargs.items() if value is not None}
+        updated_model = update_fields(from_=updated_fields, to=review)
+        return updated_model.to_dict_with_selected_properties(['author_name']), 201
 
     def delete(self):
         args_list = [
             {'name': 'id', 'type': int, 'required': True},
             {'name': 'key', 'type': str, 'required': True}
         ]
-        parser = parse_args(args_list)
-        args = parser.parse_args()
-        check_key(args['key'])
+        parser = add_arguments(args_list)
+        kwargs = parser.parse_args()
+        check_key(kwargs['key'])
 
-        review = Review.get_review_by_id(args['id'])
-
-        if not review:
-            abort(404, message='Avaliação não encontrada')
-
+        review = find_or_abort(Review, id=kwargs['id'], message='Avaliação não encontrada')
         review.delete()
-        return {'message': 'Avaliação ID {} deletada com sucesso!'.format(args['id'])}, 200
+
+        return {'message': 'Avaliação ID {} deletada com sucesso!'.format(kwargs['id'])}, 200
 
     @staticmethod
     def verify_valid_rating(rating: float):
@@ -408,41 +360,11 @@ class ReviewResource(Resource):
 
     @staticmethod
     def verify_valid_ids(author_id: int = None, product_id: int = None):
-        if author_id and not User.get_user_by_id(author_id):
+        if author_id and not User.get_by_id(author_id):
             abort(404, message='Autor ID {} não encontrado.'.format(author_id))
-        elif product_id and not Product.get_product_by_id(product_id):
+        elif product_id and not Product.get_by_id(product_id):
             abort(404, message='Produto ID {} não encontrado.'.format(product_id))
         return True
-
-    @staticmethod
-    def update_fields(kwargs: dict, review: Review) -> tuple[dict, int]:
-        fields_to_pop = ['key', 'id']
-        for field in fields_to_pop:
-            kwargs.pop(field, None)
-
-        review.update(**kwargs)
-        review.commit()
-        return review.to_dict_with_properties(), 201
-
-
-def parse_args(args: list) -> reqparse.RequestParser:
-    parser = reqparse.RequestParser()
-    for arg in args:
-        parser_args = {
-            'name': arg['name'],
-            'type': arg['type'],
-            'required': arg['required'],
-            'help': arg['help'] if 'help' in arg else None
-        }
-        if 'location' in arg:
-            parser_args['location'] = arg['location']
-        parser.add_argument(**parser_args)
-    return parser
-
-
-def check_key(key):
-    if key != 'verysecretkey':
-        abort(401, message='Não autorizado')
 
 
 api.add_resource(ProductResource, '/api/products')
