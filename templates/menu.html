@@ -52,7 +52,7 @@
           </li>
           {% for category in categories %}
           <li class="nav-item me-3 no-wrap roboto d-flex">
-            <img src="{{ category.image_url }}" alt="{{ category.name }}" class="me-2 my-auto d-block d-md-none" style="width: 20px; height: 20px; object-fit: cover; object-position: center; border-radius: 50%;">
+            <img src="{{ category.image }}" alt="{{ category.name }}" class="me-2 my-auto d-block d-md-none" style="width: 20px; height: 20px; object-fit: cover; object-position: center; border-radius: 50%;">
             <a href=" {{ url_for('view.products', category=category.id) }}" class="nav-link">{{ category.name }}</a>
           </li>
           {% endfor %}
