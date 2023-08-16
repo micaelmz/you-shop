@@ -1,4 +1,5 @@
 from models.review import Rating
+from models.base import BaseModel
 from utils.database import db
 
 
@@ -6,6 +7,10 @@ class Price:
     def __init__(self, new: float, old: float):
         self.new = new
         self.old = old
+
+    @property
+    def discount(self) -> float:
+        return self.old - self.new
 
     def __str__(self):
         return self.label_price(self.new)
@@ -15,10 +20,9 @@ class Price:
         return "{:.2f}".format(price).replace('.', ',')
 
 
-class Product(db.Model):
+class Product(BaseModel):
 
     __tablename__ = 'product'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     name = db.Column(db.String(200), nullable=False)
     price_current = db.Column(db.Float, nullable=False)
@@ -30,35 +34,6 @@ class Product(db.Model):
     additional_info = db.Column(db.JSON, nullable=True)
     additional_images = db.Column(db.JSON, nullable=True)
     reviews = db.relationship('Review', backref='product')
-
-    def __str__(self):
-        return f"{self.name} - {self.price_current}"
-
-    def __repr__(self):
-        return "<Product {}>" % self.id
-
-    def to_dict(self: object, properties: bool = False) -> dict:
-        # todo: criar documentação disso
-        product_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        product_dict['rating'] = self.rating
-        return product_dict
-
-
-    def commit(self) -> int:
-        db.session.add(self)
-        db.session.commit()
-        return self.id
-
-    def update(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        db.session.commit()
-        return self
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return True
 
     @property
     def rating(self) -> Rating:
@@ -72,14 +47,6 @@ class Product(db.Model):
     def detect_color(img_url: str) -> str:
         dominant_color = 'Neutro'
         return dominant_color
-
-    @classmethod
-    def get_all_products(cls) -> list['Product']:
-        return cls.query.all()
-
-    @classmethod
-    def get_product_by_id(cls, product_id: int) -> 'Product':
-        return cls.query.get(product_id)
 
     @classmethod
     def get_on_sale_products(cls) -> list['Product']:

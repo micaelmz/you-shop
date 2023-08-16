@@ -43,12 +43,12 @@ class TestModels(TestCase):
         assert second == 2
 
     def test_get_all_product(self):
-        products = Product.get_all_products()
+        products = Product.get_all()
         assert len(products) != 0
         assert len(products) == len(test_products)
 
     def test_get_product_by_id(self):
-        product = Product.get_product_by_id(1)
+        product = Product.get_by_id(1)
         assert product.name == "Test Product"
 
     def test_more_information_json(self):
