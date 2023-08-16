@@ -52,7 +52,7 @@ class TestModels(TestCase):
         assert str(product_grade) == "4,1"
 
     def test_review_initial_values(self):
-        review = Review.get_review_by_id(1)
+        review = Review.get_by_id(1)
         assert review.id == 1
         assert review.author_id == 1
         assert review.product_id == 1
@@ -61,7 +61,7 @@ class TestModels(TestCase):
 
     def test_review_subobject_values(self):
         now = datetime.now()
-        review = Review.get_review_by_id(1)
+        review = Review.get_by_id(1)
         assert type(review.rating) == Rating
         assert review.rating.integer == 4
         assert review.rating.decimal == 0
@@ -71,6 +71,6 @@ class TestModels(TestCase):
         assert review.date.day == now.day
 
     def test_review_str(self):
-        review = Review.get_review_by_id(1)
+        review = Review.get_by_id(1)
         assert str(review) == "User1: Good (4,0)"
 
