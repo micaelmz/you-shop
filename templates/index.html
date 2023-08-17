@@ -12,7 +12,12 @@
     .nav-link:hover {
       color: #000;
     }
-  </style>{% endblock %}
+    :root{
+        --product-carrousel-qnt: {{ recommended_products|length }} !important;
+        --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
   <section id="advantages" class="mt-3">
