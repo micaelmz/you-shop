@@ -17,13 +17,13 @@ pip install -r requirements.txt
 
 | Backend                              | Frontend                  | DevOps                |
 |--------------------------------------|---------------------------|-----------------------|
-| ✅ Banco de dados                     | ✅ Página inicial          | ✅ CI/CD               |
+| ✅ Sistema de avaliação               | ✅ Página inicial          | ✅ CI/CD               |
 | ✅ RESTful API                        | ✅ Página de produto       | ⬜ CDN                 |
-| ✅ Paginação                          | ✅ Página de detalhes      | ⬜ AWS EC2             |
+| ⬜ Sistema de usuários e autenticação | ✅ Página de detalhes      | ⬜ AWS EC2             |
 | ✅ Sistema de busca                   | ✅ Footer                  | ✅ Hospedagem          |
-| ✅ Sistema de avaliação               | ✅ Página de busca         | ✅ Testes              |
+| ✅ Banco de dados                     | ✅ Página de busca         | ✅ Testes              |
 | ✅ Sistema de categorías              | ✅ Menu (header e navbar)  | ✅ Documentação da API |
-| ⬜ Sistema de usuários e Autenticação | ✅ Página de carrinho      |                       |
+| ✅ Paginação                          | ✅ Página de carrinho      |                       |
 | ⬜ Sistema de estoque                 | ⬜ Página de pagamento     |                       |
 | ⬜ Sistema de pedidos e pagamentos    | ⬜ Página de pedidos       |                       |
 | ⬜ Sistema de cupons                  | ⬜ Página de perfil        |                       |
