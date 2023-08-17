@@ -41,4 +41,4 @@ pip install -r requirements.txt
 
 [//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmicaelmuniz%2Fyoushop.svg?type=large&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2Fmicaelmuniz%2Fyoushop?ref=badge_large&#41;)
 
-[LICENÇA DO PROJETO](https://choosealicense.com/licenses/mit/)
+[VISUALIZAR LICENÇA](https://github.com/micaelmz/you-shop/blob/master/LICENSE)
