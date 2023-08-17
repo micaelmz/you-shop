@@ -119,7 +119,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * (var(--product-carrousel-qnt) + 5))); /* 4 = number of cards */
+    transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
   }
 }
 
@@ -128,7 +128,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * (var(--product-carrousel-qnt) + 5))); /* 4 = number of cards */
+    transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
   }
 }
 .slider {
@@ -160,7 +160,7 @@
   -webkit-animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
     animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
   display: flex;
-  width: calc(250px * (var(--product-carrousel-qnt) + 5)); /* 4 = number of cards */
+  width: calc(250px * (var(--product-carrousel-qnt))); /* 4 = number of cards */
 }
 .slider .slide {
   width: 250px;

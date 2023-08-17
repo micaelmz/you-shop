@@ -12,9 +12,17 @@
     .nav-link:hover {
       color: #000;
     }
-    :root{
-        --product-carrousel-qnt: {{ recommended_products|length }} !important;
-        --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important;
+    @media (max-width: 768px) {
+        :root {
+            --product-carrousel-qnt: {{ recommended_products|length + 3}} !important; /* 2 = produtos q cabem na tela */
+            --carrousel-animation-time: {{ recommended_products|length * 4 }}s !important; /* tempo que cada produto fica na tela */
+        }
+    }
+    @media (min-width: 768px) {
+        :root {
+            --product-carrousel-qnt: {{ recommended_products|length + 5}} !important; /* 5 = produtos q cabem na tela */
+            --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important; /* tempo que cada produto fica na tela */
+        }
     }
   </style>
 {% endblock %}
