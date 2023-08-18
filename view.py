@@ -7,18 +7,6 @@ view_blueprint = Blueprint('view', __name__)
 cartLengthExample = 0
 
 
-@view_blueprint.route('/')
-def home():
-    categories = Category.get_all()
-    recommended_products = Product.get_on_sale_products()
-    return render_template(
-        'index.html',
-        categories=categories,
-        cartLength=cartLengthExample,
-        recommended_products=recommended_products
-    )
-
-
 @view_blueprint.route('/products', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def products():
     if request.method == 'GET':
@@ -85,23 +73,6 @@ def products():
         category_id=int(category_id) if category_id else None
     )
 
-
-@view_blueprint.route('/detail')
-def detail():
-    product_id = int(request.args.get('id'))
-    product = Product.get_by_id(product_id)
-
-    if not product:
-        return redirect(url_for('view.home'))
-
-    categories = Category.get_all()
-
-    return render_template(
-        'detail.html',
-        categories=categories,
-        cartLength=cartLengthExample,
-        product=product
-    )
 
 
 @view_blueprint.route('/search', methods=['GET'])
