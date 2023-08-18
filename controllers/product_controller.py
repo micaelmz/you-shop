@@ -21,6 +21,8 @@ def all_products():
 
 def products_by_category(category_id):
     products_list = Product.get_products_by_category_id(category_id)
+    if not products_list:
+        return redirect(url_for('no_results.category', category_id=category_id))
     return products(products_list)
 
 
@@ -29,8 +31,8 @@ def search_page():
 
 
 def search_form():
-    search_query = request.form['search_query']
-    return search_products(search_query)
+    search_query = request.form['search'].strip()
+    return redirect(url_for('product.search_products', search_query=search_query))
 
 
 def search_products(search_query):

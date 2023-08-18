@@ -7,7 +7,7 @@ def product_detail(product_id):
     product = Product.get_by_id(product_id)
 
     if not product:
-        return redirect(url_for('not_found.product'))
+        return redirect(url_for('no_results.product', product_id=product_id))
 
     return render_template(
         'detail.html',
