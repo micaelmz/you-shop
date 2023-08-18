@@ -208,7 +208,7 @@
             {% for product in products %}
             <li class="list-inline-item">
               <div class="card">
-                <a href="{{ url_for('view.detail', id=product.id) }}">
+                <a href="{{ url_for('detail.product_detail', product_id=product.id) }}">
                   <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
                 </a>
                 <div class="card-body text-center roboto">
@@ -218,7 +218,7 @@
                       <del class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
                     {% endif %}
                   </p>
-                  <a href="{{ url_for('view.detail', id=product.id) }}" class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
+                  <a href="{{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
                     <span class="d-none d-md-inline-block fw-light">Detalhes</span>
                     <span class="d-inline-block d-md-none fw-light">Ver</span>
                   </a>
@@ -232,21 +232,23 @@
       </div> <!-- Products -->
     </div>
     <div class="row mt-3">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
-            <a class="page-link text-dark" href="{{ url_for('view.products', search=search_query, category=category_id, page=current_page - 1) }}">Anterior</a>
-          </li>
-          {% for page in range(1, total_pages + 1) %}
-          <li class="page-item {% if current_page == page %}active{% endif %}">
-            <a class="page-link text-dark px-3" href="{{ url_for('view.products', search=search_query, category=category_id, page=page) }}">{{ page }}</a>
-          </li>
-          {% endfor %}
-          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
-            <a class="page-link text-dark"  href="{{ url_for('view.products', search=search_query, category=category_id, page=current_page + 1) }}">Próximo</a>
-          </li>
-        </ul>
-      </nav>
+
+{#      <nav aria-label="Page navigation example">#}
+{#        <ul class="pagination justify-content-center">#}
+{#          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">#}
+{#            <a class="page-link text-dark" href="PLACEHOLER PAGINATION">Anterior</a>#}
+{#          </li>#}
+{#          {% for page in range(1, total_pages + 1) %}#}
+{#          <li class="page-item {% if current_page == page %}active{% endif %}">#}
+{#            <a class="page-link text-dark px-3" href="PLACEHOLER PAGINATION">{{ page }}</a>#}
+{#          </li>#}
+{#          {% endfor %}#}
+{#          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">#}
+{#            <a class="page-link text-dark"  href="PLACEHOLER PAGINATION">Próximo</a>#}
+{#          </li>#}
+{#        </ul>#}
+{#      </nav>#}
+
     </div>
   </div>
 </section>
