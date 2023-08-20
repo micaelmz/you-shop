@@ -33,7 +33,7 @@ class Review(BaseModel):
 
     @property
     def author_name(self) -> str:
-        return User.get_user_name_by_id(self.author_id)
+        return User.get_by_id(self.author_id).name
 
     @property
     def rating(self) -> Rating:
