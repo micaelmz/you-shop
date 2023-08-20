@@ -24,9 +24,13 @@
           <svg aria-hidden="true" data-prefix="fal" height="calc(1.35rem + 0.5vh)" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-user fa-w-14 fa-7x"><path fill="currentColor" d="M313.6 288c-28.7 0-42.5 16-89.6 16-47.1 0-60.8-16-89.6-16C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4zM416 464c0 8.8-7.2 16-16 16H48c-8.8 0-16-7.2-16-16v-41.6C32 365.9 77.9 320 134.4 320c19.6 0 39.1 16 89.6 16 50.4 0 70-16 89.6-16 56.5 0 102.4 45.9 102.4 102.4V464zM224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm0-224c52.9 0 96 43.1 96 96s-43.1 96-96 96-96-43.1-96-96 43.1-96 96-96z" class=""></path></svg>
         </a>
         <div class="dropdown-menu" aria-labelledby="userDropdown" style="right: 50%; left: auto; transform: translateX(50%);">
-          <a class="dropdown-item d-none d-md-block" href="{{ url_for('user.login') }}">Login / Registrar</a>
-          <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.login') }}">Login</a>
-          <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.register') }}">Registrar</a>
+          {% if current_user.is_authenticated %}
+            <a class="dropdown-item d-none d-md-block" href="{{ url_for('home') }}">Minha conta</a>
+            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.login') }}">Login</a>
+            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.register') }}">Registrar</a>
+          {% else %}
+            <a class="dropdown-item d-none d-md-block" href="{{ url_for('user.login') }}">Login / Registrar</a>
+          {% endif %}
           <hr class="dropdown-divider">
           <a class="dropdown-item" href="#">Meus pedidos</a>
           <a class="dropdown-item" href="#">Meus cupons</a>
@@ -35,7 +39,11 @@
       <a class="position-relative text-decoration-none text-dark" href="{{ url_for('user.cart') }}"> <!-- Cart -->
         <i class="bi bi-cart fcs-16 my-auto"></i>
         <span id="cartLength" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          {{ cartLength }}
+          {% if current_user.is_authenticated %}
+            {{ current_user.cart|length }}
+          {% else %}
+            0
+          {% endif %}
         </span>
       </a> <!-- Cart -->
     </div> <!-- SVG Buttons -->
@@ -67,8 +75,13 @@
         </ul>
       </div> <!-- Navbar -->
       <div class="col-2 d-none d-md-flex justify-content-end roboto my-auto">
-        <a href="{{ url_for('user.login') }}" class="text-decoration-none text-dark me-3">Login</a>
-        <a href="{{ url_for('user.register') }}" class="text-decoration-none text-dark">Registrar</a>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('home') }}" class="text-decoration-none text-dark me-3">Olá, {{ current_user.name }}</a>
+          <a href="{{ url_for('user.logout') }}" class="text-decoration-none text-dark">Sair</a>
+        {% else %}
+          <a href="{{ url_for('user.login') }}" class="text-decoration-none text-dark me-3">Login</a>
+          <a href="{{ url_for('user.register') }}" class="text-decoration-none text-dark">Registrar</a>
+        {% endif %}
       </div>
     </div>
   </div>

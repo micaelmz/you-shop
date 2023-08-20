@@ -5,16 +5,16 @@
 
 {% block extra_style %}
   <style>
-    #loginBox{
+    #loginBox {
         max-width: 35%;
     }
     @media (max-width: 996px) {
-      #loginBox{
+      #loginBox {
         max-width: 50%;
       }
     }
     @media (max-width: 768px) {
-      #loginBox{
+      #loginBox {
         max-width: 90%;
       }
     }
@@ -22,41 +22,43 @@
 {% endblock %}
 <section>
 <div class="container-lg" id="loginBox">
-  <form style="margin-top: 15vh;">
+  <form style="margin-top: 15vh;" method="POST">
+    {{ form.hidden_tag() }}
+
     <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-12 text-dark"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
     <h1 class="mb-2 ms-2 mt-3 fcs-13 roboto">Registrar</h1>
     <div class="row">
       <div class="col pe-0">
         <div class="form-floating">
-          <input type="text" class="form-control" id="name" placeholder="John">
+          {{ form.first_name(class="form-control", id="name", placeholder="John") }}
           <label for="name">Nome</label>
         </div>
       </div>
       <div class="col ps-0">
         <div class="form-floating">
-          <input type="text" class="form-control" id="lastname" placeholder="Doe">
+          {{ form.last_name(class="form-control", id="lastname", placeholder="Doe") }}
           <label for="lastname">Sobrenome</label>
         </div>
       </div>
     </div>
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      {{ form.email(class="form-control", id="floatingInput", placeholder="name@example.com") }}
       <label for="floatingInput">Endereço de email</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      {{ form.password(class="form-control", id="floatingPassword", placeholder="Password") }}
       <label for="floatingPassword">Senha</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="confirmPassword" placeholder="Password">
+      {{ form.confirm_password(class="form-control", id="confirmPassword", placeholder="Password") }}
       <label for="confirmPassword">Confirmar senha</label>
     </div>
     <div class="text-start my-3 ms-1 d-flex justify-content-between">
        Já tem uma conta cadastrada?
       <a href="{{ url_for('user.login') }}" class="ms-auto text-dark me-1">Faça login</a>
     </div>
-    <button disabled class="btn btn-dark w-100 py-2" type="submit">Criar conta</button>
-    <button disabled class="btn btn-outline-dark w-100 py-2 mt-2" type="submit">
+    <button class="btn btn-dark w-100 py-2" type="submit">Criar conta</button>
+    <button class="btn btn-outline-dark w-100 py-2 mt-2" type="submit">
       <i class="fab fa-google me-2"></i>
       Criar conta com Google
     </button>
