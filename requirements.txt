@@ -2,6 +2,9 @@ flask==2.3.2
 flask-testing==0.8.1
 flask-sqlalchemy==3.0.5
 flask-restful==0.3.10
+Flask_Login==0.6.2
+Werkzeug
 pytest==7.4.0
 colorthief==0.2.1
 requests==2.31.0
+WTForms==3.0.1
