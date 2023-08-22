@@ -36,3 +36,13 @@ def home():
 @app.route('/api/docs')
 def api_docs():
     return redirect('https://documenter.getpostman.com/view/29096336/2s9Xy5LA6U?version=latest')
+
+
+@app.route('/terms-of-service')
+def terms_of_service():
+    return render_template('terms-of-service.html')
+
+
+@app.route('/privacy-policy')
+def privacy_policy():
+    pass
