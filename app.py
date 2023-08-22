@@ -28,7 +28,6 @@ def load_user(user_id):
 def home():
     return render_template(
         'index.html',
-        categories=Category.get_all(),
         cartLength=2,
         recommended_products=Product.get_on_sale_products()
     )
