@@ -1,4 +1,4 @@
-{% extends 'main-template.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ product.name }} | You Shop{% endblock %}
 {% block meta_description %}{{ product.description }}{% endblock %}
@@ -28,10 +28,6 @@
     .col-md-6{
       width: 49% !important;
     }
-  }
-  input[disabled] + label{
-    cursor: not-allowed !important;
-    pointer-events: visible !important;
   }
   .color-selector:checked + label {
       box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);

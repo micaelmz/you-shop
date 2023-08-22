@@ -26,10 +26,10 @@
         <div class="dropdown-menu" aria-labelledby="userDropdown" style="right: 50%; left: auto; transform: translateX(50%);">
           {% if current_user.is_authenticated %}
             <a class="dropdown-item d-none d-md-block" href="{{ url_for('home') }}">Minha conta</a>
-            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.login') }}">Login</a>
-            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.register') }}">Registrar</a>
+            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.pre_login') }}">Login</a>
+            <a class="dropdown-item d-block d-md-none" href="{{ url_for('user.pre_login') }}">Registrar</a>
           {% else %}
-            <a class="dropdown-item d-none d-md-block" href="{{ url_for('user.login') }}">Login / Registrar</a>
+            <a class="dropdown-item d-none d-md-block" href="{{ url_for('user.pre_login') }}">Login / Registrar</a>
           {% endif %}
           <hr class="dropdown-divider">
           <a class="dropdown-item" href="#">Meus pedidos</a>
@@ -79,8 +79,8 @@
           <a href="{{ url_for('home') }}" class="text-decoration-none text-dark me-3">Olá, {{ current_user.name }}</a>
           <a href="{{ url_for('user.logout') }}" class="text-decoration-none text-dark">Sair</a>
         {% else %}
-          <a href="{{ url_for('user.login') }}" class="text-decoration-none text-dark me-3">Login</a>
-          <a href="{{ url_for('user.register') }}" class="text-decoration-none text-dark">Registrar</a>
+          <a href="{{ url_for('user.pre_login') }}" class="text-decoration-none text-dark me-3">Login</a>
+          <a href="{{ url_for('user.pre_login') }}" class="text-decoration-none text-dark">Registrar</a>
         {% endif %}
       </div>
     </div>
