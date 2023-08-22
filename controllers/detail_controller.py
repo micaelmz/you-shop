@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for
 from models.product import Product
-from models.category import Category
 
 
 def product_detail(product_id):
@@ -11,7 +10,5 @@ def product_detail(product_id):
 
     return render_template(
         'detail.html',
-        categories=Category.get_all(),
-        cartLength=5,
         product=product
     )
