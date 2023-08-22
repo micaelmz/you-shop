@@ -34,11 +34,11 @@ pip install -r requirements.txt
 |--------------------------------------|---------------------------|-----------------------|
 | ✅ Sistema de avaliação               | ✅ Página inicial          | ✅ CI/CD               |
 | ✅ RESTful API                        | ✅ Página de produto       | ⬜ CDN                 |
-| ⬜ Sistema de usuários e autenticação | ✅ Página de detalhes      | ⬜ AWS EC2             |
+| ✅ Sistema de usuários e autenticação | ✅ Página de detalhes      | ⬜ AWS EC2             |
 | ✅ Sistema de busca                   | ✅ Footer                  | ✅ Hospedagem          |
 | ✅ Banco de dados                     | ✅ Página de busca         | ✅ Testes              |
 | ✅ Sistema de categorías              | ✅ Menu (header e navbar)  | ✅ Documentação da API |
-| ✅ Paginação                          | ✅ Página de carrinho      |                       |
+| ⬜ Paginação                          | ✅ Página de carrinho      |                       |
 | ⬜ Sistema de estoque                 | ⬜ Página de pagamento     |                       |
 | ⬜ Sistema de pedidos e pagamentos    | ⬜ Página de pedidos       |                       |
 | ⬜ Sistema de cupons                  | ⬜ Página de perfil        |                       |
