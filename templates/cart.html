@@ -7,7 +7,7 @@
   <div class="container-lg mt-5">
     <div class="row">
       <div class="col-8">
-        <table class="table table-hover">
+        <table class="table table-hover table-striped">
         <colgroup>
           <col style="width: 50%;" /> <!-- Product column, 30% of the table width -->
           <col style="width: 20%;" /> <!-- Quantity column, 20% of the table width -->
@@ -23,23 +23,27 @@
           </tr>
         </thead>
         <tbody>
+        {% set ns = namespace(subtotal=0) %}
+        {% for product, quantity in cart_items %}
+          {% set ns.subtotal = ns.subtotal + (product.price.new * quantity) %}
           <tr>
             <th scope="row" class="border-start border-end align-middle">
               <div class="d-flex align-items-center">
-                <img src="assets/images/product-1.png" class="cart-img" alt="">
-                <p class="fcs-14 fw-light roboto text-truncate my-auto">Vestido Branco</p>
+                <img src="{{ product.image }}" class="cart-img rounded-3 me-2" alt="">
+                <p class="fcs-14 fw-light roboto text-truncate my-auto">{{ product.name }}</p>
               </div>
             </th>
             <td class="border-end roboto align-middle"> <!-- Apply "align-middle" to center align the content in the cells -->
               <div class="input-group">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-minus"></i></button>
-                <input type="text" class="form-control text-center fcs-14" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="1">
+                <input type="text" class="form-control text-center fcs-14" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="{{ quantity }}">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
               </div>
             </td>
-            <td class="border-end roboto fcs-14 align-middle text-center">R$ 100,00</td> <!-- Apply "align-middle" to center align the content in the cells -->
+            <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ product.price }}</td> <!-- Apply "align-middle" to center align the content in the cells -->
             <td class="border-end roboto fcs-14 align-middle text-center"><i class="fas fa-trash-alt"></i></td> <!-- Apply "align-middle" to center align the content in the cells -->
           </tr>
+        {% endfor %}
         </tbody>
       </table>
       </div>
@@ -55,7 +59,7 @@
           <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
           <div class="d-flex align-content-between bor">
             <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 100,00</p>
+            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
           </div>
           <div class="d-flex align-content-between">
             <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
@@ -68,7 +72,7 @@
           <hr>
           <div class="d-flex align-content-between">
             <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 90,00</p>
+            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
           </div>
           <hr>
           <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>

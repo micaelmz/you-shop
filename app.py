@@ -45,4 +45,4 @@ def terms_of_service():
 
 @app.route('/privacy-policy')
 def privacy_policy():
-    pass
+    return render_template('privacy-policy.html')
