@@ -6,6 +6,7 @@ from utils.security import calculate_salting_length, validate_recaptcha
 from controllers.forms import validate_form_or_back, PreLoginForm, LoginForm, RegistrationForm
 
 from models.user import User
+from models.product import Product
 
 
 def pre_login(continue_modal=None, continue_form=None):
@@ -42,7 +43,7 @@ def login_post():
 
     if user and check_password_hash(user.password, form.password.data):
         login_user(user)
-        return redirect(url_for('home'))
+        return redirect(request.form.get('next') or url_for('home'))
 
     else:
         flash('Email ou senha inválidos.', 'warning')
@@ -90,4 +91,13 @@ def logout():
 
 @login_required
 def cart():
-    return render_template('cart.html')
+    cart_items = []
+    for cart_item in current_user.cart:
+        cart_items.append(
+            (Product.get_by_id(cart_item['id']), cart_item['quantity'])
+        )
+
+    return render_template(
+        'cart.html',
+        cart_items=cart_items
+    )
