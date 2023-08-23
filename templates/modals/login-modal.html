@@ -25,7 +25,9 @@
             </label>
             <a href="#" class="text-dark ms-auto me-1">Esqueceu a senha?</a>
           </div>
-          <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+          {% if request.args.get('next') %}
+            <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+          {% endif %}
           <div class="my-1" style="display: flex; justify-content: center;">
             <div class="g-recaptcha" data-theme="light" data-sitekey="6LcdrcAnAAAAALB4tg-_yxPs8xB4ZJEVTQH7yySg"></div>
           </div>

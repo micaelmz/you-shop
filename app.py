@@ -1,8 +1,11 @@
-from flask import render_template, redirect
+from flask import render_template, redirect, Flask
+from flask_login import LoginManager
+
 from api import api_blueprint
+from utils.database import db
 
 from models.category import Category
-from models.product import Product
+from models.product import Product, Price
 from models.user import User
 
 from routes.detail_bp import detail_blueprint
@@ -10,13 +13,29 @@ from routes.user_bp import user_blueprint
 from routes.product_bp import product_blueprint
 from routes.no_results_bp import no_results_blueprint
 
-from config import app, login_manager
+app = Flask(__name__)
+app.config.from_object('config')
+db.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'user.pre_login'
 
 app.register_blueprint(api_blueprint, url_prefix='/api')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(product_blueprint, url_prefix='/product')
 app.register_blueprint(detail_blueprint, url_prefix='/detail')
 app.register_blueprint(no_results_blueprint, url_prefix='/no-results')
+
+
+# Injetando categorias no contexto de todas as rotas
+@app.context_processor
+def inject_categories():
+    return dict(categories=Category.get_all())
+
+
+@app.template_global()
+def label_price(price: float) -> str:
+    return Price.label_price(price)
 
 
 @login_manager.user_loader
@@ -28,7 +47,6 @@ def load_user(user_id):
 def home():
     return render_template(
         'index.html',
-        cartLength=2,
         recommended_products=Product.get_on_sale_products()
     )
 

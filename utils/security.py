@@ -1,7 +1,8 @@
 import datetime
 import requests
+import os
 
-SECRET_KEY = open('recaptcha_secret_key.txt', 'r').read()  # todo : change this to a env variable
+SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY')
 
 
 def calculate_salting_length():
