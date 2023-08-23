@@ -20,6 +20,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'user.pre_login'
 
+with app.app_context():
+    db.create_all()
+
 app.register_blueprint(api_blueprint, url_prefix='/api')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(product_blueprint, url_prefix='/product')
