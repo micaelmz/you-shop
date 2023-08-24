@@ -7,7 +7,7 @@
 ![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?logo=bootstrap&logoColor=white)
 ![JQuery](https://img.shields.io/badge/JQuery-0769AD?logo=jquery&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)
 ![PIX](https://img.shields.io/badge/PIX-32bcbc?logo=pix&logoColor=white)
 
 Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administrativo público e aberto, RESTful API, sistema de usuários, notificação, autenticação, produtos, estoque, avaliações, pix e muito mais. 
