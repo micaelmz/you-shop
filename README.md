@@ -14,7 +14,7 @@ Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administ
 
 
 
-[Acesse o site](https://www.micaelmuniz.com/shop)&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;[Documentação da API](https://www.micaelmuniz.com/shop/api/docs)
+[Acesse o site](https://youshop.micaelmuniz.com)&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;[Documentação da API](https://youshop.micaelmuniz.com/api/docs)
 
 </div>
 
