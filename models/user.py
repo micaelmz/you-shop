@@ -10,6 +10,8 @@ class User(BaseModel, UserMixin):
     email = db.Column(db.String(200), nullable=False, unique=True)
     password = db.Column(db.String(512), nullable=False)
     cart = db.Column(db.JSON, nullable=False, default=[])
+    # vs
+    cart = db.relationship('Cart', backref='user')
     # todo : add address and status (active, inactive, banned, etc)
 
     def get_id(self):
