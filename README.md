@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![Icon](https://www.micaelmuniz.com/static/assets/images/favicon.png) You Shop
+# ![Icon](https://youshop.micaelmuniz.com/static/assets/images/favicon.png) You Shop
 <br>
 
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
