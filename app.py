@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from api import api_blueprint
 from utils.database import db
 
+from models.cart import Cart
 from models.category import Category
 from models.product import Product, Price
 from models.user import User
