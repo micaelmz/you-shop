@@ -3,332 +3,332 @@
 {% block title %}{{ product.name }} | You Shop{% endblock %}
 {% block meta_description %}{{ product.description }}{% endblock %}
 {% block extra_style %}
-    <style>
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            filter: invert(100%);
-        }
+  <style>
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+          filter: invert(100%);
+      }
 
-        .nav-link {
-            color: #676767;
-        }
+      .nav-link {
+          color: #676767;
+      }
 
-        .nav-link:hover {
-            color: #000;
-        }
+      .nav-link:hover {
+          color: #000;
+      }
 
-        @media (max-width: 990px) {
-            .cart-qnt-control {
-                width: 33%;
-            }
-        }
+      @media (max-width: 990px) {
+          .cart-qnt-control {
+              width: 33%;
+          }
+      }
 
-        @media (min-width: 991px) {
-            .cart-qnt-control {
-                width: 18%;
-            }
-        }
+      @media (min-width: 991px) {
+          .cart-qnt-control {
+              width: 18%;
+          }
+      }
 
-        @media (min-width: 768px) {
-            .col-md-6 {
-                width: 49% !important;
-            }
-        }
+      @media (min-width: 768px) {
+          .col-md-6 {
+              width: 49% !important;
+          }
+      }
 
-        .color-selector:checked + label {
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
-        }
+      .color-selector:checked + label {
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+      }
 
-        .custom-tooltip {
-            --bs-tooltip-bg: #777777;
-            --bs-tooltip-color: #fff;
-        }
-    </style>
+      .custom-tooltip {
+          --bs-tooltip-bg: #777777;
+          --bs-tooltip-color: #fff;
+      }
+  </style>
 
 {% endblock %}
 
 {% block content %}
-    <section id="detail">
-        <div class="container-lg mt-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
-                    <li class="breadcrumb-item">
-                        <a class="link-body-emphasis" href="{{ url_for('home') }}">
-                            <i class="fa-solid fa-house"></i>
-                            <span class="visually-hidden">Home</span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none"
-                           href="{{ url_for('product.all_products') }}">Produtos</a>
-                    </li>
-                    <li class="breadcrumb-item active text-truncate" aria-current="page" style="max-width: 55vw;">
-                        {{ product.name }}
-                    </li>
-                </ol>
-            </nav>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-3 mb-md-0"> <!-- Product Image Carrousel -->
-                    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="{{ product.image }}" class="img-fluid" alt="...">
-                            </div>
-                            {% for additional_image in product.additional_images %}
-                                <div class="carousel-item">
-                                    <img src="{{ additional_image }}" class="img-fluid" alt="...">
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
-                                data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
-                                data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div> <!-- Product Image Carrousel -->
-                <div class="col-12 col-md-8 ps-3">
-                    <h2 class="fcs-13 poppins fw-bold" id="productName">{{ product.name }}</h2>
-                    <div id="rating" class="mt-3">
-                        {% for i in range(5) %}
-                            {% if i < product.rating.integer %}
-                                <i class="fas fa-star fcs-15 text-warning"></i>
-                            {% elif i == product.rating.integer and product.rating.decimal >= 3 %}
-                                <i class="fa-solid fa-star-half-stroke fcs-15 text-warning"></i>
-                            {% else %}
-                                <i class="fa-regular fa-star fcs-15 text-warning"></i>
-                            {% endif %}
-                        {% endfor %}
-                        <span class="fcs-15 roboto ">{{ product.rating }} ({{ product.reviews|length }} Avaliações)</span>
-                    </div>
-                    <div id="price" class="my-5">
-                        <span class="fcs-12 roboto fw-semibold">R${{ product.price.label_price(product.price.new) }}</span>
-                        {% if product.price.old %}
-                            <del class="fcs-14 roboto fw-semibold text-danger ms-3">
-                                R${{ product.price.label_price(product.price.old) }}</del>
-                        {% endif %}
-                    </div>
-                    <div id="sizesOptions" class="row">
-                        <div class="col-12 col-md-2">
-                            <span class="fcs-15 roboto fw-semibold me-4 mb-0">Tamanho:</span>
-                        </div>
-                        <div class="col-12 col-md-10">
-                            <input type="radio" class="btn-check" name="options-outlined" id="p-size"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="p-size"
-                                   style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                   data-bs-custom-class="custom-tooltip"
-                                   title="📏 Medição do produto <br> Tórax: 94cm; Comp: 68cm; Ombro: 12cm; Manga: 21cm">
-                                P
-                            </label>
-
-                            <input type="radio" class="btn-check" name="options-outlined" id="m-size" autocomplete="off"
-                                   disabled>
-                            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="m-size"
-                                   style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                   data-bs-custom-class="custom-tooltip"
-                                   title="📏 Medição do produto <br> Tórax: 98cm; Comp: 70cm; Ombro: 15cm; Manga: 22cm">
-                                M
-                            </label>
-
-                            <input type="radio" class="btn-check" name="options-outlined" id="g-size"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="g-size"
-                                   style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                   data-bs-custom-class="custom-tooltip"
-                                   title="📏 Medição do produto <br> Tórax: 104cm; Comp: 72cm; Ombro: 18cm; Manga: 23cm">
-                                G
-                            </label>
-
-                            <input type="radio" class="btn-check" name="options-outlined" id="gg-size"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="gg-size"
-                                   style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                                   data-bs-custom-class="custom-tooltip"
-                                   title="📏 Medição do produto <br> Tórax: 110cm; Comp: 74cm; Ombro: 21cm; Manga: 24cm">
-                                GG
-                            </label>
-                        </div>
-                    </div>
-                    <div id="colorOptions" class="mt-2 mt-md-1 row">
-                        <!-- TODO: Implementar seleção de cores -->
-                        <input type="color" class="form-control form-control-color d-none" id="exampleColorInput"
-                               value="#563d7c" title="Choose your color">
-
-                        <div class="col-12 col-md-2">
-                            <span class="fcs-15 roboto fw-semibold me-4 mb-0">Cores:</span>
-                        </div>
-                        <div class="col-12 col-md-10">
-                            <input type="radio" class="btn-check color-selector" name="color-options" id="color-black"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                                   for="color-black" style="width: 2rem; height: 2rem; background-color: #282828;"
-                                   title="Preto"></label>
-
-                            <input type="radio" class="btn-check color-selector" name="color-options" id="color-white"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                                   for="color-white" style="width: 2rem; height: 2rem; background-color: white;"
-                                   title="Branco"></label>
-
-                            <input type="radio" class="btn-check color-selector" name="color-options" id="color-red"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                                   for="color-red" style="width: 2rem; height: 2rem; background-color: #af0c0c;"
-                                   title="Vermelho"></label>
-
-                            <input type="radio" class="btn-check color-selector" name="color-options" id="color-green"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                                   for="color-green" style="width: 2rem; height: 2rem; background-color: #00b000;"
-                                   title="Verde"></label>
-
-                            <input type="radio" class="btn-check color-selector" name="color-options" id="color-blue"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                                   for="color-blue" style="width: 2rem; height: 2rem; background-color: #0e0ed7;"
-                                   title="Azul"></label>
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <form action="" method="post">
-                            <div class="input-group mt-3 cart-qnt-control">
-                                <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i
-                                        class="fas fa-minus"></i></button>
-                                <input id="cart-qnt-input" type="text" class="form-control text-center fcs-15"
-                                       placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
-                                <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i
-                                        class="fas fa-plus"></i></button>
-                            </div>
-                            <div class="ms-4 mt-3">
-                                <button class="btn btn-outline-dark roboto fcs-15">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Adicionar ao carrinho
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+  <section id="detail">
+    <div class="container-lg mt-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('home') }}">
+              <i class="fa-solid fa-house"></i>
+              <span class="visually-hidden">Home</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none"
+               href="{{ url_for('product.all_products') }}">Produtos</a>
+          </li>
+          <li class="breadcrumb-item active text-truncate" aria-current="page" style="max-width: 55vw;">
+            {{ product.name }}
+          </li>
+        </ol>
+      </nav>
+      <div class="row">
+        <div class="col-12 col-md-4 mb-3 mb-md-0"> <!-- Product Image Carrousel -->
+          <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{{ product.image }}" class="img-fluid" alt="...">
+              </div>
+              {% for additional_image in product.additional_images %}
+                <div class="carousel-item">
+                  <img src="{{ additional_image }}" class="img-fluid" alt="...">
                 </div>
+              {% endfor %}
             </div>
-            <div class="row d-flex mt-5">
-                <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
-                                aria-selected="true">Descrição
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                aria-controls="profile-tab-pane" aria-selected="false">Informação
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link pe-0" id="contact-tab" data-bs-toggle="tab"
-                                data-bs-target="#contact-tab-pane" type="button" role="tab"
-                                aria-controls="contact-tab-pane" aria-selected="false">
-                            Avaliações
-                            <span class="top-0 start-100 translate-middle badge rounded-pill bg-dark">
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                    data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                    data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div> <!-- Product Image Carrousel -->
+        <div class="col-12 col-md-8 ps-3">
+          <h2 class="fcs-13 poppins fw-bold" id="productName">{{ product.name }}</h2>
+          <div id="rating" class="mt-3">
+            {% for i in range(5) %}
+              {% if i < product.rating.integer %}
+                <i class="fas fa-star fcs-15 text-warning"></i>
+              {% elif i == product.rating.integer and product.rating.decimal >= 3 %}
+                <i class="fa-solid fa-star-half-stroke fcs-15 text-warning"></i>
+              {% else %}
+                <i class="fa-regular fa-star fcs-15 text-warning"></i>
+              {% endif %}
+            {% endfor %}
+            <span class="fcs-15 roboto ">{{ product.rating }} ({{ product.reviews|length }} Avaliações)</span>
+          </div>
+          <div id="price" class="my-5">
+            <span class="fcs-12 roboto fw-semibold">R${{ product.price.label_price(product.price.new) }}</span>
+            {% if product.price.old %}
+              <del class="fcs-14 roboto fw-semibold text-danger ms-3">
+                R${{ product.price.label_price(product.price.old) }}</del>
+            {% endif %}
+          </div>
+          <div id="sizesOptions" class="row">
+            <div class="col-12 col-md-2">
+              <span class="fcs-15 roboto fw-semibold me-4 mb-0">Tamanho:</span>
+            </div>
+            <div class="col-12 col-md-10">
+              <input type="radio" class="btn-check" name="options-outlined" id="p-size"
+                     autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="p-size"
+                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                     data-bs-custom-class="custom-tooltip"
+                     title="📏 Medição do produto <br> Tórax: 94cm; Comp: 68cm; Ombro: 12cm; Manga: 21cm">
+                P
+              </label>
+
+              <input type="radio" class="btn-check" name="options-outlined" id="m-size" autocomplete="off"
+                     disabled>
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="m-size"
+                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                     data-bs-custom-class="custom-tooltip"
+                     title="📏 Medição do produto <br> Tórax: 98cm; Comp: 70cm; Ombro: 15cm; Manga: 22cm">
+                M
+              </label>
+
+              <input type="radio" class="btn-check" name="options-outlined" id="g-size"
+                     autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="g-size"
+                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                     data-bs-custom-class="custom-tooltip"
+                     title="📏 Medição do produto <br> Tórax: 104cm; Comp: 72cm; Ombro: 18cm; Manga: 23cm">
+                G
+              </label>
+
+              <input type="radio" class="btn-check" name="options-outlined" id="gg-size"
+                     autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="gg-size"
+                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
+                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                     data-bs-custom-class="custom-tooltip"
+                     title="📏 Medição do produto <br> Tórax: 110cm; Comp: 74cm; Ombro: 21cm; Manga: 24cm">
+                GG
+              </label>
+            </div>
+          </div>
+          <div id="colorOptions" class="mt-2 mt-md-1 row">
+            <!-- TODO: Implementar seleção de cores -->
+            <input type="color" class="form-control form-control-color d-none" id="exampleColorInput"
+                   value="#563d7c" title="Choose your color">
+
+            <div class="col-12 col-md-2">
+              <span class="fcs-15 roboto fw-semibold me-4 mb-0">Cores:</span>
+            </div>
+            <div class="col-12 col-md-10">
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-black"
+                     autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
+                     for="color-black" style="width: 2rem; height: 2rem; background-color: #282828;"
+                     title="Preto"></label>
+
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-white"
+                     autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
+                     for="color-white" style="width: 2rem; height: 2rem; background-color: white;"
+                     title="Branco"></label>
+
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-red"
+                     autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
+                     for="color-red" style="width: 2rem; height: 2rem; background-color: #af0c0c;"
+                     title="Vermelho"></label>
+
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-green"
+                     autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
+                     for="color-green" style="width: 2rem; height: 2rem; background-color: #00b000;"
+                     title="Verde"></label>
+
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-blue"
+                     autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
+                     for="color-blue" style="width: 2rem; height: 2rem; background-color: #0e0ed7;"
+                     title="Azul"></label>
+            </div>
+          </div>
+          <form action="" method="post">
+            <div class="d-flex">
+              <div class="input-group mt-3 cart-qnt-control">
+                <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i
+                  class="fas fa-minus"></i></button>
+                <input id="cart-qnt-input" type="text" class="form-control text-center fcs-15"
+                       placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
+                <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i
+                  class="fas fa-plus"></i></button>
+              </div>
+              <div class="ms-4 mt-3">
+                <button class="btn btn-outline-dark roboto fcs-15">
+                  <i class="fas fa-shopping-cart"></i>
+                  Adicionar ao carrinho
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row d-flex mt-5">
+        <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                    data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
+                    aria-selected="true">Descrição
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                    data-bs-target="#profile-tab-pane" type="button" role="tab"
+                    aria-controls="profile-tab-pane" aria-selected="false">Informação
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link pe-0" id="contact-tab" data-bs-toggle="tab"
+                    data-bs-target="#contact-tab-pane" type="button" role="tab"
+                    aria-controls="contact-tab-pane" aria-selected="false">
+              Avaliações
+              <span class="top-0 start-100 translate-middle badge rounded-pill bg-dark">
               {{ product.reviews|length }}
             </span>
-                        </button>
-                    </li>
-                </ul>
-                <div class="tab-content mt-1">
-                    <div class="tab-pane fade show active roboto" id="home-tab-pane" role="tabpanel"
-                         aria-labelledby="home-tab" tabindex="0">
-                        {% if product.description %}
-                            <p class="m-3 roboto text-justify">{{ product.description }}</p>
-                        {% else %}
-                            <p class="m-3 roboto">Não há descrição para este produto.</p>
-                        {% endif %}
-                    </div>
-                    <div class="tab-pane fade roboto" id="profile-tab-pane" role="tabpanel"
-                         aria-labelledby="profile-tab" tabindex="0">
-                        <div class="row mt-3 mx-2">
-                            {% if product.additional_info %}
-                                <table class="table table-striped table-bordered table-hover roboto">
-                                    <tbody>
-                                    {% for key, value in product.additional_info.items() %}
-                                        <tr>
-                                            <td>{{ key }}</td>
-                                            <td>{{ value }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                <p class="roboto">Não há informações adicionais sobre este produto.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade roboto" id="contact-tab-pane" role="tabpanel"
-                         aria-labelledby="contact-tab" tabindex="0">
-                        <div class="d-flex row mt-3 mx-3">
-                            {% if product.reviews|length > 0 %}
-                                <ul class="list-inline row d-flex">
-                                    {% for review in product.reviews %}
-                                        <li class="list-inline-item col-12 col-md-6">
-                                            <div class="userReview">
-                                                <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span
-                                                        class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span>
-                                                </p>
-                                                <div class="userRating">
-                                                    {% for i in range(5) %}
-                                                        {% if i < review.rating.integer %}
-                                                            <i class="fas fa-star text-warning"></i>
-                                                        {% elif i == review.rating.integer and review.rating.decimal >= 3 %}
-                                                            <i class="fa-solid fa-star-half-stroke text-warning"></i>
-                                                        {% else %}
-                                                            <i class="fa-regular fa-star text-warning"></i>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                                <p class="comment roboto">{{ review.content }}</p>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <p class="roboto">Não há avaliações para este produto.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content mt-1">
+          <div class="tab-pane fade show active roboto" id="home-tab-pane" role="tabpanel"
+               aria-labelledby="home-tab" tabindex="0">
+            {% if product.description %}
+              <p class="m-3 roboto text-justify">{{ product.description }}</p>
+            {% else %}
+              <p class="m-3 roboto">Não há descrição para este produto.</p>
+            {% endif %}
+          </div>
+          <div class="tab-pane fade roboto" id="profile-tab-pane" role="tabpanel"
+               aria-labelledby="profile-tab" tabindex="0">
+            <div class="row mt-3 mx-2">
+              {% if product.additional_info %}
+                <table class="table table-striped table-bordered table-hover roboto">
+                  <tbody>
+                  {% for key, value in product.additional_info.items() %}
+                    <tr>
+                      <td>{{ key }}</td>
+                      <td>{{ value }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p class="roboto">Não há informações adicionais sobre este produto.</p>
+              {% endif %}
             </div>
+          </div>
+          <div class="tab-pane fade roboto" id="contact-tab-pane" role="tabpanel"
+               aria-labelledby="contact-tab" tabindex="0">
+            <div class="d-flex row mt-3 mx-3">
+              {% if product.reviews|length > 0 %}
+                <ul class="list-inline row d-flex">
+                  {% for review in product.reviews %}
+                    <li class="list-inline-item col-12 col-md-6">
+                      <div class="userReview">
+                        <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span
+                          class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span>
+                        </p>
+                        <div class="userRating">
+                          {% for i in range(5) %}
+                            {% if i < review.rating.integer %}
+                              <i class="fas fa-star text-warning"></i>
+                            {% elif i == review.rating.integer and review.rating.decimal >= 3 %}
+                              <i class="fa-solid fa-star-half-stroke text-warning"></i>
+                            {% else %}
+                              <i class="fa-regular fa-star text-warning"></i>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                        <p class="comment roboto">{{ review.content }}</p>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="roboto">Não há avaliações para este produto.</p>
+              {% endif %}
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 {% block extra_scripts %}
-    <script>
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-        $(document).ready(function () {
+  <script>
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      $(document).ready(function () {
 
-            var $input = $("#cart-qnt-input");
-            var $btnAdd = $("#cart-qnt-add1");
-            var $btnRemove = $("#cart-qnt-remove1");
+          var $input = $("#cart-qnt-input");
+          var $btnAdd = $("#cart-qnt-add1");
+          var $btnRemove = $("#cart-qnt-remove1");
 
-            $btnAdd.click(function () {
-                var currentValue = parseInt($input.val());
-                $input.val(currentValue + 1);
-            });
+          $btnAdd.click(function () {
+              var currentValue = parseInt($input.val());
+              $input.val(currentValue + 1);
+          });
 
-            $btnRemove.click(function () {
-                var currentValue = parseInt($input.val());
-                if (currentValue > 1) {
-                    $input.val(currentValue - 1);
-                }
-            });
-        });
-    </script>
+          $btnRemove.click(function () {
+              var currentValue = parseInt($input.val());
+              if (currentValue > 1) {
+                  $input.val(currentValue - 1);
+              }
+          });
+      });
+  </script>
 {% endblock %}

@@ -6,7 +6,7 @@
         <h1 class="modal-title fcs-13 roboto" id="exampleModalLabel">Crie sua conta</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="POST" action="{{ url_for('user.register_post') }}">
+      <form method="POST" action="{{ url_for('auth.register_post') }}">
         <div class="modal-body pb-0">
           {{ continue_form.hidden_tag() }}
           <div class="row my-1">
