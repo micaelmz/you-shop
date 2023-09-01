@@ -199,12 +199,13 @@
                      title="Azul"></label>
             </div>
           </div>
-          <form action="" method="post">
+          <form action="{{ url_for('user.add_to_cart') }}" method="post">
             <div class="d-flex">
+              <input type="hidden" name="product_id" value="{{ product.id }}">
               <div class="input-group mt-3 cart-qnt-control">
                 <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i
                   class="fas fa-minus"></i></button>
-                <input id="cart-qnt-input" type="text" class="form-control text-center fcs-15"
+                <input name="quantity" id="cart-qnt-input" type="text" class="form-control text-center fcs-15"
                        placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
                 <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i
                   class="fas fa-plus"></i></button>

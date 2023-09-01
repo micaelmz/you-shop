@@ -41,7 +41,12 @@
               </div>
             </td>
             <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td> <!-- Apply "align-middle" to center align the content in the cells -->
-            <td class="border-end roboto fcs-14 align-middle text-center"><a class="text-danger text-decoration-none"><i class="fas fa-trash-alt"></i></a></td> <!-- Apply "align-middle" to center align the content in the cells -->
+            <td class="border-end roboto fcs-14 align-middle text-center">
+              <form action="{{ url_for('user.delete_item') }}" method="post">
+                <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
+                <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </td> <!-- Apply "align-middle" to center align the content in the cells -->
           </tr>
         {% endfor %}
         </tbody>
