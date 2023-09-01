@@ -13,22 +13,24 @@ from routes.detail_bp import detail_blueprint
 from routes.user_bp import user_blueprint
 from routes.product_bp import product_blueprint
 from routes.no_results_bp import no_results_blueprint
+from routes.auth_bp import auth_blueprint
 
 app = Flask(__name__)
 app.config.from_object('config')
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'user.pre_login'
+login_manager.login_view = 'auth.pre_login'
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 app.register_blueprint(api_blueprint, url_prefix='/api')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(product_blueprint, url_prefix='/product')
 app.register_blueprint(detail_blueprint, url_prefix='/detail')
 app.register_blueprint(no_results_blueprint, url_prefix='/no-results')
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 
 # Injetando categorias no contexto de todas as rotas

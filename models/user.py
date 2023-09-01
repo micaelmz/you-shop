@@ -11,9 +11,6 @@ class User(BaseModel, UserMixin):
     password = db.Column(db.String(512), nullable=False)
     cart = db.relationship('Cart', backref='user')
 
-    def get_id(self):
-        return str(self.id)
-
     @classmethod
     def get_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
