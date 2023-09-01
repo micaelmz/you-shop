@@ -14,8 +14,13 @@ def cart():
 def add_to_cart():
     product_id = request.form.get('product_id')
     quantity = request.form.get('quantity')
+
+    if not quantity.isnumeric() or int(quantity) < 1:
+        return redirect(url_for('home'))
+
     cart = Cart.get_or_create_cart(current_user.id, product_id)
     cart += int(quantity)
+
     return redirect(url_for('user.cart'))
 
 
