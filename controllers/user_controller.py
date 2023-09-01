@@ -6,6 +6,7 @@ from utils.security import calculate_salting_length, validate_recaptcha
 from controllers.forms import validate_form_or_back, PreLoginForm, LoginForm, RegistrationForm
 
 from models.user import User
+from models.cart import Cart
 from models.product import Product
 
 
@@ -91,13 +92,16 @@ def logout():
 
 @login_required
 def cart():
-    cart_items = []
-    for cart_item in current_user.cart:
-        cart_items.append(
-            (Product.get_by_id(cart_item['id']), cart_item['quantity'])
-        )
-
     return render_template(
         'cart.html',
-        cart_items=cart_items
     )
+
+
+@login_required
+def add_to_cart(product_id, qnt):
+    new_cart = Cart(
+        user_id=current_user.id,
+        product_id=product_id,
+        qnt=qnt
+    )
+
