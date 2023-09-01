@@ -3,89 +3,123 @@
 {% block title %}You Shop - Detalhes do Produto{% endblock %}
 
 {% block content %}
-<section id="cart">
-  <div class="container-lg mt-5">
-    <div class="row">
-      <div class="col-8">
-        <table class="table table-hover table-striped">
-        <colgroup>
-          <col style="width: 50%;" /> <!-- Product column, 30% of the table width -->
-          <col style="width: 20%;" /> <!-- Quantity column, 20% of the table width -->
-          <col style="width: 20%;" /> <!-- Price column, 30% of the table width -->
-          <col style="width: 10%;" /> <!-- Empty column, 20% of the table width -->
-        </colgroup>
-        <thead>
-          <tr class="text-center"> <!-- Apply "text-center" to center align the header -->
-            <th scope="col">Produto</th>
-            <th scope="col">Quantidade</th>
-            <th scope="col">Preço</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-        {% set ns = namespace(subtotal=0) %}
-        {% for cart_item in current_user.cart %}
-          {% set ns.subtotal = ns.subtotal + (cart_item.product.price.new * cart_item.quantity) %}
-          <tr>
-            <th scope="row" class="border-start border-end align-middle">
-              <div class="d-flex align-items-center">
-                <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
-                <p class="fcs-14 fw-light roboto text-truncate my-auto">{{ cart_item.product.name }}</p>
-              </div>
-            </th>
-            <td class="border-end roboto align-middle"> <!-- Apply "align-middle" to center align the content in the cells -->
+  <section id="cart">
+    <div class="container-lg">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis" href="{{ url_for('home') }}">
+              <i class="fa-solid fa-house"></i>
+              <span class="visually-hidden">Home</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none"
+               href="{{ url_for('product.all_products') }}">Carrinho</a>
+          </li>
+        </ol>
+      </nav>
+      <div class="row my-3">
+        {% if current_user.cart|length > 0 %}
+          <div class="col-8"> <!-- Cart items -->
+            {% set ns = namespace(subtotal=0) %}
+            <table class="table table-hover table-striped">
+              <colgroup>
+                <col style="width: 50%;"/> <!-- Product column, 30% of the table width -->
+                <col style="width: 20%;"/> <!-- Quantity column, 20% of the table width -->
+                <col style="width: 20%;"/> <!-- Price column, 30% of the table width -->
+                <col style="width: 10%;"/> <!-- Empty column, 20% of the table width -->
+              </colgroup>
+              <thead>
+              <tr class="text-center"> <!-- Apply "text-center" to center align the header -->
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Preço</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for cart_item in current_user.cart %}
+                {% set ns.subtotal = ns.subtotal + (cart_item.product.price.new * cart_item.quantity) %}
+                <tr>
+                  <th scope="row" class="border-start border-end align-middle">
+                    <div class="d-flex align-items-center">
+                      <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
+                      <p class="fcs-14 fw-light roboto text-truncate my-auto">{{ cart_item.product.name }}</p>
+                    </div>
+                  </th>
+                  <td class="border-end roboto align-middle">
+                    <!-- Apply "align-middle" to center align the content in the cells -->
+                    <div class="input-group">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i
+                        class="fas fa-minus"></i></button>
+                      <input type="text" class="form-control text-center fcs-14" placeholder=""
+                             aria-label="Example text with button addon" aria-describedby="button-addon1"
+                             value="{{ cart_item.quantity }}">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i
+                        class="fas fa-plus"></i></button>
+                    </div>
+                  </td>
+                  <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td>
+                  <!-- Apply "align-middle" to center align the content in the cells -->
+                  <td class="border-end roboto fcs-14 align-middle text-center">
+                    <form action="{{ url_for('user.delete_item') }}" method="post">
+                      <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
+                      <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                  </td> <!-- Apply "align-middle" to center align the content in the cells -->
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div> <!-- Cart items -->
+          <div class="col-4 mt-5"> <!-- Order resume -->
+            <form action="" method="post">
               <div class="input-group">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-minus"></i></button>
-                <input type="text" class="form-control text-center fcs-14" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="{{ cart_item.quantity }}">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                <input type="text" class="form-control roboto" placeholder="Código de Cupom"
+                       aria-label="Código de Cupom"
+                       aria-describedby="searchProducts">
+                <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
               </div>
-            </td>
-            <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td> <!-- Apply "align-middle" to center align the content in the cells -->
-            <td class="border-end roboto fcs-14 align-middle text-center">
-              <form action="{{ url_for('user.delete_item') }}" method="post">
-                <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
-                <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
-              </form>
-            </td> <!-- Apply "align-middle" to center align the content in the cells -->
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-      </div>
-      <div class="col-4 mt-5">
-        <form action="" method="post">
-          <div class="input-group">
-            <input type="text" class="form-control roboto" placeholder="Código de Cupom" aria-label="Código de Cupom" aria-describedby="searchProducts">
-            <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
+            </form>
+            <div class="card mt-5">
+              <div class="card-body">
+                <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
+                <div class="d-flex align-content-between bor">
+                  <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
+                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
+                </div>
+                <div class="d-flex align-content-between">
+                  <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
+                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
+                </div>
+                <div class="d-flex align-content-between">
+                  <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
+                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
+                </div>
+                <hr>
+                <div class="d-flex align-content-between">
+                  <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
+                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
+                </div>
+                <hr>
+                <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
+              </div>
+            </div>
+          </div> <!-- Order resume -->
+        {% else %}
+          <div class="container-lg">
+            <div class="row my-5 text-center">
+              <div class="col-md-12 my-2">
+                <h1 class="poppins">Seu carrinho está vazio! :(</h1>
+                <p class="roboto">Adicione produtos ao seu carrinho para continuar.</p>
+                <a href="{{ url_for('product.all_products') }}" class="btn btn-dark">Ver produtos</a>
+              </div>
+            </div>
           </div>
-        </form>
-        <div class="card mt-5">
-        <div class="card-body">
-          <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
-          <div class="d-flex align-content-between bor">
-            <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
-          </div>
-          <div class="d-flex align-content-between">
-            <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
-          </div>
-          <div class="d-flex align-content-between">
-            <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
-          </div>
-          <hr>
-          <div class="d-flex align-content-between">
-            <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
-            <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
-          </div>
-          <hr>
-          <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
-        </div>
-      </div>
+        {% endif %}
       </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
 
