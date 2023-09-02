@@ -2,85 +2,97 @@
 {% block title %}Login | You Shop{% endblock %}
 
 {% block content %}
-{% block extra_style %}
-  <style>
-  .divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 10px 0;
-  }
+  {% block extra_style %}
+    <style>
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 10px 0;
+        }
 
-  .divider::before,
-  .divider::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #ccc;
-  }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
 
-  .divider-text {
-    padding: 0 10px;
-    color: #999;
-  }
-</style>
-{% endblock %}
-<section>
-  <div class="container-lg my-5">
-    <div class="mx-auto" style="width: 40%;">
-      <h2 class="text-center mb-4">Login / Cadastro</h2>
-      <form style="" method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-floating">
-          {{ form.email(class="form-control", id="floatingInput", placeholder="name@example.com") }}
-          <label for="floatingInput">Endereço de email</label>
-          <button class="btn btn-dark w-100 py-2 mt-2 text-uppercase" type="submit">Continuar</button>
-          <div class="divider">
-            <span class="divider-text">ou</span>
+        .divider-text {
+            padding: 0 10px;
+            color: #999;
+        }
+        @media (max-width: 990px) {
+          #pre-login-form {
+              width: 85%;
+          }
+      }
+
+      @media (min-width: 991px) {
+          #pre-login-form {
+              width: 40%;
+          }
+      }
+
+    </style>
+  {% endblock %}
+  <section>
+    <div class="container-lg my-5"> <!-- Pré login form -->
+      <div id="pre-login-form" class="mx-auto">
+        <h2 class="text-center mb-4">Login / Cadastro</h2>
+        <form style="" method="POST">
+          {{ form.hidden_tag() }}
+          <div class="form-floating">
+            {{ form.email(class="form-control", id="floatingInput", placeholder="name@example.com") }}
+            <label for="floatingInput">Endereço de email</label>
+            <button class="btn btn-dark w-100 py-2 mt-2 text-uppercase" type="submit">Continuar</button>
+            <div class="divider">
+              <span class="divider-text">ou</span>
+            </div>
+            <button class="btn btn-outline-dark w-100 py-2 mt-2">
+              <i class="fab fa-google me-2"></i>
+              Entrar com o Google
+            </button>
           </div>
-          <button class="btn btn-outline-dark w-100 py-2 mt-2">
-            <i class="fab fa-google me-2"></i>
-            Entrar com o Google
-          </button>
+        </form>
+
+        <div class="row d-flex mt-2">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                {% if category == 'success' %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill"></i> <strong>Sucesso!</strong> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% elif category == 'warning' %}
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-circle-fill"></i> <strong>Atenção: </strong> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
         </div>
-      </form>
-
-      <div class="row d-flex mt-2">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-              {% if category == 'success' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                  <i class="bi bi-check-circle-fill"></i> <strong>Sucesso!</strong> {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% elif  category == 'warning' %}
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  <i class="bi bi-exclamation-circle-fill"></i> <strong>Atenção: </strong> {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% endif %}
-            {% endfor %}
-        {% endif %}
-      {% endwith %}
       </div>
-    </div>
-  </div>
-</section>
+    </div> <!-- Pré login form -->
+  </section>
 
-{% if continue_modal == 'login' %}
-  {% include 'modals/login-modal.html' %}
-{% elif continue_modal == 'register' %}
-  {% include 'modals/register-modal.html' %}
-{% endif %}
+  {% if continue_modal == 'login' %}
+    {% include 'modals/login-modal.html' %}
+  {% elif continue_modal == 'register' %}
+    {% include 'modals/register-modal.html' %}
+  {% endif %}
 
 {% endblock %}
 {% block extra_scripts %}
-<script>
-  $(document).ready(function() {
-    var continueModal = '{{ continue_modal }}';
-    if (continueModal === 'login' || continueModal === 'register') {
-      $('#continue-modal').modal('show');
-    }
-  });
-</script>
+  <script>
+      $(document).ready(function () {
+          var continueModal = '{{ continue_modal }}';
+          if (continueModal === 'login' || continueModal === 'register') {
+              $('#continue-modal').modal('show');
+          }
+      });
+  </script>
 {% endblock %}

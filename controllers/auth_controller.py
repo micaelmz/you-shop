@@ -36,17 +36,17 @@ def login_post():
 
     if not validate_recaptcha(request.form.get('g-recaptcha-response')):
         flash('Recaptcha inválido.', 'warning')
-        return redirect(url_for('user.pre_login'))
+        return redirect(url_for('auth.pre_login'))
 
     user = User.get_by_email(email=form.email.data)
 
     if user and check_password_hash(user.password, form.password.data):
-        login_user(user)
+        login_user(user, remember=form.remember_me.data)
         return redirect(request.form.get('next') or url_for('home'))
 
     else:
         flash('Email ou senha inválidos.', 'warning')
-        return redirect(url_for('user.pre_login'))
+        return redirect(url_for('auth.pre_login'))
 
 
 def register_post():
@@ -55,7 +55,7 @@ def register_post():
 
     if not validate_recaptcha(request.form.get('g-recaptcha-response')):
         flash('Recaptcha inválido.', 'warning')
-        return redirect(url_for('user.pre_login'))
+        return redirect(url_for('auth.pre_login'))
 
     password = generate_password_hash(
         password=form.password.data,
@@ -72,7 +72,7 @@ def register_post():
     new_user.commit()
 
     flash('Cadastro realizado com sucesso.', 'success')
-    return redirect(url_for('user.pre_login'))
+    return redirect(url_for('auth.pre_login'))
 
 
 def register_validation():
