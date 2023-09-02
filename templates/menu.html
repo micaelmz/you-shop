@@ -1,42 +1,65 @@
-
+<!-- Header -->
 <header class="container-lg mt-3">
-  <div class="row d-flex shadow-sm py-2"> <!-- Header -->
-    <div class="col-2 col-md-0 d-flex d-md-none"> <!-- Hamburger Button -->
-      <button class="navbar-toggler d-block d-md-none my-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- Header Wrapper -->
+  <div class="row d-flex shadow-sm py-2">
+    <!-- Hamburger Button -->
+    <div class="col-2 col-md-0 d-flex d-md-none">
+      <button class="navbar-toggler d-block d-md-none my-auto" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
         <i class="fcs-16 fa-solid fa-bars"></i>
       </button>
     </div> <!-- Hamburger Button -->
-    <div class="col-6 col-md-4 d-flex"> <!-- Logo -->
-      <a href="{{ url_for('home') }}" class="text-decoration-none poppins fw-bold fcs-16 text-dark mx-auto mx-md-0 my-auto"><i class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
+    <!-- Logo -->
+    <div class="col-6 col-md-4 d-flex">
+      <a href="{{ url_for('home') }}"
+         class="text-decoration-none poppins fw-bold fcs-16 text-dark mx-auto mx-md-0 my-auto"><i
+        class="fa-solid fa-bag-shopping me-2"></i>You Shop</a>
     </div> <!-- Logo -->
-    <div class="col-0 col-md-4 d-none d-md-block mx-auto"> <!-- Search -->
+    <!-- Search -->
+    <div class="col-0 col-md-4 d-none d-md-block mx-auto">
       <form action="{{ url_for('product.search_form') }}" method="post">
         <div class="input-group">
-          <input type="text" name="search" class="form-control roboto fw-light" placeholder="Pesquisar produtos" aria-label="Pesquisar produtos" aria-describedby="searchButton">
-          <button id="searchButton" class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+          <input type="text" name="search" class="form-control roboto fw-light" placeholder="Pesquisar produtos"
+                 aria-label="Pesquisar produtos" aria-describedby="searchButton">
+          <button id="searchButton" class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i>
+          </button>
         </div>
       </form>
     </div> <!-- Search -->
-    <div class="col-4 col-md-4 d-flex align-content-center justify-content-end"> <!-- SVG Buttons -->
-      <a class="text-decoration-none text-dark d-block d-md-none my-auto" href=" {{ url_for('product.search_page') }}"><i class="bi bi-search fcs-16"></i></a> <!-- Search -->
+    <!-- SVG Buttons -->
+    <div class="col-4 col-md-4 d-flex align-content-center justify-content-end">
+      <!-- Search (mobile only) -->
+      <a class="text-decoration-none text-dark d-block d-md-none my-auto" href=" {{ url_for('product.search_page') }}">
+        <i class="bi bi-search fcs-16"></i>
+      </a> <!-- Search -->
+      <!-- User -->
       <div class="dropdown mx-3 my-auto"> <!-- User -->
         <a id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <svg aria-hidden="true" data-prefix="fal" height="calc(1.35rem + 0.5vh)" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-user fa-w-14 fa-7x"><path fill="currentColor" d="M313.6 288c-28.7 0-42.5 16-89.6 16-47.1 0-60.8-16-89.6-16C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4zM416 464c0 8.8-7.2 16-16 16H48c-8.8 0-16-7.2-16-16v-41.6C32 365.9 77.9 320 134.4 320c19.6 0 39.1 16 89.6 16 50.4 0 70-16 89.6-16 56.5 0 102.4 45.9 102.4 102.4V464zM224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm0-224c52.9 0 96 43.1 96 96s-43.1 96-96 96-96-43.1-96-96 43.1-96 96-96z" class=""></path></svg>
+          <svg aria-hidden="true" data-prefix="fal" height="calc(1.35rem + 0.5vh)" data-icon="user" role="img"
+               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-user fa-w-14 fa-7x">
+            <path fill="currentColor"
+                  d="M313.6 288c-28.7 0-42.5 16-89.6 16-47.1 0-60.8-16-89.6-16C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4zM416 464c0 8.8-7.2 16-16 16H48c-8.8 0-16-7.2-16-16v-41.6C32 365.9 77.9 320 134.4 320c19.6 0 39.1 16 89.6 16 50.4 0 70-16 89.6-16 56.5 0 102.4 45.9 102.4 102.4V464zM224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm0-224c52.9 0 96 43.1 96 96s-43.1 96-96 96-96-43.1-96-96 43.1-96 96-96z"
+                  class=""></path>
+          </svg>
         </a>
-        <div class="dropdown-menu" aria-labelledby="userDropdown" style="right: 50%; left: auto; transform: translateX(50%);">
+        <div class="dropdown-menu" aria-labelledby="userDropdown"
+             style="right: 50%; left: auto; transform: translateX(50%);">
           {% if current_user.is_authenticated %}
-            <a class="dropdown-item d-none d-md-block" href="{{ url_for('home') }}">Minha conta</a>
+            <a class="dropdown-item" href="{{ url_for('home') }}">Minha conta</a>
+            <a class="dropdown-item d-block d-md-none" href="{{ url_for('auth.logout') }}">Sair</a>
+          {% else %}
             <a class="dropdown-item d-block d-md-none" href="{{ url_for('auth.pre_login') }}">Login</a>
             <a class="dropdown-item d-block d-md-none" href="{{ url_for('auth.pre_login') }}">Registrar</a>
-          {% else %}
             <a class="dropdown-item d-none d-md-block" href="{{ url_for('auth.pre_login') }}">Login / Registrar</a>
           {% endif %}
-          <hr class="dropdown-divider">
-          <a class="dropdown-item" href="#">Meus pedidos</a>
-          <a class="dropdown-item" href="#">Meus cupons</a>
+          <hr class="dropdown-divider d-none d-md-block">
+          <a class="dropdown-item d-none d-md-block" href="#">Meus pedidos</a>
+          <a class="dropdown-item d-none d-md-block" href="#">Meus cupons</a>
         </div>
       </div> <!-- User -->
-      <a class="position-relative text-decoration-none text-dark" href="{{ url_for('user.cart') }}"> <!-- Cart -->
+      <!-- Cart -->
+      <a class="position-relative text-decoration-none text-dark" href="{{ url_for('user.cart') }}">
         <i class="bi bi-cart fcs-16 my-auto"></i>
         <span id="cartLength" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           {% if current_user.is_authenticated %}
@@ -46,10 +69,13 @@
           {% endif %}
         </span>
       </a> <!-- Cart -->
+
     </div> <!-- SVG Buttons -->
-  </div>
+
+  </div> <!-- Header Wrapper -->
 </header> <!-- Header -->
-<nav class="navbar navbar-expand-md align-items-start p-0">
+
+<nav class="navbar navbar-expand-md align-items-start p-0"> <!-- Navbar -->
   <div class="container-lg d-block">
     <div class="row">
       <div class="col-10 collapse navbar-collapse" id="navbarSupportedContent">
@@ -59,13 +85,16 @@
             <a href="{{ url_for('product.all_products') }}" class="nav-link roboto ps-0">Todos produtos</a>
           </li>
           {% for category in categories %}
-          <li class="nav-item me-3 no-wrap roboto d-flex">
-            <img src="{{ category.image }}" alt="{{ category.name }}" class="me-2 my-auto d-block d-md-none" style="width: 20px; height: 20px; object-fit: cover; object-position: center; border-radius: 50%;">
-            <a href=" {{ url_for('product.products_by_category', category_id=category.id) }}" class="nav-link">{{ category.name }}</a>
-          </li>
+            <li class="nav-item me-3 no-wrap roboto d-flex">
+              <img src="{{ category.image }}" alt="{{ category.name }}" class="me-2 my-auto d-block d-md-none"
+                   style="width: 20px; height: 20px; object-fit: cover; object-position: center; border-radius: 50%;">
+              <a href=" {{ url_for('product.products_by_category', category_id=category.id) }}"
+                 class="nav-link">{{ category.name }}</a>
+            </li>
           {% endfor %}
           <li class="nav-item dropdown me-3" id="moreDropdown">
-            <a class="nav-link dropdown-toggle roboto" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle roboto" href="#" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
               Mais
             </a>
             <ul class="dropdown-menu" aria-labelledby="moreDropdown" id="moreItems">
@@ -85,4 +114,4 @@
       </div>
     </div>
   </div>
-</nav>
+</nav> <!-- Navbar -->
