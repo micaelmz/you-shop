@@ -21,7 +21,7 @@ def add_to_cart():
     cart = Cart.get_or_create_cart(current_user.id, product_id)
     cart += int(quantity)
 
-    return redirect(url_for('user.cart'))
+    return redirect(url_for('detail.product_detail', product_id=product_id, cart_toast=True))
 
 
 @login_required
