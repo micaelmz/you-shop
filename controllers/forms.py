@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask import flash, redirect, url_for
-from wtforms import StringField, PasswordField, validators
+from wtforms import StringField, PasswordField, validators, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
@@ -41,6 +41,7 @@ class LoginForm(PreLoginForm):
             DataRequired(message='O campo senha é obrigatório.')
         ]
     )
+    remember_me = BooleanField('Manter conectado')
 
 
 class RegistrationForm(FlaskForm):

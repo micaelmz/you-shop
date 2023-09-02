@@ -19,9 +19,8 @@
             <label for="floatingPassword">Senha</label>
           </div>
           <div class="form-check d-flex align-content-between mt-2 mb-3">
-            <label class="form-check-label ms-1" for="flexCheckDefault">
-              <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-              Manter conectado
+            <label class="form-check-label ms-1" for="{{ continue_form.remember_me.id }}">
+              {{ continue_form.remember_me(class="form-check-input") }} Manter conectado
             </label>
             <a href="#" class="text-dark ms-auto me-1">Esqueceu a senha?</a>
           </div>
