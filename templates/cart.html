@@ -49,25 +49,27 @@
                     </div>
                   </th>
                   <td class="border-end roboto align-middle">
-                    <!-- Apply "align-middle" to center align the content in the cells -->
                     <div class="input-group">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i
+                      <button class="btn btn-outline-secondary" type="button" id="decrement"><i
                         class="fas fa-minus"></i></button>
-                      <input type="text" class="form-control text-center fcs-14" placeholder=""
+                      <input type="number" class="form-control text-center fcs-14" placeholder=""
                              aria-label="Example text with button addon" aria-describedby="button-addon1"
-                             value="{{ cart_item.quantity }}">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i
-                        class="fas fa-plus"></i></button>
+                             value="{{ cart_item.quantity }}" id="quantity-input">
+                      <button class="btn btn-outline-secondary" type="button" id="increment"><i class="fas fa-plus"></i>
+                      </button>
                     </div>
+                    <form action="{{ url_for("user.update_item") }}" method="post" id="quantity-form">
+                      <input type="hidden" name="quantity" id="hidden-quantity" value="{{ cart_item.quantity }}">
+                      <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
+                    </form>
                   </td>
                   <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td>
-                  <!-- Apply "align-middle" to center align the content in the cells -->
                   <td class="border-end roboto fcs-14 align-middle text-center">
                     <form action="{{ url_for('user.delete_item') }}" method="post">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                       <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
                     </form>
-                  </td> <!-- Apply "align-middle" to center align the content in the cells -->
+                  </td>
                 </tr>
               {% endfor %}
               </tbody>
@@ -110,7 +112,7 @@
         {% else %}
           <div class="container-lg">
             <div class="row my-5 text-center">
-              <div class="col-md-12 my-2">
+              <div class="col-12 my-2">
                 <h1 class="poppins">Seu carrinho está vazio! :(</h1>
                 <p class="roboto">Adicione produtos ao seu carrinho para continuar.</p>
                 <a href="{{ url_for('product.all_products') }}" class="btn btn-dark">Ver produtos</a>
@@ -121,5 +123,39 @@
       </div>
     </div>
   </section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+  const quantityInput = document.getElementById('quantity-input');
+  const hiddenQuantityInput = document.getElementById('hidden-quantity');
+  const quantityForm = document.getElementById('quantity-form');
+
+  quantityInput.addEventListener('blur', () => {
+    const newQuantity = parseInt(quantityInput.value, 10);
+    hiddenQuantityInput.value = newQuantity;
+    quantityForm.submit();
+  });
+
+  const decrementButton = document.getElementById('decrement');
+  const incrementButton = document.getElementById('increment');
+
+  decrementButton.addEventListener('click', () => {
+    const currentQuantity = parseInt(quantityInput.value, 10);
+    if (currentQuantity > 0) {
+      const newQuantity = currentQuantity - 1;
+      quantityInput.value = newQuantity;
+      hiddenQuantityInput.value = newQuantity;
+      quantityForm.submit();
+    }
+  });
+
+  incrementButton.addEventListener('click', () => {
+    const currentQuantity = parseInt(quantityInput.value, 10);
+    const newQuantity = currentQuantity + 1;
+    quantityInput.value = newQuantity;
+    hiddenQuantityInput.value = newQuantity;
+    quantityForm.submit();
+  });
+</script>
 {% endblock %}
 
