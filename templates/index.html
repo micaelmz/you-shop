@@ -1,79 +1,77 @@
 {% extends 'base.html' %}
 
 {% block title %}You Shop{% endblock %}
-{% block extra_style %}<style>
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-      filter: invert(100%);
-    }
-    .nav-link {
-      color: #676767;
-    }
-    .nav-link:hover {
-      color: #000;
-    }
-    @media (max-width: 768px) {
-        :root {
-            --product-carrousel-qnt: {{ recommended_products|length + 3}} !important; /* 2 = produtos q cabem na tela */
-            --carrousel-animation-time: {{ recommended_products|length * 4 }}s !important; /* tempo que cada produto fica na tela */
-        }
-    }
-    @media (min-width: 768px) {
-        :root {
-            --product-carrousel-qnt: {{ recommended_products|length + 5}} !important; /* 5 = produtos q cabem na tela */
-            --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important; /* tempo que cada produto fica na tela */
-        }
-    }
+{% block extra_style %}
+  <style>
+      @media (max-width: 768px) {
+          :root {
+              --product-carrousel-qnt: {{ recommended_products|length + 3}} !important; /* 2 = produtos q cabem na tela */
+              --carrousel-animation-time: {{ recommended_products|length * 4 }}s !important; /* tempo que cada produto fica na tela */
+          }
+      }
+
+      @media (min-width: 768px) {
+          :root {
+              --product-carrousel-qnt: {{ recommended_products|length + 5}} !important; /* 5 = produtos q cabem na tela */
+              --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important; /* tempo que cada produto fica na tela */
+          }
+      }
   </style>
 {% endblock %}
 
 {% block content %}
   <section id="advantages" class="mt-3">
-  <div class="container-lg">
-    <div class="row flex-nowrap overflow-auto">
-      <div class="col bg-secondary-subtle"> <!-- Free Shipping -->
-        <div class="text-center border p-2">
-          <i class="fa fa-shipping-fast text-dark fcs-13"></i>
-          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Frete Grátis</h5>
-        </div>
-      </div> <!-- Free Shipping -->
-      <div class="col bg-secondary-subtle"> <!-- Security Payment -->
-        <div class="text-center border p-2">
-          <i class="fa fa-lock text-dark fcs-13"></i>
-          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">100% Seguro</h5>
-        </div>
-      </div> <!-- Security Payment -->
-      <div class="col bg-secondary-subtle"> <!-- 24/7 Support -->
-        <div class="text-center border p-2">
-          <i class="fa fa-headset text-dark fcs-13"></i>
-          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Suporte 24/7</h5>
-        </div>
-      </div> <!-- 24/7 Support -->
-      <div class="col bg-secondary-subtle"> <!-- Money Return -->
-        <div class="text-center border p-2">
-          <i class="fa fa-undo text-dark me-2 fcs-13"></i>
-          <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Devolução Grátis</h5>
-        </div>
-      </div> <!-- Money Return -->
+    <div class="container-lg">
+      <div class="row flex-nowrap overflow-auto">
+        <div class="col bg-secondary-subtle"> <!-- Free Shipping -->
+          <div class="text-center border p-2">
+            <i class="fa fa-shipping-fast text-dark fcs-13"></i>
+            <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Frete Grátis</h5>
+          </div>
+        </div> <!-- Free Shipping -->
+        <div class="col bg-secondary-subtle"> <!-- Security Payment -->
+          <div class="text-center border p-2">
+            <i class="fa fa-lock text-dark fcs-13"></i>
+            <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">100% Seguro</h5>
+          </div>
+        </div> <!-- Security Payment -->
+        <div class="col bg-secondary-subtle"> <!-- 24/7 Support -->
+          <div class="text-center border p-2">
+            <i class="fa fa-headset text-dark fcs-13"></i>
+            <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Suporte 24/7</h5>
+          </div>
+        </div> <!-- 24/7 Support -->
+        <div class="col bg-secondary-subtle"> <!-- Money Return -->
+          <div class="text-center border p-2">
+            <i class="fa fa-undo text-dark me-2 fcs-13"></i>
+            <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Devolução Grátis</h5>
+          </div>
+        </div> <!-- Money Return -->
+      </div>
     </div>
-  </div>
-</section>
+  </section>
   <section id="promotions" class="mt-3">
     <div class="container-lg p-0">
       <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active" data-bs-interval="2500">
-            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp" class="d-block w-100" alt="...">
+            <img
+              src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp"
+              class="d-block w-100" alt="...">
           </div>
           <div class="carousel-item" data-bs-interval="2500">
-            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp" class="d-block w-100" alt="...">
+            <img
+              src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp"
+              class="d-block w-100" alt="...">
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
@@ -87,12 +85,13 @@
       </div>
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         {% for category in categories[:8] %}
-        <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
-          <a href="{{ url_for('product.products_by_category', category_id=category.id) }}" class="text-decoration-none text-dark">
-            <img src="{{ category.image }}" class="rounded-circle category-img p-3 p-md-0" alt="">
-            <h3 class="fcs-13 fw-medium roboto text-center mt-1">{{ category.name }}</h3>
-          </a>
-        </li>
+          <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
+            <a href="{{ url_for('product.products_by_category', category_id=category.id) }}"
+               class="text-decoration-none text-dark">
+              <img src="{{ category.image }}" class="rounded-circle category-img p-3 p-md-0" alt="">
+              <h3 class="fcs-13 fw-medium roboto text-center mt-1">{{ category.name }}</h3>
+            </a>
+          </li>
         {% endfor %}
       </ul>
     </div>
@@ -100,7 +99,8 @@
   <section id="ad" class="mt-3">
     <div class="container-lg">
       <div class="row">
-        <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp" alt="">
+        <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp"
+             alt="">
       </div>
     </div>
   </section>
@@ -125,15 +125,20 @@
                   </a>
                   <div class="card-body text-center roboto">
                     <h5 class="card-title fw-normal text-truncate fcs-15 mb-3">{{ product.name }}</h5>
-                    <p class="card-text fw-medium">R$<span class="fcs-14 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
+                    <p class="card-text fw-medium">R$<span
+                      class="fcs-14 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
                       {% if product.price.old %}
-                        <del class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
+                        <del
+                          class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
                       {% endif %}
                     </p>
-                    <a href="{{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
-                    <a href="#" class="text-decoration-none fw-normal text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                    <a href="{{ url_for('detail.product_detail', product_id=product.id) }}"
+                       class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
+                    <a href="#" class="text-decoration-none fw-normal text-dark"><i
+                      class="fa fa-shopping-cart me-1"></i>Carrinho</a>
                   </div>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="z-index: 100 !important;">
                     {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
                   </span>
                 </div>

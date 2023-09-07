@@ -4,19 +4,6 @@
 {% block meta_description %}{{ product.description }}{% endblock %}
 {% block extra_style %}
   <style>
-      .carousel-control-prev-icon,
-      .carousel-control-next-icon {
-          filter: invert(100%);
-      }
-
-      .nav-link {
-          color: #676767;
-      }
-
-      .nav-link:hover {
-          color: #000;
-      }
-
       @media (max-width: 990px) {
           .cart-qnt-control {
               width: 33%;
@@ -33,15 +20,6 @@
           .col-md-6 {
               width: 49% !important;
           }
-      }
-
-      .color-selector:checked + label {
-          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
-      }
-
-      .custom-tooltip {
-          --bs-tooltip-bg: #777777;
-          --bs-tooltip-color: #fff;
       }
   </style>
 
@@ -311,20 +289,20 @@
 
   <!-- Toast -->
   {% if cart_toast %}
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <img src="{{ product.image }}" class="rounded me-2" style="width: 2rem; height: 2rem;" alt="...">
-        <strong class="me-auto poppins">Adicionado ao carrinho!</strong>
-        <small>Agora</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        {{ product.name }}
-        <a href="{{ url_for('user.cart') }}" class="link-body-emphasis">Ver carrinho</a>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="{{ product.image }}" class="rounded me-2" style="width: 2rem; height: 2rem;" alt="...">
+          <strong class="me-auto poppins">Adicionado ao carrinho!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          {{ product.name }}
+          <a href="{{ url_for('user.cart') }}" class="link-body-emphasis">Ver carrinho</a>
+        </div>
       </div>
     </div>
-  </div>
   {% endif %}
 {% endblock %}
 {% block extra_scripts %}
