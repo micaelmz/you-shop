@@ -18,6 +18,11 @@ class Cart(BaseModel):
         self.quantity -= qnt
         return self.quantity
 
+    def update_item(self, quantity):
+        self.quantity = quantity
+        self.commit()
+        return True
+
     def delete_item(self):
         self.delete()
         return True

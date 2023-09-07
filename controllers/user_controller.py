@@ -25,6 +25,20 @@ def add_to_cart():
 
 
 @login_required
+def update_item():
+    cart_id = request.form.get('cart_id')
+    quantity = request.form.get('quantity')
+
+    if not quantity.isnumeric() or int(quantity) < 1:
+        return redirect(url_for('home'))
+
+    cart = Cart.get_by_id(int(cart_id))
+    cart.update_item(int(quantity))
+
+    return redirect(url_for('user.cart'))
+
+
+@login_required
 def delete_item():
     cart_id = request.form.get('cart_id')
     cart = Cart.get_by_id(int(cart_id))

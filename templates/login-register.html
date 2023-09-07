@@ -4,36 +4,17 @@
 {% block content %}
   {% block extra_style %}
     <style>
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .divider-text {
-            padding: 0 10px;
-            color: #999;
-        }
         @media (max-width: 990px) {
-          #pre-login-form {
-              width: 85%;
-          }
-      }
+            #pre-login-form {
+                width: 85%;
+            }
+        }
 
-      @media (min-width: 991px) {
-          #pre-login-form {
-              width: 40%;
-          }
-      }
-
+        @media (min-width: 991px) {
+            #pre-login-form {
+                width: 40%;
+            }
+        }
     </style>
   {% endblock %}
   <section>
@@ -49,7 +30,7 @@
             <div class="divider">
               <span class="divider-text">ou</span>
             </div>
-            <button class="btn btn-outline-dark w-100 py-2 mt-2">
+            <button class="btn btn-outline-dark w-100 py-2 mt-2" disabled>
               <i class="fab fa-google me-2"></i>
               Entrar com o Google
             </button>

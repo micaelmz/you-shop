@@ -1,4 +1,4 @@
-:root{
+:root {
     --primary: #EEEEEE;
     --responsible-font-size-11: calc(1.7rem + 2.2vh);
     --responsible-font-size-12: calc(1rem + 1.5vh);
@@ -11,181 +11,267 @@
 
     --product-carrousel-qnt: 0;
     --carrousel-animation-time: 0s;
-
-}
-
-.poppins{
-    font-family: 'Poppins', sans-serif;
-}
-.roboto{
-    font-family: 'Roboto', sans-serif;
-}
-.garamond {
-    font-family: 'EB Garamond', serif;
-}
-
-/* Font Custom Size */
-.fcs-11{
-    font-size: var(--responsible-font-size-11);
-}
-.fcs-12{
-    font-size: var(--responsible-font-size-12);
-}
-.fcs-13{
-    font-size: var(--responsible-font-size-13);
-}
-.fcs-14{
-    font-size: var(--responsible-font-size-14);
-}
-.fcs-15{
-    font-size: var(--responsible-font-size-15);
-}
-.fcs-16{
-    font-size: var(--responsible-font-size-16);
-}
-.fcs-17{
-    font-size: var(--responsible-font-size-17);
-}
-.text-justify{
-    text-align: justify !important;
-}
-
-.category-img{
-    width: calc(7rem + 7vh);
-}
-
-.bg-grey{
-    background-color: #cccccc;
-}
-
-/* CSS para dropdown on hover */
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.section-title {
-  position: relative;
-  display: inline-block;
-  letter-spacing: 1px;
-  font-weight: bold;
-  color: #1C1C1C;
-}
-
-.section-title span {
-  position: relative;
-  background: #ffffff;
-  z-index: 1;
-}
-
-.section-title::before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  margin-top: -1px;
-  background: #1C1C1C;
-}
-
-.card-img-top:hover{
-    transform: scale(1.03);
-    transition: 0.5s;
-}
-/* Seletor para o checkbox do Bootstrap */
-.form-check-input:checked{
-    background-color: #212529;
-    border-color:#000000;
-}
-.pagination{
-    --bs-pagination-active-bg: #aaaaaa;
-    --bs-pagination-active-border-color:#aaaaaa;
-}
-
-.cart-img{
-    width: calc(2rem + 2vh);
-    height: calc(2rem + 2vh);
-}
-
-.dropdown-item.active,.dropdown-item:active{
-    color:var(--bs-dropdown-link-active-color);
-    text-decoration:none;
-    background-color:var(--bs-dark)
-}
-
-
-@-webkit-keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
-  }
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
-  }
-}
-.slider {
-  background: white;
-  margin: auto;
-  overflow: hidden;
-  position: relative;
-  width: 87.5vw;
-
-}
-.slider::before, .slider::after {
-  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
-  content: "";
-  height: 100%;
-  position: absolute;
-  width: 50px;
-  z-index: 2;
-}
-.slider::after {
-  right: 0;
-  top: 0;
-  transform: rotateZ(180deg);
-}
-.slider::before {
-  left: 0;
-  top: 0;
-}
-.slider .slide-track {
-  -webkit-animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
-    animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
-  display: flex;
-  width: calc(250px * (var(--product-carrousel-qnt))); /* 4 = number of cards */
-}
-.slider .slide {
-  width: 250px;
 }
 
 ::-webkit-scrollbar {
     width: 0;
 }
 
-input:focus {
-  box-shadow: 0 0 0 1px #000000 !important;
-}
-.accordion-button:focus{
-    box-shadow: 0 0 0 0 #000000 !important;
-}
-.page-link:focus {
-  box-shadow: 0 0 0 1px #000000 !important;
+/* Fonts */
+.poppins {
+    font-family: 'Poppins', sans-serif;
 }
 
-input[disabled] + label{
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.garamond {
+    font-family: 'EB Garamond', serif;
+}
+
+
+/* Font Custom Size */
+.fcs-11 {
+    font-size: var(--responsible-font-size-11);
+}
+
+.fcs-12 {
+    font-size: var(--responsible-font-size-12);
+}
+
+.fcs-13 {
+    font-size: var(--responsible-font-size-13);
+}
+
+.fcs-14 {
+    font-size: var(--responsible-font-size-14);
+}
+
+.fcs-15 {
+    font-size: var(--responsible-font-size-15);
+}
+
+.fcs-16 {
+    font-size: var(--responsible-font-size-16);
+}
+
+.fcs-17 {
+    font-size: var(--responsible-font-size-17);
+}
+
+
+.text-justify {
+    text-align: justify !important;
+}
+
+/* Apply the same aspect ratio for all products images */
+.product-ratio {
+    --bs-aspect-ratio: 110%;
+}
+
+.category-img {
+    width: calc(7rem + 7vh);
+}
+
+.bg-grey {
+    background-color: #cccccc;
+}
+
+/* CSS para dropdown on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Text with line through it, used as title of a section */
+.section-title {
+    position: relative;
+    display: inline-block;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #1C1C1C;
+}
+
+.section-title span {
+    position: relative;
+    background: #ffffff;
+    z-index: 1;
+}
+
+.section-title::before {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+    background: #1C1C1C;
+}
+
+/* Zoom effect on product image card */
+.card-img-top:hover {
+    transform: scale(1.03);
+    transition: 0.5s;
+}
+
+.pagination {
+    --bs-pagination-active-bg: #aaaaaa;
+    --bs-pagination-active-border-color: #aaaaaa;
+}
+
+.cart-img {
+    width: calc(2rem + 2vh);
+    height: calc(2rem + 2vh);
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color: var(--bs-dark)
+}
+
+
+/* On sale products infinite carrousel start */
+@-webkit-keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-250px * (var(--product-carrousel-qnt)))); /* 4 = number of cards */
+    }
+}
+
+.slider {
+    background: white;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    width: 87.5vw;
+
+}
+
+.slider::before, .slider::after {
+    background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 50px;
+    z-index: 2;
+}
+
+.slider::after {
+    right: 0;
+    top: 0;
+    transform: rotateZ(180deg);
+}
+
+.slider::before {
+    left: 0;
+    top: 0;
+}
+
+.slider .slide-track {
+    -webkit-animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+    animation: scroll var(--carrousel-animation-time) linear infinite; /* o tempo tem que se baseado na quantidade de itens */
+    display: flex;
+    width: calc(250px * (var(--product-carrousel-qnt))); /* 4 = number of cards */
+}
+
+.slider .slide {
+    width: 250px;
+}
+/* On sale products infinite carrousel end */
+
+
+/* Changing Bootstrap default colors and styles */
+.form-check-input:checked {
+    background-color: #212529;
+    border-color: #000000;
+}
+
+input:focus {
+    box-shadow: 0 0 0 1px #000000 !important;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0 #000000 !important;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 1px #000000 !important;
+}
+
+input[disabled] + label {
     cursor: not-allowed !important;
     pointer-events: visible !important;
 }
-input[readonly]{
+
+input[readonly] {
     cursor: not-allowed !important;
     pointer-events: visible !important;
     background-color: #eeeeee !important;
 }
+
+[disabled] {
+    cursor: not-allowed !important;
+    pointer-events: visible !important;
+}
+
+.nav-item.no-wrap {
+    white-space: nowrap;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(100%);
+}
+
+.nav-link {
+    color: #676767;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+.color-selector:checked + label {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.custom-tooltip {
+    --bs-tooltip-bg: #777777;
+    --bs-tooltip-color: #fff;
+}
+
+
+/* Text effect with line before and after it */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider-text {
+    padding: 0 10px;
+    color: #999;
+}
+
+

@@ -4,19 +4,6 @@
 {% block meta_description %}{{ product.description }}{% endblock %}
 {% block extra_style %}
   <style>
-      .carousel-control-prev-icon,
-      .carousel-control-next-icon {
-          filter: invert(100%);
-      }
-
-      .nav-link {
-          color: #676767;
-      }
-
-      .nav-link:hover {
-          color: #000;
-      }
-
       @media (max-width: 990px) {
           .cart-qnt-control {
               width: 33%;
@@ -33,15 +20,6 @@
           .col-md-6 {
               width: 49% !important;
           }
-      }
-
-      .color-selector:checked + label {
-          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
-      }
-
-      .custom-tooltip {
-          --bs-tooltip-bg: #777777;
-          --bs-tooltip-color: #fff;
       }
   </style>
 
@@ -71,12 +49,12 @@
         <div class="col-12 col-md-4 mb-3 mb-md-0"> <!-- Product Image Carrousel -->
           <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="{{ product.image }}" class="img-fluid" alt="...">
+              <div class="carousel-item active ratio product-ratio">
+                <img src="{{ product.image }}" class="img-fluid" alt="{{ product.name }}">
               </div>
               {% for additional_image in product.additional_images %}
-                <div class="carousel-item">
-                  <img src="{{ additional_image }}" class="img-fluid" alt="...">
+                <div class="carousel-item ratio product-ratio">
+                  <img src="{{ additional_image }}" class="img-fluid" alt="{{ product.name }}">
                 </div>
               {% endfor %}
             </div>
@@ -205,7 +183,7 @@
               <div class="input-group mt-3 cart-qnt-control">
                 <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i
                   class="fas fa-minus"></i></button>
-                <input name="quantity" id="cart-qnt-input" type="text" class="form-control text-center fcs-15"
+                <input name="quantity" id="cart-qnt-input" type="number" class="form-control text-center fcs-15"
                        placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
                 <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i
                   class="fas fa-plus"></i></button>
@@ -311,20 +289,20 @@
 
   <!-- Toast -->
   {% if cart_toast %}
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <img src="{{ product.image }}" class="rounded me-2" style="width: 2rem; height: 2rem;" alt="...">
-        <strong class="me-auto poppins">Adicionado ao carrinho!</strong>
-        <small>Agora</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        {{ product.name }}
-        <a href="{{ url_for('user.cart') }}" class="link-body-emphasis">Ver carrinho</a>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="{{ product.image }}" class="rounded me-2" style="width: 2rem; height: 2rem;" alt="...">
+          <strong class="me-auto poppins">Adicionado ao carrinho!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          {{ product.name }}
+          <a href="{{ url_for('user.cart') }}" class="link-body-emphasis">Ver carrinho</a>
+        </div>
       </div>
     </div>
-  </div>
   {% endif %}
 {% endblock %}
 {% block extra_scripts %}

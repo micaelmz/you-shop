@@ -2,6 +2,25 @@
 
 {% block title %}You Shop - Detalhes do Produto{% endblock %}
 
+{% block extra_style %}
+  <style>
+      .cart-items-table {
+          max-height: 75vh;
+          overflow-y: auto;
+      }
+
+      table {
+          table-layout: fixed;
+      }
+
+      td {
+          text-overflow: ellipsis;
+          /* Required for text-overflow to do anything */
+          white-space: nowrap;
+          overflow: hidden;
+      }
+  </style>
+{% endblock %}
 {% block content %}
   <section id="cart">
     <div class="container-lg">
@@ -18,12 +37,15 @@
                href="{{ url_for('product.all_products') }}">Carrinho</a>
           </li>
         </ol>
-      </nav>
+      </nav> <!-- Breadcrumb -->
+
+      <!-- Cart items & Order resume Start -->
       <div class="row my-3">
         {% if current_user.cart|length > 0 %}
-          <div class="col-8"> <!-- Cart items -->
+          <!-- Cart items Start -->
+          <div class="col-12 col-md-8 order-2 order-md-1">
             {% set ns = namespace(subtotal=0) %}
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped cart-items-table">
               <colgroup>
                 <col style="width: 50%;"/> <!-- Product column, 30% of the table width -->
                 <col style="width: 20%;"/> <!-- Quantity column, 20% of the table width -->
@@ -31,7 +53,7 @@
                 <col style="width: 10%;"/> <!-- Empty column, 20% of the table width -->
               </colgroup>
               <thead>
-              <tr class="text-center"> <!-- Apply "text-center" to center align the header -->
+              <tr class="text-center">
                 <th scope="col">Produto</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Preço</th>
@@ -42,84 +64,143 @@
               {% for cart_item in current_user.cart %}
                 {% set ns.subtotal = ns.subtotal + (cart_item.product.price.new * cart_item.quantity) %}
                 <tr>
+                  <!-- Product name & Image Start-->
                   <th scope="row" class="border-start border-end align-middle">
-                    <div class="d-flex align-items-center">
-                      <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
-                      <p class="fcs-14 fw-light roboto text-truncate my-auto">{{ cart_item.product.name }}</p>
-                    </div>
-                  </th>
+                    <a href="{{ url_for('detail.product_detail', product_id=cart_item.product.id) }}"
+                       class="text-decoration-none link-body-emphasis">
+                      <div class="d-flex align-items-center">
+                        <div class="">
+                          <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
+                        </div>
+                        <p class="fcs-14 fw-light roboto my-auto">{{ cart_item.product.name }}</p>
+                      </div>
+                    </a>
+                  </th> <!-- Product name & Image End-->
+
+                  <!-- Quantity Start -->
                   <td class="border-end roboto align-middle">
-                    <!-- Apply "align-middle" to center align the content in the cells -->
                     <div class="input-group">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i
+                      <button class="btn btn-outline-secondary" type="button" id="decrement"><i
                         class="fas fa-minus"></i></button>
-                      <input type="text" class="form-control text-center fcs-14" placeholder=""
+                      <input type="number" class="form-control text-center fcs-14" placeholder=""
                              aria-label="Example text with button addon" aria-describedby="button-addon1"
-                             value="{{ cart_item.quantity }}">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i
-                        class="fas fa-plus"></i></button>
+                             value="{{ cart_item.quantity }}" id="quantity-input">
+                      <button class="btn btn-outline-secondary" type="button" id="increment"><i class="fas fa-plus"></i>
+                      </button>
                     </div>
-                  </td>
+                    <form action="{{ url_for("user.update_item") }}" method="post" id="quantity-form">
+                      <input type="hidden" name="quantity" id="hidden-quantity" value="{{ cart_item.quantity }}">
+                      <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
+                    </form>
+                  </td> <!-- Quantity End -->
+
+                  <!-- Price Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td>
-                  <!-- Apply "align-middle" to center align the content in the cells -->
+                  <!-- Price End -->
+
+                  <!-- Delete button Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">
                     <form action="{{ url_for('user.delete_item') }}" method="post">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                       <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
                     </form>
-                  </td> <!-- Apply "align-middle" to center align the content in the cells -->
+                  </td> <!-- Delete button End -->
+
                 </tr>
               {% endfor %}
               </tbody>
             </table>
-          </div> <!-- Cart items -->
-          <div class="col-4 mt-5"> <!-- Order resume -->
-            <form action="" method="post">
-              <div class="input-group">
-                <input type="text" class="form-control roboto" placeholder="Código de Cupom"
-                       aria-label="Código de Cupom"
-                       aria-describedby="searchProducts">
-                <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
+          </div> <!-- Cart items End -->
+
+          <!-- Order resume Start -->
+          <div class="col-12 col-md-4 mt-1 mt-md-5 order-1 order-md-2">
+            <div class="row mx-3 mx-md-0">
+              <div class="order-2 order-md-1 p-0 mt-1 mt-md-0">
+                <form action="" method="post">
+                  <div class="input-group">
+                    <input type="text" class="form-control roboto" placeholder="Código de Cupom"
+                           aria-label="Código de Cupom"
+                           aria-describedby="searchProducts">
+                    <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
+                  </div>
+                </form>
               </div>
-            </form>
-            <div class="card mt-5">
-              <div class="card-body">
-                <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
-                <div class="d-flex align-content-between bor">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
+              <div class="order-1 order-md-2 card mt-1 mt-md-5">
+                <div class="card-body">
+                  <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
+                  <div class="d-flex align-content-between bor">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
+                  </div>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
+                  </div>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
+                  </div>
+                  <hr>
+                  <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
                 </div>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
-                </div>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
-                </div>
-                <hr>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
-                </div>
-                <hr>
-                <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
               </div>
             </div>
-          </div> <!-- Order resume -->
+          </div> <!-- Order resume End -->
+
         {% else %}
+          <!-- Empty cart Start -->
           <div class="container-lg">
             <div class="row my-5 text-center">
-              <div class="col-md-12 my-2">
+              <div class="col-12 my-2">
                 <h1 class="poppins">Seu carrinho está vazio! :(</h1>
                 <p class="roboto">Adicione produtos ao seu carrinho para continuar.</p>
                 <a href="{{ url_for('product.all_products') }}" class="btn btn-dark">Ver produtos</a>
               </div>
             </div>
-          </div>
+          </div> <!-- Empty cart End -->
+
         {% endif %}
-      </div>
+      </div> <!-- Cart items & Order resume End -->
     </div>
   </section>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script>
+      const quantityInput = document.getElementById('quantity-input');
+      const hiddenQuantityInput = document.getElementById('hidden-quantity');
+      const quantityForm = document.getElementById('quantity-form');
+
+      quantityInput.addEventListener('blur', () => {
+          hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+          quantityForm.submit();
+      });
+
+      const decrementButton = document.getElementById('decrement');
+      const incrementButton = document.getElementById('increment');
+
+      decrementButton.addEventListener('click', () => {
+          const currentQuantity = parseInt(quantityInput.value, 10);
+          if (currentQuantity > 0) {
+              const newQuantity = currentQuantity - 1;
+              quantityInput.value = newQuantity;
+              hiddenQuantityInput.value = newQuantity;
+              quantityForm.submit();
+          }
+      });
+
+      incrementButton.addEventListener('click', () => {
+          const currentQuantity = parseInt(quantityInput.value, 10);
+          const newQuantity = currentQuantity + 1;
+          quantityInput.value = newQuantity;
+          hiddenQuantityInput.value = newQuantity;
+          quantityForm.submit();
+      });
+  </script>
 {% endblock %}
 
