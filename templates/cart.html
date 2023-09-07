@@ -2,6 +2,25 @@
 
 {% block title %}You Shop - Detalhes do Produto{% endblock %}
 
+{% block extra_style %}
+  <style>
+      .cart-items-table {
+          max-height: 75vh;
+          overflow-y: auto;
+      }
+
+      table {
+          table-layout: fixed;
+      }
+
+      td {
+          text-overflow: ellipsis;
+          /* Required for text-overflow to do anything */
+          white-space: nowrap;
+          overflow: hidden;
+      }
+  </style>
+{% endblock %}
 {% block content %}
   <section id="cart">
     <div class="container-lg">
@@ -18,12 +37,16 @@
                href="{{ url_for('product.all_products') }}">Carrinho</a>
           </li>
         </ol>
-      </nav>
+      </nav> <!-- Breadcrumb -->
+
+      <!-- Cart items & Order resume Start -->
       <div class="row my-3">
         {% if current_user.cart|length > 0 %}
-          <div class="col-8"> <!-- Cart items -->
+          <!-- todo: tabela n respeita os limites de tamanho da coluna e o form js so funciona pro primeiro item  -->
+          <!-- Cart items Start -->
+          <div class="col-8">
             {% set ns = namespace(subtotal=0) %}
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped cart-items-table">
               <colgroup>
                 <col style="width: 50%;"/> <!-- Product column, 30% of the table width -->
                 <col style="width: 20%;"/> <!-- Quantity column, 20% of the table width -->
@@ -31,7 +54,7 @@
                 <col style="width: 10%;"/> <!-- Empty column, 20% of the table width -->
               </colgroup>
               <thead>
-              <tr class="text-center"> <!-- Apply "text-center" to center align the header -->
+              <tr class="text-center">
                 <th scope="col">Produto</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Preço</th>
@@ -42,12 +65,20 @@
               {% for cart_item in current_user.cart %}
                 {% set ns.subtotal = ns.subtotal + (cart_item.product.price.new * cart_item.quantity) %}
                 <tr>
+                  <!-- Product name & Image Start-->
                   <th scope="row" class="border-start border-end align-middle">
-                    <div class="d-flex align-items-center">
-                      <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
-                      <p class="fcs-14 fw-light roboto text-truncate my-auto">{{ cart_item.product.name }}</p>
-                    </div>
-                  </th>
+                    <a href="{{ url_for('detail.product_detail', product_id=cart_item.product.id) }}"
+                       class="text-decoration-none link-body-emphasis">
+                      <div class="d-flex align-items-center">
+                        <div class="">
+                          <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
+                        </div>
+                        <p class="fcs-14 fw-light roboto my-auto">{{ cart_item.product.name }}</p>
+                      </div>
+                    </a>
+                  </th> <!-- Product name & Image End-->
+
+                  <!-- Quantity Start -->
                   <td class="border-end roboto align-middle">
                     <div class="input-group">
                       <button class="btn btn-outline-secondary" type="button" id="decrement"><i
@@ -62,20 +93,28 @@
                       <input type="hidden" name="quantity" id="hidden-quantity" value="{{ cart_item.quantity }}">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                     </form>
-                  </td>
+                  </td> <!-- Quantity End -->
+
+                  <!-- Price Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td>
+                  <!-- Price End -->
+
+                  <!-- Delete button Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">
                     <form action="{{ url_for('user.delete_item') }}" method="post">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                       <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
                     </form>
-                  </td>
+                  </td> <!-- Delete button End -->
+
                 </tr>
               {% endfor %}
               </tbody>
             </table>
-          </div> <!-- Cart items -->
-          <div class="col-4 mt-5"> <!-- Order resume -->
+          </div> <!-- Cart items End -->
+
+          <!-- Order resume Start -->
+          <div class="col-4 mt-5">
             <form action="" method="post">
               <div class="input-group">
                 <input type="text" class="form-control roboto" placeholder="Código de Cupom"
@@ -108,8 +147,10 @@
                 <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
               </div>
             </div>
-          </div> <!-- Order resume -->
+          </div> <!-- Order resume End -->
+
         {% else %}
+          <!-- Empty cart Start -->
           <div class="container-lg">
             <div class="row my-5 text-center">
               <div class="col-12 my-2">
@@ -118,44 +159,45 @@
                 <a href="{{ url_for('product.all_products') }}" class="btn btn-dark">Ver produtos</a>
               </div>
             </div>
-          </div>
+          </div> <!-- Empty cart End -->
+
         {% endif %}
-      </div>
+      </div> <!-- Cart items & Order resume End -->
     </div>
   </section>
 {% endblock %}
+
 {% block extra_scripts %}
-<script>
-  const quantityInput = document.getElementById('quantity-input');
-  const hiddenQuantityInput = document.getElementById('hidden-quantity');
-  const quantityForm = document.getElementById('quantity-form');
+  <script>
+      const quantityInput = document.getElementById('quantity-input');
+      const hiddenQuantityInput = document.getElementById('hidden-quantity');
+      const quantityForm = document.getElementById('quantity-form');
 
-  quantityInput.addEventListener('blur', () => {
-    const newQuantity = parseInt(quantityInput.value, 10);
-    hiddenQuantityInput.value = newQuantity;
-    quantityForm.submit();
-  });
+      quantityInput.addEventListener('blur', () => {
+          hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+          quantityForm.submit();
+      });
 
-  const decrementButton = document.getElementById('decrement');
-  const incrementButton = document.getElementById('increment');
+      const decrementButton = document.getElementById('decrement');
+      const incrementButton = document.getElementById('increment');
 
-  decrementButton.addEventListener('click', () => {
-    const currentQuantity = parseInt(quantityInput.value, 10);
-    if (currentQuantity > 0) {
-      const newQuantity = currentQuantity - 1;
-      quantityInput.value = newQuantity;
-      hiddenQuantityInput.value = newQuantity;
-      quantityForm.submit();
-    }
-  });
+      decrementButton.addEventListener('click', () => {
+          const currentQuantity = parseInt(quantityInput.value, 10);
+          if (currentQuantity > 0) {
+              const newQuantity = currentQuantity - 1;
+              quantityInput.value = newQuantity;
+              hiddenQuantityInput.value = newQuantity;
+              quantityForm.submit();
+          }
+      });
 
-  incrementButton.addEventListener('click', () => {
-    const currentQuantity = parseInt(quantityInput.value, 10);
-    const newQuantity = currentQuantity + 1;
-    quantityInput.value = newQuantity;
-    hiddenQuantityInput.value = newQuantity;
-    quantityForm.submit();
-  });
-</script>
+      incrementButton.addEventListener('click', () => {
+          const currentQuantity = parseInt(quantityInput.value, 10);
+          const newQuantity = currentQuantity + 1;
+          quantityInput.value = newQuantity;
+          hiddenQuantityInput.value = newQuantity;
+          quantityForm.submit();
+      });
+  </script>
 {% endblock %}
 
