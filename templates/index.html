@@ -119,7 +119,9 @@
               <div class="slide ">
                 <div class="card me-3 mt-3">
                   <a href=" {{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none">
-                    <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="ratio product-ratio">
+                      <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                    </div>
                   </a>
                   <div class="card-body text-center roboto">
                     <h5 class="card-title fw-normal text-truncate fcs-15 mb-3">{{ product.name }}</h5>

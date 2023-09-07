@@ -42,9 +42,8 @@
       <!-- Cart items & Order resume Start -->
       <div class="row my-3">
         {% if current_user.cart|length > 0 %}
-          <!-- todo: tabela n respeita os limites de tamanho da coluna e o form js so funciona pro primeiro item  -->
           <!-- Cart items Start -->
-          <div class="col-8">
+          <div class="col-12 col-md-8 order-2 order-md-1">
             {% set ns = namespace(subtotal=0) %}
             <table class="table table-hover table-striped cart-items-table">
               <colgroup>
@@ -114,37 +113,41 @@
           </div> <!-- Cart items End -->
 
           <!-- Order resume Start -->
-          <div class="col-4 mt-5">
-            <form action="" method="post">
-              <div class="input-group">
-                <input type="text" class="form-control roboto" placeholder="Código de Cupom"
-                       aria-label="Código de Cupom"
-                       aria-describedby="searchProducts">
-                <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
+          <div class="col-12 col-md-4 mt-1 mt-md-5 order-1 order-md-2">
+            <div class="row mx-3 mx-md-0">
+              <div class="order-2 order-md-1 p-0 mt-1 mt-md-0">
+                <form action="" method="post">
+                  <div class="input-group">
+                    <input type="text" class="form-control roboto" placeholder="Código de Cupom"
+                           aria-label="Código de Cupom"
+                           aria-describedby="searchProducts">
+                    <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
+                  </div>
+                </form>
               </div>
-            </form>
-            <div class="card mt-5">
-              <div class="card-body">
-                <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
-                <div class="d-flex align-content-between bor">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
+              <div class="order-1 order-md-2 card mt-1 mt-md-5">
+                <div class="card-body">
+                  <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
+                  <div class="d-flex align-content-between bor">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Subtotal</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal) }}</p>
+                  </div>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
+                  </div>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-content-between">
+                    <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
+                    <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
+                  </div>
+                  <hr>
+                  <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
                 </div>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Frete</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ 0,00</p>
-                </div>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Cupom</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ -10,00</p>
-                </div>
-                <hr>
-                <div class="d-flex align-content-between">
-                  <h6 class="card-subtitle text-body-secondary my-auto">Total</h6>
-                  <p class="ms-auto roboto fcs-14 fw-light my-auto">R$ {{ label_price(ns.subtotal - 10) }}</p>
-                </div>
-                <hr>
-                <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
               </div>
             </div>
           </div> <!-- Order resume End -->

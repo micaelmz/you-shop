@@ -3,277 +3,292 @@
 
 {% block title %}
 
-{% if search_query %}Procurar {{ search_query }}
-{% elif category_id and category_id > 0 %}{{ categories[category_id - 1].name }}
-{% else %}Produtos
-{% endif %}
-| You Shop
+  {% if search_query %}Procurar {{ search_query }}
+    {% elif category_id and category_id > 0 %}{{ categories[category_id - 1].name }}
+  {% else %}Produtos
+  {% endif %}
+  | You Shop
 {% endblock %}
 
 {% block extra_style %}
   <style>
       ul.list-unstyled.list-inline {
-      margin: 0;
-      padding: 0;
-    }
-
-    ul.list-unstyled.list-inline li {
-      padding: 0;
-      box-sizing: border-box;
-      width: 31.33%; /* 33.33% - (2 * 1%) para cada li */
-      float: left; /* Alinha os li's lado a lado */
-      margin: 0 0 1.5% 1.5%; /* Margem de 1% entre os li's */
-    }
-    @media (max-width: 768px) { /* Ou qualquer outra resolução que você considerar como o limite */
-      ul.list-unstyled.list-inline li {
-        width: 49%; /* 50% para cada li */
-        margin: 1.5% .5% 1.5% .5%; /* Margem de 1% entre os li's */
+          margin: 0;
+          padding: 0;
       }
-    }
 
-    /* Limpa o float para o próximo elemento após o UL */
-    ul.list-unstyled.list-inline::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
+      ul.list-unstyled.list-inline li {
+          padding: 0;
+          box-sizing: border-box;
+          width: 31.33%; /* 33.33% - (2 * 1%) para cada li */
+          float: left; /* Alinha os li's lado a lado */
+          margin: 0 0 1.5% 1.5%; /* Margem de 1% entre os li's */
+      }
 
-    .accordion-button:not(.collapsed) {
-      color: #343a40;
-      background-color: #f5f5f5;
-    }
+      @media (max-width: 768px) {
+          /* Ou qualquer outra resolução que você considerar como o limite */
+          ul.list-unstyled.list-inline li {
+              width: 49%; /* 50% para cada li */
+              margin: 1.5% .5% 1.5% .5%; /* Margem de 1% entre os li's */
+          }
+      }
+
+      /* Limpa o float para o próximo elemento após o UL */
+      ul.list-unstyled.list-inline::after {
+          content: "";
+          display: table;
+          clear: both;
+      }
+
+      .accordion-button:not(.collapsed) {
+          color: #343a40;
+          background-color: #f5f5f5;
+      }
   </style>
 {% endblock %}
 
 {% block content %}
-<section id="products" class="mt-3">
-  <div class="container-lg">
-    <div class="row">
-      <div class="col-12 col-md-3"> <!-- Filters -->
-        <div class="accordion" id="accordionFilter">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                <span class="roboto fw-bold fcs-15">Filtar por preço</span>
-              </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <form id="priceForm" action="/seu_backend" method="POST">
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="0to50" checked name="checkbox2">
-                    <label class="form-check-label roboto fcs-15" for="0to50">
-                      R$ 0,00 - R$ 50,00
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="50to100" name="checkbox1">
-                    <label class="form-check-label roboto fcs-15" for="50to100">
-                      R$ 50,00 - R$ 100,00
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="100to150" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="100to150">
-                      R$ 100,00 - R$ 150,00
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="150to200" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="150to200">
-                      R$ 150,00 - R$ 200,00
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="200ormore" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="200ormore">
-                      R$ 200 ou mais
-                    </label>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <span class="roboto fw-bold fcs-15">Filtar por cor</span>
-              </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <form id="colorForm" action="/seu_backend" method="POST">
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="allcolors" checked name="checkbox2">
-                    <label class="form-check-label roboto fcs-15" for="allcolors">
-                      Todas as cores
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="black" name="checkbox1">
-                    <label class="form-check-label roboto fcs-15" for="black">
-                      Preto
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="white" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="white">
-                      Branco
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="red" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="red">
-                      Vermelho
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" value="" id="blue" name="checkbox1">
-                    <label class="form-check-labe roboto fcs-15l" for="blue">
-                      Azul
-                    </label>
-                  </div>
-                  <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" value="" id="green" name="checkbox1">
-                  <label class="form-check-labe roboto fcs-15l" for="green">
-                    Verde
-                  </label>
+  <section id="products" class="mt-3">
+    <div class="container-lg">
+      <div class="row">
+        <div class="col-12 col-md-3"> <!-- Filters -->
+          <div class="accordion" id="accordionFilter">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <span class="roboto fw-bold fcs-15">Filtar por preço</span>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <form id="priceForm" action="/seu_backend" method="POST">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="0to50" checked name="checkbox2">
+                      <label class="form-check-label roboto fcs-15" for="0to50">
+                        R$ 0,00 - R$ 50,00
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="50to100" name="checkbox1">
+                      <label class="form-check-label roboto fcs-15" for="50to100">
+                        R$ 50,00 - R$ 100,00
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="100to150" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="100to150">
+                        R$ 100,00 - R$ 150,00
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="150to200" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="150to200">
+                        R$ 150,00 - R$ 200,00
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="200ormore" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="200ormore">
+                        R$ 200 ou mais
+                      </label>
+                    </div>
+                  </form>
                 </div>
-                </form>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <span class="roboto fw-bold fcs-15">Filtar por cor</span>
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <form id="colorForm" action="/seu_backend" method="POST">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="allcolors" checked name="checkbox2">
+                      <label class="form-check-label roboto fcs-15" for="allcolors">
+                        Todas as cores
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="black" name="checkbox1">
+                      <label class="form-check-label roboto fcs-15" for="black">
+                        Preto
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="white" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="white">
+                        Branco
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="red" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="red">
+                        Vermelho
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="blue" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="blue">
+                        Azul
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="green" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="green">
+                        Verde
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <span class="roboto fw-bold fcs-15">Filtar por tamanho</span>
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <form id="sizeForm" action="/seu_backend" method="POST">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="allsizes" checked name="checkbox2">
+                      <label class="form-check-label roboto fcs-15" for="allsizes">
+                        Todos os tamanhos
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="sizeP" name="checkbox1">
+                      <label class="form-check-label roboto fcs-15" for="sizeP">
+                        P
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="sizeM" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="sizeM">
+                        M
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="sizeG" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="sizeG">
+                        G
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" value="" id="sizeGG" name="checkbox1">
+                      <label class="form-check-labe roboto fcs-15l" for="sizeGG">
+                        GG
+                      </label>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <span class="roboto fw-bold fcs-15">Filtar por tamanho</span>
+        </div> <!-- Filters -->
+        <div class="col-12 col-md-9 mt-3 mt-md-0"> <!-- Products -->
+          <div class="row mb-2"> <!-- Menu -->
+            <div class="col-9 ps-3 ps-md-4"> <!-- Search -->
+              <input type="text" class="form-control roboto" id="searchInput" placeholder="Pesquisar por nome"
+                     aria-label="Pesquisar por nome" aria-describedby="button-addon2">
+            </div> <!-- Search -->
+            <div class="col-3 pe-3 pe-md-4 dropdown roboto d-flex justify-content-end"> <!-- Order By -->
+              <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                Ordenar por
               </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                <form id="sizeForm" action="/seu_backend" method="POST">
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="allsizes" checked name="checkbox2">
-            <label class="form-check-label roboto fcs-15" for="allsizes">
-              Todos os tamanhos
-            </label>
-          </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="sizeP" name="checkbox1">
-            <label class="form-check-label roboto fcs-15" for="sizeP">
-              P
-            </label>
-          </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="sizeM" name="checkbox1">
-            <label class="form-check-labe roboto fcs-15l" for="sizeM">
-              M
-            </label>
-          </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="sizeG" name="checkbox1">
-            <label class="form-check-labe roboto fcs-15l" for="sizeG">
-              G
-            </label>
-          </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" value="" id="sizeGG" name="checkbox1">
-            <label class="form-check-labe roboto fcs-15l" for="sizeGG">
-              GG
-            </label>
-          </div>
-        </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- Filters -->
-      <div class="col-12 col-md-9 mt-3 mt-md-0"> <!-- Products -->
-        <div class="row mb-2"> <!-- Menu -->
-          <div class="col-9 ps-3 ps-md-4"> <!-- Search -->
-            <input type="text" class="form-control roboto" id="searchInput" placeholder="Pesquisar por nome" aria-label="Pesquisar por nome" aria-describedby="button-addon2">
-          </div> <!-- Search -->
-          <div class="col-3 pe-3 pe-md-4 dropdown roboto d-flex justify-content-end"> <!-- Order By -->
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Ordenar por
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Preço</a></li>
-              <li><a class="dropdown-item" href="#">Avaliação</a></li>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Preço</a></li>
+                <li><a class="dropdown-item" href="#">Avaliação</a></li>
+              </ul>
+            </div> <!-- Order By -->
+          </div> <!-- Menu -->
+          <div class="row mx-1 mx-md-0"> <!-- Products -->
+            <ul class="list-unstyled list-inline">
+              {% for product in products %}
+                <li class="list-inline-item">
+                  <div class="card">
+                    <a href="{{ url_for('detail.product_detail', product_id=product.id) }}">
+                      <div class="ratio product-ratio">
+                        <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                      </div>
+                    </a>
+                    <div class="card-body text-center roboto">
+                      <h5 class="card-title fw-normal text-truncate fcs-15" title="{{ product.name }}">{{ product.name }}</h5>
+                      <p class="card-text fw-medium">R$<span
+                        class="fcs-15 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
+                        {% if product.price.old %}
+                          <del
+                            class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
+                        {% endif %}
+                      </p>
+                      <a href="{{ url_for('detail.product_detail', product_id=product.id) }}"
+                         class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i
+                        class="fa-solid fa-eye me-1"></i>
+                        <span class="d-none d-md-inline-block fw-light">Detalhes</span>
+                        <span class="d-inline-block d-md-none fw-light">Ver</span>
+                      </a>
+                      <a href="#" class="text-decoration-none fw-light text-dark"><i
+                        class="fa fa-shopping-cart me-1"></i>Carrinho</a>
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
             </ul>
-          </div> <!-- Order By -->
-        </div> <!-- Menu -->
-        <div class="row mx-1 mx-md-0"> <!-- Products -->
-          <ul class="list-unstyled list-inline">
-            {% for product in products %}
-            <li class="list-inline-item">
-              <div class="card">
-                <a href="{{ url_for('detail.product_detail', product_id=product.id) }}">
-                  <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
-                </a>
-                <div class="card-body text-center roboto">
-                  <h5 class="card-title fw-normal text-truncate fcs-15">{{ product.name }}</h5>
-                  <p class="card-text fw-medium">R$<span class="fcs-15 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
-                    {% if product.price.old %}
-                      <del class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
-                    {% endif %}
-                  </p>
-                  <a href="{{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i class="fa-solid fa-eye me-1"></i>
-                    <span class="d-none d-md-inline-block fw-light">Detalhes</span>
-                    <span class="d-inline-block d-md-none fw-light">Ver</span>
-                  </a>
-                  <a href="#" class="text-decoration-none fw-light text-dark"><i class="fa fa-shopping-cart me-1"></i>Carrinho</a>
-                </div>
-              </div>
-            </li>
-            {% endfor %}
-          </ul>
+          </div> <!-- Products -->
         </div> <!-- Products -->
-      </div> <!-- Products -->
-    </div>
-    <div class="row mt-3">
+      </div>
+      <div class="row mt-3">
 
-{#      <nav aria-label="Page navigation example">#}
-{#        <ul class="pagination justify-content-center">#}
-{#          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">#}
-{#            <a class="page-link text-dark" href="PLACEHOLER PAGINATION">Anterior</a>#}
-{#          </li>#}
-{#          {% for page in range(1, total_pages + 1) %}#}
-{#          <li class="page-item {% if current_page == page %}active{% endif %}">#}
-{#            <a class="page-link text-dark px-3" href="PLACEHOLER PAGINATION">{{ page }}</a>#}
-{#          </li>#}
-{#          {% endfor %}#}
-{#          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">#}
-{#            <a class="page-link text-dark"  href="PLACEHOLER PAGINATION">Próximo</a>#}
-{#          </li>#}
-{#        </ul>#}
-{#      </nav>#}
+        {#      <nav aria-label="Page navigation example">#}
+        {#        <ul class="pagination justify-content-center">#}
+        {#          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">#}
+        {#            <a class="page-link text-dark" href="PLACEHOLER PAGINATION">Anterior</a>#}
+        {#          </li>#}
+        {#          {% for page in range(1, total_pages + 1) %}#}
+        {#          <li class="page-item {% if current_page == page %}active{% endif %}">#}
+        {#            <a class="page-link text-dark px-3" href="PLACEHOLER PAGINATION">{{ page }}</a>#}
+        {#          </li>#}
+        {#          {% endfor %}#}
+        {#          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">#}
+        {#            <a class="page-link text-dark"  href="PLACEHOLER PAGINATION">Próximo</a>#}
+        {#          </li>#}
+        {#        </ul>#}
+        {#      </nav>#}
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
 {% block extra_scripts %}
-<script>
-   function collapseOnSmallScreen() {
-    if ($(window).width() < 768) {
-      $('.accordion-collapse').removeClass('show');
-      $('.accordion-button').addClass('collapsed');
-    } else {
-      $('.accordion-collapse').addClass('show');
-      $('.accordion-button').removeClass('collapsed');
-    }
-  }
- document.addEventListener('DOMContentLoaded', function () {
-    collapseOnSmallScreen();
-  });
-   // pesquisa por substring
-  $('#searchInput').on('keyup', function () {
-    var value = $(this).val().toLowerCase();
-    $('.list-inline-item').filter(function () {
-      $(this).toggle($(this).find('.card-title').text().toLowerCase().indexOf(value) > -1)
-    });
-  });
+  <script>
+      function collapseOnSmallScreen() {
+          if ($(window).width() < 768) {
+              $('.accordion-collapse').removeClass('show');
+              $('.accordion-button').addClass('collapsed');
+          } else {
+              $('.accordion-collapse').addClass('show');
+              $('.accordion-button').removeClass('collapsed');
+          }
+      }
 
-</script>
+      document.addEventListener('DOMContentLoaded', function () {
+          collapseOnSmallScreen();
+      });
+      // pesquisa por substring
+      $('#searchInput').on('keyup', function () {
+          var value = $(this).val().toLowerCase();
+          $('.list-inline-item').filter(function () {
+              $(this).toggle($(this).find('.card-title').text().toLowerCase().indexOf(value) > -1)
+          });
+      });
+
+  </script>
 {% endblock %}
