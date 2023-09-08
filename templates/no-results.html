@@ -3,9 +3,10 @@
 {% block title %}Nenhum resultado encontrado | You Shop{% endblock %}
 
 {% block content %}
-<section>
-  <div class="container-lg">
-    <nav aria-label="breadcrumb">
+  <section>
+    <div class="container-lg">
+      <!-- Breadcrumb Start -->
+      <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
           <li class="breadcrumb-item">
             <a class="link-body-emphasis" href="{{ url_for('home') }}">
@@ -21,12 +22,16 @@
           </li>
         </ol>
       </nav>
+      <!-- Breadcrumb End -->
+
+      <!-- Message Start -->
       <div class="row my-5 text-center">
         <div class="col-md-12 my-2">
           <h1 class="poppins">Nenhum resultado encontrado</h1>
           <p class="roboto">Infelizmente não encontramos nenhum resultado para {{ message }}.</p>
         </div>
       </div>
-  </div>
-</section>
+      <!-- Message End -->
+    </div>
+  </section>
 {% endblock %}

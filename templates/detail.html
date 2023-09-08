@@ -26,8 +26,10 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Product Detail Start -->
   <section id="detail">
     <div class="container-lg mt-3">
+      <!-- Breadcrumb Start -->
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
           <li class="breadcrumb-item">
@@ -37,41 +39,56 @@
             </a>
           </li>
           <li class="breadcrumb-item">
-            <a class="link-body-emphasis fw-semibold text-decoration-none"
-               href="{{ url_for('product.all_products') }}">Produtos</a>
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ url_for('product.all_products') }}">Produtos</a>
           </li>
           <li class="breadcrumb-item active text-truncate" aria-current="page" style="max-width: 55vw;">
             {{ product.name }}
           </li>
         </ol>
       </nav>
+      <!-- Breadcrumb End -->
+
+      <!-- Product Detail Body Start -->
       <div class="row">
-        <div class="col-12 col-md-4 mb-3 mb-md-0"> <!-- Product Image Carrousel -->
+        <!-- Product Image Carrousel Start -->
+        <div class="col-12 col-md-4 mb-3 mb-md-0">
           <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Product Image Content Start -->
             <div class="carousel-inner">
-              <div class="carousel-item active ratio product-ratio">
+              <div class="carousel-item active ratio product-ratio" data-bs-interval="2000">
                 <img src="{{ product.image }}" class="img-fluid" alt="{{ product.name }}">
               </div>
               {% for additional_image in product.additional_images %}
-                <div class="carousel-item ratio product-ratio">
+                <div class="carousel-item ratio product-ratio" data-bs-interval="2000">
                   <img src="{{ additional_image }}" class="img-fluid" alt="{{ product.name }}">
                 </div>
               {% endfor %}
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
-                    data-bs-slide="prev">
+            <!-- Product Image Content End -->
+
+            <!-- Product Image Carrousel Controls Start -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+              <span class="visually-hidden">Anterior</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
-                    data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+              <span class="visually-hidden">Próximo</span>
             </button>
+            <!-- Product Image Carrousel Controls End -->
           </div>
-        </div> <!-- Product Image Carrousel -->
+        </div>
+        <!-- Product Image Carrousel End -->
+
+        <!-- Product Details & Options Start -->
         <div class="col-12 col-md-8 ps-3">
-          <h2 class="fcs-13 poppins fw-bold" id="productName">{{ product.name }}</h2>
+          <!-- Product Name Start -->
+          <h2 id="productName" class="fcs-13 poppins fw-bold">
+            {{ product.name }}
+          </h2>
+          <!-- Product Name End -->
+
+          <!-- Product Rating Start -->
           <div id="rating" class="mt-3">
             {% for i in range(5) %}
               {% if i < product.rating.integer %}
@@ -84,6 +101,9 @@
             {% endfor %}
             <span class="fcs-15 roboto ">{{ product.rating }} ({{ product.reviews|length }} Avaliações)</span>
           </div>
+          <!-- Product Rating End -->
+
+          <!-- Product Price Start -->
           <div id="price" class="my-5">
             <span class="fcs-12 roboto fw-semibold">R${{ product.price.label_price(product.price.new) }}</span>
             {% if product.price.old %}
@@ -91,131 +111,115 @@
                 R${{ product.price.label_price(product.price.old) }}</del>
             {% endif %}
           </div>
+          <!-- Product Price End -->
+
+          <!-- Product Size Options Start -->
           <div id="sizesOptions" class="row">
+            <!-- Product Size Options Title Start -->
             <div class="col-12 col-md-2">
-              <span class="fcs-15 roboto fw-semibold me-4 mb-0">Tamanho:</span>
+              <span class="fcs-15 roboto fw-semibold me-4 mb-0">
+                Tamanho:
+              </span>
             </div>
+            <!-- Product Size Options Title End -->
+
+            <!-- Product Size Options Body Start -->
             <div class="col-12 col-md-10">
-              <input type="radio" class="btn-check" name="options-outlined" id="p-size"
-                     autocomplete="off">
-              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="p-size"
-                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                     data-bs-custom-class="custom-tooltip"
-                     title="📏 Medição do produto <br> Tórax: 94cm; Comp: 68cm; Ombro: 12cm; Manga: 21cm">
+              <input type="radio" class="btn-check" name="options-outlined" id="p-size" autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="p-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip" title="📏 Medição do produto <br> Tórax: 94cm; Comp: 68cm; Ombro: 12cm; Manga: 21cm">
                 P
               </label>
 
-              <input type="radio" class="btn-check" name="options-outlined" id="m-size" autocomplete="off"
-                     disabled>
-              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="m-size"
-                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                     data-bs-custom-class="custom-tooltip"
-                     title="📏 Medição do produto <br> Tórax: 98cm; Comp: 70cm; Ombro: 15cm; Manga: 22cm">
+              <input type="radio" class="btn-check" name="options-outlined" id="m-size" autocomplete="off" disabled>
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="m-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip" title="📏 Medição do produto <br> Tórax: 98cm; Comp: 70cm; Ombro: 15cm; Manga: 22cm">
                 M
               </label>
 
-              <input type="radio" class="btn-check" name="options-outlined" id="g-size"
-                     autocomplete="off">
-              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="g-size"
-                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                     data-bs-custom-class="custom-tooltip"
-                     title="📏 Medição do produto <br> Tórax: 104cm; Comp: 72cm; Ombro: 18cm; Manga: 23cm">
+              <input type="radio" class="btn-check" name="options-outlined" id="g-size" autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="g-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip" title="📏 Medição do produto <br> Tórax: 104cm; Comp: 72cm; Ombro: 18cm; Manga: 23cm">
                 G
               </label>
 
-              <input type="radio" class="btn-check" name="options-outlined" id="gg-size"
-                     autocomplete="off">
-              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="gg-size"
-                     style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;"
-                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
-                     data-bs-custom-class="custom-tooltip"
-                     title="📏 Medição do produto <br> Tórax: 110cm; Comp: 74cm; Ombro: 21cm; Manga: 24cm">
+              <input type="radio" class="btn-check" name="options-outlined" id="gg-size" autocomplete="off">
+              <label class="btn btn-outline-dark btn-sm rounded-pill me-2 fw-medium fcs-15" for="gg-size" style="width: 4rem; --bs-btn-padding-y: .2rem; --bs-btn-padding-x: .1rem;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="custom-tooltip" title="📏 Medição do produto <br> Tórax: 110cm; Comp: 74cm; Ombro: 21cm; Manga: 24cm">
                 GG
               </label>
             </div>
+            <!-- Product Size Options Body End -->
           </div>
+          <!-- Product Size Options End -->
+
+          <!-- Product Color Options Start -->
           <div id="colorOptions" class="mt-2 mt-md-1 row">
             <!-- TODO: Implementar seleção de cores -->
-            <input type="color" class="form-control form-control-color d-none" id="exampleColorInput"
-                   value="#563d7c" title="Choose your color">
+            <input type="color" class="form-control form-control-color d-none" id="exampleColorInput" value="#563d7c" title="Choose your color">
 
             <div class="col-12 col-md-2">
               <span class="fcs-15 roboto fw-semibold me-4 mb-0">Cores:</span>
             </div>
             <div class="col-12 col-md-10">
-              <input type="radio" class="btn-check color-selector" name="color-options" id="color-black"
-                     autocomplete="off">
-              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                     for="color-black" style="width: 2rem; height: 2rem; background-color: #282828;"
-                     title="Preto"></label>
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-black" autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-black" style="width: 2rem; height: 2rem; background-color: #282828;" title="Preto"></label>
 
-              <input type="radio" class="btn-check color-selector" name="color-options" id="color-white"
-                     autocomplete="off">
-              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                     for="color-white" style="width: 2rem; height: 2rem; background-color: white;"
-                     title="Branco"></label>
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-white" autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-white" style="width: 2rem; height: 2rem; background-color: white;" title="Branco"></label>
 
-              <input type="radio" class="btn-check color-selector" name="color-options" id="color-red"
-                     autocomplete="off">
-              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                     for="color-red" style="width: 2rem; height: 2rem; background-color: #af0c0c;"
-                     title="Vermelho"></label>
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-red" autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-red" style="width: 2rem; height: 2rem; background-color: #af0c0c;" title="Vermelho"></label>
 
-              <input type="radio" class="btn-check color-selector" name="color-options" id="color-green"
-                     autocomplete="off">
-              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                     for="color-green" style="width: 2rem; height: 2rem; background-color: #00b000;"
-                     title="Verde"></label>
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-green" autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-green" style="width: 2rem; height: 2rem; background-color: #00b000;" title="Verde"></label>
 
-              <input type="radio" class="btn-check color-selector" name="color-options" id="color-blue"
-                     autocomplete="off">
-              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15"
-                     for="color-blue" style="width: 2rem; height: 2rem; background-color: #0e0ed7;"
-                     title="Azul"></label>
+              <input type="radio" class="btn-check color-selector" name="color-options" id="color-blue" autocomplete="off">
+              <label class="btn btn-outline-secondary btn-sm rounded-circle me-2 fw-medium fcs-15" for="color-blue" style="width: 2rem; height: 2rem; background-color: #0e0ed7;" title="Azul"></label>
             </div>
           </div>
+          <!-- Product Color Options End -->
+
+          <!-- Product Quantity & Add to Cart Start -->
           <form action="{{ url_for('user.add_to_cart') }}" method="post">
             <div class="d-flex">
               <input type="hidden" name="product_id" value="{{ product.id }}">
+              <!-- Quantity Input Start -->
               <div class="input-group mt-3 cart-qnt-control">
-                <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i
-                  class="fas fa-minus"></i></button>
-                <input name="quantity" id="cart-qnt-input" type="number" class="form-control text-center fcs-15"
-                       placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
-                <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i
-                  class="fas fa-plus"></i></button>
+                <button id="cart-qnt-remove1" class="btn btn-outline-dark" type="button"><i class="fas fa-minus"></i>
+                </button>
+                <input name="quantity" id="cart-qnt-input" type="number" class="form-control text-center fcs-15" placeholder="" aria-label="Counter" aria-describedby="button-addon1" value="1">
+                <button id="cart-qnt-add1" class="btn btn-outline-dark" type="button"><i class="fas fa-plus"></i>
+                </button>
               </div>
+              <!-- Quantity Input End -->
+
+              <!-- Add to Cart Button Start -->
               <div class="ms-4 mt-3">
                 <button class="btn btn-outline-dark roboto fcs-15">
                   <i class="fas fa-shopping-cart"></i>
                   Adicionar ao carrinho
                 </button>
               </div>
+              <!-- Add to Cart Button End -->
             </div>
           </form>
+          <!-- Product Quantity & Add to Cart End -->
         </div>
+        <!-- Product Details & Options End -->
       </div>
+      <!-- Product Detail Body End -->
+
+      <!-- Product Description, Reviews & Additional Info Start -->
       <div class="row d-flex mt-5">
+        <!-- Nav Tabs Start -->
         <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                    data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
-                    aria-selected="true">Descrição
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Descrição
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                    data-bs-target="#profile-tab-pane" type="button" role="tab"
-                    aria-controls="profile-tab-pane" aria-selected="false">Informação
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Informação
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link pe-0" id="contact-tab" data-bs-toggle="tab"
-                    data-bs-target="#contact-tab-pane" type="button" role="tab"
-                    aria-controls="contact-tab-pane" aria-selected="false">
+            <button class="nav-link pe-0" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
               Avaliações
               <span class="top-0 start-100 translate-middle badge rounded-pill bg-dark">
               {{ product.reviews|length }}
@@ -223,17 +227,22 @@
             </button>
           </li>
         </ul>
+        <!-- Nav Tabs End -->
+
+        <!-- Tab Content Start -->
         <div class="tab-content mt-1">
-          <div class="tab-pane fade show active roboto" id="home-tab-pane" role="tabpanel"
-               aria-labelledby="home-tab" tabindex="0">
+          <!-- Product Description Tab Start -->
+          <div class="tab-pane fade show active roboto" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
             {% if product.description %}
               <p class="m-3 roboto text-justify">{{ product.description }}</p>
             {% else %}
               <p class="m-3 roboto">Não há descrição para este produto.</p>
             {% endif %}
           </div>
-          <div class="tab-pane fade roboto" id="profile-tab-pane" role="tabpanel"
-               aria-labelledby="profile-tab" tabindex="0">
+          <!-- Product Description Tab End -->
+
+          <!-- Product Additional Info Tab Start -->
+          <div class="tab-pane fade roboto" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
             <div class="row mt-3 mx-2">
               {% if product.additional_info %}
                 <table class="table table-striped table-bordered table-hover roboto">
@@ -251,16 +260,17 @@
               {% endif %}
             </div>
           </div>
-          <div class="tab-pane fade roboto" id="contact-tab-pane" role="tabpanel"
-               aria-labelledby="contact-tab" tabindex="0">
+          <!-- Product Additional Info Tab End -->
+
+          <!-- Product Reviews Tab Start -->
+          <div class="tab-pane fade roboto" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
             <div class="d-flex row mt-3 mx-3">
               {% if product.reviews|length > 0 %}
                 <ul class="list-inline row d-flex">
                   {% for review in product.reviews %}
                     <li class="list-inline-item col-12 col-md-6">
                       <div class="userReview">
-                        <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span
-                          class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span>
+                        <p class="fw-bold roboto mb-0 text-truncate">{{ review.author_name }}<span class="fw-light fst-italic"> - {{ review.date.strftime('%d/%m/%Y') }}</span>
                         </p>
                         <div class="userRating">
                           {% for i in range(5) %}
@@ -282,12 +292,16 @@
               {% endif %}
             </div>
           </div>
+          <!-- Product Reviews Tab End -->
         </div>
+        <!-- Tab Content End -->
       </div>
+      <!-- Product Description, Reviews & Additional Info End -->
     </div>
   </section>
+  <!-- Product Detail End -->
 
-  <!-- Toast -->
+  <!-- Toast Start -->
   {% if cart_toast %}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -304,13 +318,19 @@
       </div>
     </div>
   {% endif %}
+  <!-- Toast End -->
+
 {% endblock %}
+
+
 {% block extra_scripts %}
   <script>
+      // Tooltips Initialization
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
       const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-      $(document).ready(function () {
 
+      // Quantity Input Control
+      $(document).ready(function () {
           var $input = $("#cart-qnt-input");
           var $btnAdd = $("#cart-qnt-add1");
           var $btnRemove = $("#cart-qnt-remove1");
@@ -327,10 +347,13 @@
               }
           });
       });
+
+      // Toast callback
       if ('{{ cart_toast }}') {
           const toastLiveExample = document.getElementById('liveToast')
           const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
           toastBootstrap.show()
       }
+
   </script>
 {% endblock %}

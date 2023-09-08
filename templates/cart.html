@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}You Shop - Detalhes do Produto{% endblock %}
+{% block title %}You Shop - Carrinho{% endblock %}
 
 {% block extra_style %}
   <style>
@@ -24,6 +24,7 @@
 {% block content %}
   <section id="cart">
     <div class="container-lg">
+      <!-- Breadcrumb Start -->
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-3 fcs-15 roboto">
           <li class="breadcrumb-item">
@@ -33,11 +34,13 @@
             </a>
           </li>
           <li class="breadcrumb-item">
-            <a class="link-body-emphasis fw-semibold text-decoration-none"
-               href="{{ url_for('product.all_products') }}">Carrinho</a>
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{ url_for('product.all_products') }}">
+              Carrinho
+            </a>
           </li>
         </ol>
-      </nav> <!-- Breadcrumb -->
+      </nav>
+      <!-- Breadcrumb End -->
 
       <!-- Cart items & Order resume Start -->
       <div class="row my-3">
@@ -66,8 +69,7 @@
                 <tr>
                   <!-- Product name & Image Start-->
                   <th scope="row" class="border-start border-end align-middle">
-                    <a href="{{ url_for('detail.product_detail', product_id=cart_item.product.id) }}"
-                       class="text-decoration-none link-body-emphasis">
+                    <a href="{{ url_for('detail.product_detail', product_id=cart_item.product.id) }}" class="text-decoration-none link-body-emphasis">
                       <div class="d-flex align-items-center">
                         <div class="">
                           <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">
@@ -75,16 +77,15 @@
                         <p class="fcs-14 fw-light roboto my-auto">{{ cart_item.product.name }}</p>
                       </div>
                     </a>
-                  </th> <!-- Product name & Image End-->
+                  </th>
+                  <!-- Product name & Image End-->
 
                   <!-- Quantity Start -->
                   <td class="border-end roboto align-middle">
                     <div class="input-group">
-                      <button class="btn btn-outline-secondary" type="button" id="decrement"><i
-                        class="fas fa-minus"></i></button>
-                      <input type="number" class="form-control text-center fcs-14" placeholder=""
-                             aria-label="Example text with button addon" aria-describedby="button-addon1"
-                             value="{{ cart_item.quantity }}" id="quantity-input">
+                      <button class="btn btn-outline-secondary" type="button" id="decrement">
+                        <i class="fas fa-minus"></i></button>
+                      <input type="number" class="form-control text-center fcs-14" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="{{ cart_item.quantity }}" id="quantity-input">
                       <button class="btn btn-outline-secondary" type="button" id="increment"><i class="fas fa-plus"></i>
                       </button>
                     </div>
@@ -92,7 +93,8 @@
                       <input type="hidden" name="quantity" id="hidden-quantity" value="{{ cart_item.quantity }}">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                     </form>
-                  </td> <!-- Quantity End -->
+                  </td>
+                  <!-- Quantity End -->
 
                   <!-- Price Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">R$ {{ cart_item.product.price }}</td>
@@ -104,27 +106,31 @@
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                       <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
                     </form>
-                  </td> <!-- Delete button End -->
+                  </td>
+                  <!-- Delete button End -->
 
                 </tr>
               {% endfor %}
               </tbody>
             </table>
-          </div> <!-- Cart items End -->
+          </div>
+          <!-- Cart items End -->
 
           <!-- Order resume Start -->
           <div class="col-12 col-md-4 mt-1 mt-md-5 order-1 order-md-2">
             <div class="row mx-3 mx-md-0">
+              <!-- cupom code Start -->
               <div class="order-2 order-md-1 p-0 mt-1 mt-md-0">
                 <form action="" method="post">
                   <div class="input-group">
-                    <input type="text" class="form-control roboto" placeholder="Código de Cupom"
-                           aria-label="Código de Cupom"
-                           aria-describedby="searchProducts">
+                    <input type="text" class="form-control roboto" placeholder="Código de Cupom" aria-label="Código de Cupom" aria-describedby="searchProducts">
                     <button class="btn btn-outline-secondary" type="submit" id="cupomCode">Aplicar Cupom</button>
                   </div>
                 </form>
               </div>
+              <!-- cupom code End -->
+
+              <!-- Order total Start -->
               <div class="order-1 order-md-2 card mt-1 mt-md-5">
                 <div class="card-body">
                   <h5 class="card-title roboto fw-bold fcs-12 border-bottom pb-2">Resumo do pedido</h5>
@@ -149,8 +155,10 @@
                   <a href="#" class="btn btn-dark w-100 card-link">Finalizar pedido</a>
                 </div>
               </div>
+              <!-- Order total End -->
             </div>
-          </div> <!-- Order resume End -->
+          </div>
+          <!-- Order resume End -->
 
         {% else %}
           <!-- Empty cart Start -->
@@ -162,10 +170,12 @@
                 <a href="{{ url_for('product.all_products') }}" class="btn btn-dark">Ver produtos</a>
               </div>
             </div>
-          </div> <!-- Empty cart End -->
+          </div>
+          <!-- Empty cart End -->
 
         {% endif %}
-      </div> <!-- Cart items & Order resume End -->
+      </div>
+      <!-- Cart items & Order resume End -->
     </div>
   </section>
 {% endblock %}

@@ -1,0 +1,46 @@
+<div class="card">
+
+  <!-- Product image Start -->
+  <a href=" {{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none">
+    <div class="ratio product-ratio">
+      <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+    </div>
+  </a>
+  <!-- Product image End -->
+
+  <!-- Product body Start -->
+  <div class="card-body text-center roboto">
+    <h5 class="card-title fw-normal text-truncate fcs-15 mb-3">
+      {{ product.name }}
+    </h5>
+    <p class="card-text fw-medium">
+      R$ <span class="fcs-14 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
+      {% if product.price.old %}
+        <del class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
+      {% endif %}
+    </p>
+    <div class="flex-row">
+      <a href="{{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark">
+        <i class="fa-solid fa-eye me-1"></i>
+        Detalhes
+      </a>
+      <form action="{{ url_for("user.add_to_cart") }}" method="post" style="display: inline-block;">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" style="border: none; background: none;">
+          <i class="fa fa-shopping-cart me-1"></i>
+          Carrinho
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- Product body End -->
+
+  <!-- Product discount Start -->
+  {% if product.price.old %}
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 100 !important;">
+      {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
+    </span>
+  {% endif %}
+  <!-- Product discount End -->
+</div>
