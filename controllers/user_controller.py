@@ -21,7 +21,7 @@ def add_to_cart():
     cart = Cart.get_or_create_cart(current_user.id, product_id)
     cart += int(quantity)
 
-    return redirect(url_for('detail.product_detail', product_id=product_id, cart_toast=True))
+    return redirect(url_for('product.product_detail', product_id=product_id, cart_toast=True))
 
 
 @login_required
@@ -29,8 +29,11 @@ def update_item():
     cart_id = request.form.get('cart_id')
     quantity = request.form.get('quantity')
 
-    if not quantity.isnumeric() or int(quantity) < 1:
+    if not quantity.isnumeric():
         return redirect(url_for('home'))
+
+    if int(quantity) < 1:
+        return delete_item()
 
     cart = Cart.get_by_id(int(cart_id))
     cart.update_item(int(quantity))

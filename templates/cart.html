@@ -69,7 +69,7 @@
                 <tr>
                   <!-- Product name & Image Start-->
                   <th scope="row" class="border-start border-end align-middle">
-                    <a href="{{ url_for('detail.product_detail', product_id=cart_item.product.id) }}" class="text-decoration-none link-body-emphasis">
+                    <a href="{{ url_for('product.product_detail', product_id=cart_item.product.id) }}" class="text-decoration-none link-body-emphasis">
                       <div class="d-flex align-items-center">
                         <div class="">
                           <img src="{{ cart_item.product.image }}" class="cart-img rounded-3 me-2" alt="">

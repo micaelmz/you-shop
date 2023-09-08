@@ -1,7 +1,7 @@
 <div class="card">
 
   <!-- Product image Start -->
-  <a href=" {{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none">
+  <a href=" {{ url_for('product.product_detail', product_id=product.id) }}" class="text-decoration-none">
     <div class="ratio product-ratio">
       <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
     </div>
@@ -20,7 +20,7 @@
       {% endif %}
     </p>
     <div class="flex-row">
-      <a href="{{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark">
+      <a href="{{ url_for('product.product_detail', product_id=product.id) }}" class="text-decoration-none fw-normal text-dark">
         <i class="fa-solid fa-eye me-1"></i>
         Detalhes
       </a>
