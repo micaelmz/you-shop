@@ -83,14 +83,16 @@
                   <!-- Quantity Start -->
                   <td class="border-end roboto align-middle">
                     <div class="input-group">
-                      <button class="btn btn-outline-secondary" type="button" id="decrement">
-                        <i class="fas fa-minus"></i></button>
-                      <input type="number" class="form-control text-center fcs-14" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="{{ cart_item.quantity }}" id="quantity-input">
-                      <button class="btn btn-outline-secondary" type="button" id="increment"><i class="fas fa-plus"></i>
+                      <button class="btn btn-outline-secondary decrement" type="button">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="number" class="form-control text-center fcs-14 quantity-input" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="{{ cart_item.quantity }}">
+                      <button class="btn btn-outline-secondary increment" type="button">
+                        <i class="fas fa-plus"></i>
                       </button>
                     </div>
-                    <form action="{{ url_for("user.update_item") }}" method="post" id="quantity-form">
-                      <input type="hidden" name="quantity" id="hidden-quantity" value="{{ cart_item.quantity }}">
+                    <form action="{{ url_for("user.update_item") }}" method="post" class="quantity-form">
+                      <input type="hidden" name="quantity" class="hidden-quantity" value="{{ cart_item.quantity }}">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                     </form>
                   </td>
@@ -182,34 +184,35 @@
 
 {% block extra_scripts %}
   <script>
-      const quantityInput = document.getElementById('quantity-input');
-      const hiddenQuantityInput = document.getElementById('hidden-quantity');
-      const quantityForm = document.getElementById('quantity-form');
+      const quantityInputs = document.querySelectorAll('.quantity-input');
+      const hiddenQuantityInputs = document.querySelectorAll('.hidden-quantity');
+      const quantityForms = document.querySelectorAll('.quantity-form');
+      const decrementButtons = document.querySelectorAll('.decrement');
+      const incrementButtons = document.querySelectorAll('.increment');
 
-      quantityInput.addEventListener('blur', () => {
-          hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
-          quantityForm.submit();
-      });
+      quantityInputs.forEach((quantityInput, index) => {
+          quantityInput.addEventListener('blur', () => {
+              hiddenQuantityInputs[index].value = parseInt(quantityInput.value, 10);
+              quantityForms[index].submit();
+          });
 
-      const decrementButton = document.getElementById('decrement');
-      const incrementButton = document.getElementById('increment');
+          decrementButtons[index].addEventListener('click', () => {
+              const currentQuantity = parseInt(quantityInput.value, 10);
+              if (currentQuantity > 0) {
+                  const newQuantity = currentQuantity - 1;
+                  quantityInput.value = newQuantity;
+                  hiddenQuantityInputs[index].value = newQuantity;
+                  quantityForms[index].submit();
+              }
+          });
 
-      decrementButton.addEventListener('click', () => {
-          const currentQuantity = parseInt(quantityInput.value, 10);
-          if (currentQuantity > 0) {
-              const newQuantity = currentQuantity - 1;
+          incrementButtons[index].addEventListener('click', () => {
+              const currentQuantity = parseInt(quantityInput.value, 10);
+              const newQuantity = currentQuantity + 1;
               quantityInput.value = newQuantity;
-              hiddenQuantityInput.value = newQuantity;
-              quantityForm.submit();
-          }
-      });
-
-      incrementButton.addEventListener('click', () => {
-          const currentQuantity = parseInt(quantityInput.value, 10);
-          const newQuantity = currentQuantity + 1;
-          quantityInput.value = newQuantity;
-          hiddenQuantityInput.value = newQuantity;
-          quantityForm.submit();
+              hiddenQuantityInputs[index].value = newQuantity;
+              quantityForms[index].submit();
+          });
       });
   </script>
 {% endblock %}
