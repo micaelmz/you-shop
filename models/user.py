@@ -9,7 +9,7 @@ class User(BaseModel, UserMixin):
     last_name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False, unique=True)
     password = db.Column(db.String(512), nullable=False)
-    cart = db.relationship('Cart', backref='user')
+    cart = db.relationship('Cart', backref='user', order_by='Cart.id')
 
     @classmethod
     def get_by_email(cls, email):
