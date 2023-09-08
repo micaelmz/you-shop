@@ -67,9 +67,11 @@
 
 /* Apply the same aspect ratio for all products images */
 .product-ratio {
-    --bs-aspect-ratio: 110%;
+    --bs-aspect-ratio: 111%;
 }
-
+.promotions-banner-ratio{
+    --bs-aspect-ratio: 33%;
+}
 .category-img {
     width: calc(7rem + 7vh);
 }

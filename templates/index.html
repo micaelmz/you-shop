@@ -20,133 +20,147 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Advantages  Start -->
   <section id="advantages" class="mt-3">
     <div class="container-lg">
+      <!-- Scrollable Advantages Start -->
       <div class="row flex-nowrap overflow-auto">
-        <div class="col bg-secondary-subtle"> <!-- Free Shipping -->
+        <!-- Free Shipping Start -->
+        <div class="col bg-secondary-subtle">
           <div class="text-center border p-2">
             <i class="fa fa-shipping-fast text-dark fcs-13"></i>
             <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Frete Grátis</h5>
           </div>
-        </div> <!-- Free Shipping -->
-        <div class="col bg-secondary-subtle"> <!-- Security Payment -->
+        </div>
+        <!-- Free Shipping End -->
+
+        <!-- Security Payment Start -->
+        <div class="col bg-secondary-subtle">
           <div class="text-center border p-2">
             <i class="fa fa-lock text-dark fcs-13"></i>
             <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">100% Seguro</h5>
           </div>
-        </div> <!-- Security Payment -->
-        <div class="col bg-secondary-subtle"> <!-- 24/7 Support -->
+        </div>
+        <!-- Security Payment End -->
+
+        <!-- 24/7 Support Start -->
+        <div class="col bg-secondary-subtle">
           <div class="text-center border p-2">
             <i class="fa fa-headset text-dark fcs-13"></i>
             <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Suporte 24/7</h5>
           </div>
-        </div> <!-- 24/7 Support -->
-        <div class="col bg-secondary-subtle"> <!-- Money Return -->
+        </div>
+        <!-- 24/7 Support End -->
+
+        <!-- Money Return Start -->
+        <div class="col bg-secondary-subtle">
           <div class="text-center border p-2">
             <i class="fa fa-undo text-dark me-2 fcs-13"></i>
             <h5 class="fw-medium m-0 roboto fcs-17" style="white-space: nowrap;">Devolução Grátis</h5>
           </div>
-        </div> <!-- Money Return -->
+        </div>
+        <!-- Money Return End -->
       </div>
+      <!-- Scrollable Advantages End -->
     </div>
   </section>
+  <!-- Advantages  End -->
+
+  <!-- Promo Banner Start -->
   <section id="promotions" class="mt-3">
     <div class="container-lg p-0">
-      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <!-- Promo Banner Carousel Start -->
+      <div id="promotions-carousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel Content Start -->
         <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="2500">
-            <img
-              src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp"
-              class="d-block w-100" alt="...">
+          <div class="carousel-item active ratio promotions-banner-ratio" data-bs-interval="2500">
+            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/1689561764a308289d1d261cde4e52c80e6c8b369b_thumbnail_2000x.webp" class="d-block w-100" alt="...">
           </div>
-          <div class="carousel-item" data-bs-interval="2500">
-            <img
-              src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp"
-              class="d-block w-100" alt="...">
+          <div class="carousel-item ratio promotions-banner-ratio" data-bs-interval="2500">
+            <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/17/16895783130a5b4a7ee74d58ae920e7a8a8f80c6d7_thumbnail_2000x.webp" class="d-block w-100" alt="...">
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="prev">
+        <!-- Carousel Content End -->
+
+        <!-- Carousel Controls Start -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#promotions-carousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
+          <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#promotions-carousel" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
+          <span class="visually-hidden">Próximo</span>
         </button>
+        <!-- Carousel Controls End -->
       </div>
+      <!-- Promo Banner Carousel End -->
     </div>
   </section>
-  <section id="category" class="mt-4">
+  <!-- Promo Banner End -->
+
+  <!-- Categories Start -->
+  <section id="category" class="mt-3">
     <div class="container-lg">
+      <!-- Categories Title Start -->
       <div class="text-center mb-2">
         <h2 class="section-title px-5 garamond"><span class="px-2">Por categoria</span></h2>
       </div>
+      <!-- Categories Title End -->
+
+      <!-- Categories Start -->
       <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         {% for category in categories[:8] %}
-          <li class="align-items-center m-1 m-md-5"> <!-- Feminino -->
-            <a href="{{ url_for('product.products_by_category', category_id=category.id) }}"
-               class="text-decoration-none text-dark">
-              <img src="{{ category.image }}" class="rounded-circle category-img p-3 p-md-0" alt="">
+          <li class="align-items-center m-1 m-md-5">
+            <a href="{{ url_for('product.products_by_category', category_id=category.id) }}" class="text-decoration-none text-dark">
+              <img src="{{ category.image }}" class="rounded-circle category-img p-3 p-md-0" alt="{{ category.name }}">
               <h3 class="fcs-13 fw-medium roboto text-center mt-1">{{ category.name }}</h3>
             </a>
           </li>
         {% endfor %}
       </ul>
+      <!-- Categories End -->
     </div>
   </section>
+  <!-- Categories End -->
+
+  <!-- Advertisement Start -->
   <section id="ad" class="mt-3">
     <div class="container-lg">
       <div class="row">
-        <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp"
-             alt="">
+        <img src="https://img.ltwebstatic.com/images3_ccc/2023/07/14/1689304830e3d2a86f067e76ce0059c93262ad6514.webp" alt="">
       </div>
     </div>
   </section>
-  <section id="hot" class="mt-4">
+  <!-- Advertisement End -->
+
+  <!-- Hot Products Start -->
+  <section id="hot" class="mt-3">
     <div class="container-lg">
+      <!-- Hot Products Title Start -->
       <div class="text-center">
         <h2 class="section-title px-5">
           <span class="px-2 garamond">Em promoção</span>
         </h2>
       </div>
+      <!-- Hot Products Title End -->
+
+      <!-- Hot Products Start -->
       <div class="row">
         <div class="slider">
           <div class="slide-track ">
             <div class="" style="width: 88vw;"></div>
             {% for product in recommended_products %}
               <div class="slide ">
-                <div class="card me-3 mt-3">
-                  <a href=" {{ url_for('detail.product_detail', product_id=product.id) }}" class="text-decoration-none">
-                    <div class="ratio product-ratio">
-                      <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
-                    </div>
-                  </a>
-                  <div class="card-body text-center roboto">
-                    <h5 class="card-title fw-normal text-truncate fcs-15 mb-3">{{ product.name }}</h5>
-                    <p class="card-text fw-medium">R$<span
-                      class="fcs-14 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
-                      {% if product.price.old %}
-                        <del
-                          class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
-                      {% endif %}
-                    </p>
-                    <a href="{{ url_for('detail.product_detail', product_id=product.id) }}"
-                       class="text-decoration-none fw-normal text-dark me-4"><i class="fa-solid fa-eye me-1"></i>Detalhes</a>
-                    <a href="#" class="text-decoration-none fw-normal text-dark"><i
-                      class="fa fa-shopping-cart me-1"></i>Carrinho</a>
-                  </div>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style="z-index: 100 !important;">
-                    {{ ((product.price.old - product.price.new) / product.price.old * 100) | round | int }}% OFF
-                  </span>
+                <div class="me-3 mt-3">
+                  {% include 'components/product-card.html' %}
                 </div>
               </div>
             {% endfor %}
           </div>
         </div>
       </div>
+      <!-- Hot Products End -->
     </div>
   </section>
+  <!-- Hot Products End -->
 {% endblock %}

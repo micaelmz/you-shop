@@ -18,25 +18,30 @@
     </style>
   {% endblock %}
   <section>
-    <div class="container-lg my-5"> <!-- Pré login form -->
+    <div class="container-lg my-5">
+      <!-- Pré login start -->
       <div id="pre-login-form" class="mx-auto">
+        <!-- Title start -->
         <h2 class="text-center mb-4">Login / Cadastro</h2>
+        <!-- Title end -->
+
+        <!-- Form start -->
         <form style="" method="POST">
           {{ form.hidden_tag() }}
           <div class="form-floating">
             {{ form.email(class="form-control", id="floatingInput", placeholder="name@example.com") }}
             <label for="floatingInput">Endereço de email</label>
             <button class="btn btn-dark w-100 py-2 mt-2 text-uppercase" type="submit">Continuar</button>
-            <div class="divider">
-              <span class="divider-text">ou</span>
-            </div>
+            <div class="divider"><span class="divider-text">ou</span></div>
             <button class="btn btn-outline-dark w-100 py-2 mt-2" disabled>
               <i class="fab fa-google me-2"></i>
               Entrar com o Google
             </button>
           </div>
         </form>
+        <!-- Form end -->
 
+        <!-- Error messages start -->
         <div class="row d-flex mt-2">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -56,22 +61,27 @@
             {% endif %}
           {% endwith %}
         </div>
+        <!-- Error messages end -->
       </div>
-    </div> <!-- Pré login form -->
+      <!-- Pré login end -->
+    </div>
   </section>
 
+  <!-- Continue modal start -->
   {% if continue_modal == 'login' %}
     {% include 'modals/login-modal.html' %}
   {% elif continue_modal == 'register' %}
     {% include 'modals/register-modal.html' %}
   {% endif %}
+  <!-- Continue modal end -->
 
 {% endblock %}
+
+
 {% block extra_scripts %}
   <script>
       $(document).ready(function () {
-          var continueModal = '{{ continue_modal }}';
-          if (continueModal === 'login' || continueModal === 'register') {
+          if ('{{ continue_modal }}') {
               $('#continue-modal').modal('show');
           }
       });

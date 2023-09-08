@@ -212,31 +212,7 @@
             <ul class="list-unstyled list-inline">
               {% for product in products %}
                 <li class="list-inline-item">
-                  <div class="card">
-                    <a href="{{ url_for('detail.product_detail', product_id=product.id) }}">
-                      <div class="ratio product-ratio">
-                        <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
-                      </div>
-                    </a>
-                    <div class="card-body text-center roboto">
-                      <h5 class="card-title fw-normal text-truncate fcs-15" title="{{ product.name }}">{{ product.name }}</h5>
-                      <p class="card-text fw-medium">R$<span
-                        class="fcs-15 value-product me-1">{{ product.price.label_price(product.price.new) }}</span>
-                        {% if product.price.old %}
-                          <del
-                            class="text-danger fw-light fcs-15">{{ product.price.label_price(product.price.old) }}</del>
-                        {% endif %}
-                      </p>
-                      <a href="{{ url_for('detail.product_detail', product_id=product.id) }}"
-                         class="text-decoration-none fw-normal text-dark me-2 me-md-4"><i
-                        class="fa-solid fa-eye me-1"></i>
-                        <span class="d-none d-md-inline-block fw-light">Detalhes</span>
-                        <span class="d-inline-block d-md-none fw-light">Ver</span>
-                      </a>
-                      <a href="#" class="text-decoration-none fw-light text-dark"><i
-                        class="fa fa-shopping-cart me-1"></i>Carrinho</a>
-                    </div>
-                  </div>
+                  {% include 'components/product-card.html' %}
                 </li>
               {% endfor %}
             </ul>

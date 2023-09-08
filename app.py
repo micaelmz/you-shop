@@ -9,7 +9,6 @@ from models.category import Category
 from models.product import Product, Price
 from models.user import User
 
-from routes.detail_bp import detail_blueprint
 from routes.user_bp import user_blueprint
 from routes.product_bp import product_blueprint
 from routes.no_results_bp import no_results_blueprint
@@ -28,7 +27,6 @@ login_manager.login_view = 'auth.pre_login'
 app.register_blueprint(api_blueprint, url_prefix='/api')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(product_blueprint, url_prefix='/product')
-app.register_blueprint(detail_blueprint, url_prefix='/detail')
 app.register_blueprint(no_results_blueprint, url_prefix='/no-results')
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
