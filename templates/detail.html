@@ -177,7 +177,7 @@
           <!-- Product Color Options End -->
 
           <!-- Product Quantity & Add to Cart Start -->
-          <form action="{{ url_for('user.add_to_cart') }}" method="post">
+          <form action="{{ url_for('user.cart_add_item') }}" method="post">
             <div class="d-flex">
               <input type="hidden" name="product_id" value="{{ product.id }}">
               <!-- Quantity Input Start -->

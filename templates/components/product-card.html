@@ -24,7 +24,7 @@
         <i class="fa-solid fa-eye me-1"></i>
         Detalhes
       </a>
-      <form action="{{ url_for("user.add_to_cart") }}" method="post" style="display: inline-block;">
+      <form action="{{ url_for("user.cart_add_item") }}" method="post" style="display: inline-block;">
         <input type="hidden" name="product_id" value="{{ product.id }}">
         <input type="hidden" name="quantity" value="1">
         <button type="submit" style="border: none; background: none;">

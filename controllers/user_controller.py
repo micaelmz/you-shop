@@ -11,7 +11,7 @@ def cart():
 
 
 @login_required
-def add_to_cart():
+def cart_add_item():
     product_id = request.form.get('product_id')
     quantity = request.form.get('quantity')
 
@@ -25,7 +25,7 @@ def add_to_cart():
 
 
 @login_required
-def update_item():
+def cart_update_item():
     cart_id = request.form.get('cart_id')
     quantity = request.form.get('quantity')
 
@@ -33,7 +33,7 @@ def update_item():
         return redirect(url_for('home'))
 
     if int(quantity) < 1:
-        return delete_item()
+        return cart_delete_item()
 
     cart = Cart.get_by_id(int(cart_id))
     cart.update_item(int(quantity))
@@ -42,7 +42,7 @@ def update_item():
 
 
 @login_required
-def delete_item():
+def cart_delete_item():
     cart_id = request.form.get('cart_id')
     cart = Cart.get_by_id(int(cart_id))
     cart.delete_item()
