@@ -68,3 +68,8 @@ def terms_of_service():
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('privacy-policy.html')
+
+
+@app.route('/detail/<int:product_id>')
+def detail_moved(product_id: int):
+    return redirect(f'/product/id/{product_id}', code=301)
