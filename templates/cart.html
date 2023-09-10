@@ -91,7 +91,7 @@
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>
-                    <form action="{{ url_for("user.update_item") }}" method="post" class="quantity-form">
+                    <form action="{{ url_for("user.cart_update_item") }}" method="post" class="quantity-form">
                       <input type="hidden" name="quantity" class="hidden-quantity" value="{{ cart_item.quantity }}">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                     </form>
@@ -104,7 +104,7 @@
 
                   <!-- Delete button Start -->
                   <td class="border-end roboto fcs-14 align-middle text-center">
-                    <form action="{{ url_for('user.delete_item') }}" method="post">
+                    <form action="{{ url_for('user.cart_delete_item') }}" method="post">
                       <input type="hidden" name="cart_id" value="{{ cart_item.id }}">
                       <button type="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
                     </form>
