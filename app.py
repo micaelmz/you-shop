@@ -4,15 +4,8 @@ from flask_login import LoginManager
 from api import api_blueprint
 from utils.database import db
 
-from models.cart import Cart
-from models.category import Category
-from models.product import Product, Price
-from models.user import User
-
-from routes.user_bp import user_blueprint
-from routes.product_bp import product_blueprint
-from routes.no_results_bp import no_results_blueprint
-from routes.auth_bp import auth_blueprint
+from models import Cart, Category, Product, Review, User, Price
+from routes import auth_blueprint, no_results_blueprint, product_blueprint, user_blueprint
 
 app = Flask(__name__)
 app.config.from_object('config')

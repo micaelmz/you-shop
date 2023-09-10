@@ -35,6 +35,9 @@ class Product(BaseModel):
     additional_images = db.Column(db.JSON, nullable=True)
     reviews = db.relationship('Review', backref='product')
 
+    def __str__(self):
+        return f"{self.name} - {self.price} ({self.rating})"
+
     @property
     def rating(self) -> Rating:
         return Rating.calculate_rating_from_reviews(self.reviews)

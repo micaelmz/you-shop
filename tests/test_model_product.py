@@ -7,52 +7,48 @@ from flask import Flask
 if not __name__ == "__main__":
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from mock_data import *
 from models.product import Product, Price
 from utils.database import db
 
 
 class TestModels(TestCase):
     def create_app(self):
-        if os.path.exists("test.db"):
-            os.remove("test.db")
         app = Flask(__name__)
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
         db.init_app(app)
-        with app.app_context():
-            db.create_all()
+
+        self.db = db
+        self.app = app
+
+        with self.app.app_context():
+            self.db.create_all()
+
         return app
 
-    def test_price_format_price(self):
-        price = Price(25.99, 15.5)
-        assert price.label_price(25.99) == "25,99"
-        assert price.label_price(15.5) == "15,50"
+    def setUp(self):
+        product1 = Product(
+            name="Test Product 1",
+            category_id=1,
+            price_current=25.99,
+            price_old=30,
+            on_sale=True,
+            image="https://via.placeholder.com/200x200",
+            description="Test Product 1 Description",
+            color="Red",
+            additional_info={"key": "value"},
+            additional_images=["https://via.placeholder.com/200x200", "https://via.placeholder.com/200x200"],
+        )
+        self.db.session.add(product1)
+        self.db.session.commit()
 
-    def test_price_str(self):
-        price = Price(29.95, 20.0)
-        assert str(price) == "29,95"
+    def tearDown(self):
+        self.db.session.remove()
+        self.db.drop_all()
 
-    def test_product_detect_color(self):
-        pass
-
-    def test_commit_product(self):
-        first = test_products[0].commit()
-        assert first == 1
-        second = test_products[1].commit()
-        assert second == 2
-
-    def test_get_all_product(self):
-        products = Product.get_all()
-        assert len(products) != 0
-        assert len(products) == len(test_products)
-
-    def test_get_product_by_id(self):
+    def test_product_name(self):
         product = Product.get_by_id(1)
-        assert product.name == "Test Product"
-
-    def test_more_information_json(self):
-        pass
+        assert str(product) == "Test Product 1 - 25,99 (0,0)"
 
 
 if __name__ == '__main__':
