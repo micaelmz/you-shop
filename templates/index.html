@@ -3,17 +3,27 @@
 {% block title %}You Shop{% endblock %}
 {% block extra_style %}
   <style>
+      /* Mobile */
       @media (max-width: 768px) {
           :root {
               --product-carrousel-qnt: {{ recommended_products|length + 3}} !important; /* 2 = produtos q cabem na tela */
               --carrousel-animation-time: {{ recommended_products|length * 4 }}s !important; /* tempo que cada produto fica na tela */
           }
+
+          .promotions-banner-ratio {
+              --bs-aspect-ratio: 45%;
+          }
       }
 
+      /* Medium devices (tablets and pc, 768px and up) */
       @media (min-width: 768px) {
           :root {
               --product-carrousel-qnt: {{ recommended_products|length + 5}} !important; /* 5 = produtos q cabem na tela */
               --carrousel-animation-time: {{ recommended_products|length * 3 }}s !important; /* tempo que cada produto fica na tela */
+          }
+
+          .promotions-banner-ratio {
+              --bs-aspect-ratio: 33%;
           }
       }
   </style>

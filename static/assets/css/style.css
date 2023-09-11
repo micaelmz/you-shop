@@ -255,6 +255,10 @@ input[readonly] {
     --bs-tooltip-color: #fff;
 }
 
+.start-92{
+    left: 92% !important;
+}
+
 
 /* Text effect with line before and after it */
 .divider {
