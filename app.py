@@ -1,4 +1,4 @@
-from flask import render_template, redirect, Flask
+from flask import render_template, redirect, Flask, session
 from flask_login import LoginManager
 
 from api import api_blueprint
@@ -42,9 +42,13 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
+    showed_disclaimer = session.get('showed_disclaimer', False)
+    if not showed_disclaimer:
+        session['showed_disclaimer'] = True
     return render_template(
         'index.html',
-        recommended_products=Product.get_on_sale_products()
+        recommended_products=Product.get_on_sale_products(),
+        showed_disclaimer=showed_disclaimer
     )
 
 
