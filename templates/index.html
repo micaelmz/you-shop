@@ -169,10 +169,13 @@
       <!-- Hot Products End -->
     </div>
   </section>
+
+  {% if not showed_disclaimer %}
+    {% include  'modals/disclaimer-modal.html' %}
+  {% endif %}
+
   <!-- Hot Products End -->
 {% endblock %}
-
-{% include  'modals/disclaimer-modal.html' %}
 
 
 {% block extra_scripts %}
