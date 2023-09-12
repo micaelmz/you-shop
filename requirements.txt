@@ -5,6 +5,7 @@ flask-restful==0.3.10
 Flask_Login==0.6.2
 flask-recaptcha==0.4.2
 flask-WTF==1.1.1
+flask-mail==0.9.1
 email_validator==2.0.0.post2
 Werkzeug
 pytest==7.4.0

@@ -3,6 +3,7 @@ from flask_login import LoginManager
 
 from api import api_blueprint
 from utils.database import db
+from utils.mail import mail, send_email, send_confirmation_code
 
 from models import Cart, Category, Product, Review, User, Price
 from routes import auth_blueprint, no_results_blueprint, product_blueprint, user_blueprint
@@ -13,6 +14,7 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.pre_login'
+mail.init_app(app)
 
 # with app.app_context():
 #     db.create_all()
@@ -70,3 +72,8 @@ def privacy_policy():
 @app.route('/detail/id/<int:product_id>')
 def detail_moved(product_id: int):
     return redirect(f'/product/id/{product_id}', code=301)
+
+
+@app.route('/send-confirm')
+def send_confirm():
+    return send_confirmation_code('123456')
