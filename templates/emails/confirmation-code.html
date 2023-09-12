@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+      }
+
+      @font-face {
+          font-family: 'Poppins';
+          src: url('https://cdn.micaelmuniz.com/font/Poppins/Poppins-Regular.ttf') format('truetype');
+      }
+      @font-face {
+          font-family: 'Roboto';
+          src: url('https://cdn.micaelmuniz.com/font/Roboto/Roboto-Regular.ttf') format('truetype');
+      }
+      @font-face {
+          font-family: 'Roboto';
+          src: url('https://cdn.micaelmuniz.com/font/Roboto/Roboto-Bold.ttf') format('truetype');
+          font-weight: bold;
+      }
+
+      .poppins {
+          font-family: 'Poppins', sans-serif;
+      }
+      .roboto {
+          font-family: 'Roboto', sans-serif;
+      }
+
+      .header {
+          background: linear-gradient(90deg, #a9a9a9 0%, #8c8c8c 100%);
+          text-align: center;
+          padding: 20px;
+          width: 80%;
+          margin: 0 auto;
+      }
+
+      .logo {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 10px;
+      }
+
+      .logo img {
+          max-width: 100px; /* Ajuste o tamanho mÃ¡ximo conforme necessÃ¡rio */
+      }
+
+      .title {
+          color: #fff;
+          font-size: 2rem;
+          font-weight: 500;
+          vertical-align: middle;
+          display: inline-block;
+      }
+
+      .content {
+          background: linear-gradient(90deg, #d0d0d0 0%, #f5f5f5 100%);
+          border: 2px solid #CDCDCD;
+          font-size: 14px;
+          border-top: 0;
+          width: 80%;
+          margin: 0 auto;
+          padding: 20px;
+          text-align: justify;
+          color: #666666;
+      }
+
+      .content p {
+          color: black;
+          font-size: 1.1rem;
+      }
+
+      .content strong {
+          font-weight: bold;
+      }
+
+      .footer {
+          text-align: center;
+          padding: 20px;
+      }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">
+    <img src="https://cdn.micaelmuniz.com/img/youshop-favicon.png" alt="You Shop Logo">
+  </div>
+  <h2 class="title poppins">You Shop</h2>
+</div>
+<div class="content roboto">
+  <p><strong>Olá {{ current_user.name }},</strong></p>
+  <p>
+    Seu cadastro está quase completo! Para finalizar, basta confirmar seu e-mail clicando no link abaixo ou copiando e
+    colando o código de confirmação no campo indicado: {{ confirmation_link }}
+  </p>
+  <p><strong>Código de confirmação:</strong> {{ confirmation_code }}</p>
+  <hr size="2" width="100%" noshade align="center" style="border: 1px solid #CDCDCD; margin-top: 30px; margin-bottom: 30px;">
+  <p style="font-size: 1.4rem;"><b>Obrigado!</b></p>
+  <p>Equipe You Shop</p>
+</div>
+<div class="footer">
+</div>
+</body>
+</html>
