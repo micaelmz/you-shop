@@ -1,5 +1,5 @@
 from flask_mail import Message, Mail
-from flask import render_template
+from flask import render_template, session
 from flask_login import current_user
 
 mail = Mail()
@@ -12,8 +12,10 @@ def send_email(subject, recipients, html_body):
     return "Sent", 200
 
 
-def send_confirmation_code(code):
+def send_confirmation_code():
+    confirmation_code = session.get('confirmation_code')
+    user_email = session.get('confirmation_email')
     subject = "Código de confirmação You Shop"
-    recipients = [f"{current_user.email}"]
-    html_body = render_template("emails/confirmation-code.html", confirmation_code=code)
+    recipients = [user_email]
+    html_body = render_template("emails/confirmation-code.html", confirmation_code=confirmation_code)
     return send_email(subject, recipients, html_body)

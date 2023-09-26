@@ -17,6 +17,14 @@ def validate_recaptcha(secret_response):
     return verify_response['success']
 
 
+def generate_6_digit_code():
+    import random
+    import string
+    digits = "".join([random.choice(string.digits + string.ascii_letters) for i in range(6)])
+
+    return digits
+
+
 if __name__ == '__main__':
     salting_length = calculate_salting_length()
     print(f"Comprimento de salting sugerido: {salting_length}")

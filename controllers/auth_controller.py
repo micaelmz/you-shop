@@ -1,9 +1,10 @@
-from flask import render_template, redirect, url_for, request, flash, jsonify
+from flask import render_template, redirect, url_for, request, flash, jsonify, session
 from flask_login import login_user, login_required, current_user, logout_user
 from flask_mail import Message
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from utils.security import calculate_salting_length, validate_recaptcha
+from utils.security import calculate_salting_length, validate_recaptcha, generate_6_digit_code
+from utils.mail import send_confirmation_code
 from controllers.forms import validate_form_or_back, PreLoginForm, LoginForm, RegistrationForm
 
 from models.user import User
@@ -41,6 +42,10 @@ def login_post():
 
     user = User.get_by_email(email=form.email.data)
 
+    if not user.is_active:
+        flash('Você precisa confirmar seu email antes de fazer login.', 'warning')
+        return redirect(url_for('auth.register_validation'))
+
     if user and check_password_hash(user.password, form.password.data):
         login_user(user, remember=form.remember_me.data)
         return redirect(request.form.get('next') or url_for('home'))
@@ -72,16 +77,32 @@ def register_post():
     )
     new_user.commit()
 
-    flash('Cadastro realizado com sucesso.', 'success')
-    return redirect(url_for('auth.pre_login'))
+    session['confirmation_code'] = generate_6_digit_code()
+    session['confirmation_email'] = new_user.email
+    send_confirmation_code()
+
+    flash('Um código de confirmação foi enviado para seu email.', 'success')
+    return redirect(url_for('auth.register_validation'))
 
 
 def register_validation():
+    # TODO: em caso não tiver um email na sessão, dar sessão expirada e pedir o email pra mandar um novo codigo -->
+    if not session.get('confirmation_code'):
+        flash('Você precisa se cadastrar primeiro.', 'warning')
+        return redirect(url_for('auth.pre_login'))
     return render_template('validation.html')
 
 
 def register_validation_post():
-    pass
+    code = request.form.get('code')
+    if code == session.get('confirmation_code'):
+        user = User.get_by_email(email=session.get('confirmation_email'))
+        user.confirm()
+        flash('Email confirmado com sucesso.', 'success')
+        return redirect(url_for('auth.pre_login'))
+    else:
+        flash('Código inválido.', 'warning')
+        return redirect(url_for('auth.register_validation'))
 
 
 def logout():
