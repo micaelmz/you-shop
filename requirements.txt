@@ -7,7 +7,7 @@ flask-recaptcha==0.4.2
 flask-WTF==1.1.1
 flask-mail==0.9.1
 email_validator==2.0.0.post2
-Werkzeug
+Werkzeug==2.3.3
 pytest==7.4.0
 colorthief==0.2.1
 requests==2.31.0
