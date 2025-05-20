@@ -18,7 +18,7 @@ Um projeto demonstrativo de uma loja on-line feita em Flask, com painel administ
 
 </div>
 
-![Capa](https://micaelmuniz.com/assets/images/youshopcapa.png)
+![Capa](https://github.com/micaelmz/micaelmz/blob/main/images/youshopcapa.png)
     
 
 ## Requisitos
